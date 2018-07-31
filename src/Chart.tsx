@@ -1,25 +1,25 @@
-import * as React from 'react';
+import React from 'react';
 
-interface Props {
-    width: number;
-    height: number;
-    margins: [number, number, number, number];
+type Props = {
     data: Array<any>;
-    x: Function | number | Date | string;
-    y: Function | number | Date | string;
-    xScale: Function;
-    yScale: Function;
-    color: Function | string;
-    children: any;
-}
+    width?: number;
+    height?: number;
+    margins?: [number, number, number, number];
+    x?: Function | number | Date | string;
+    y?: Function | number | Date | string;
+    xScale?: Function;
+    yScale?: Function;
+    color?: Function | string;
+    children?: any;
+};
 
-interface State {
+type State = {
     xScale: Function;
     yScale: Function;
-}
+};
 
 class Chart extends React.Component<Props, State> {
-    static defaultProps = {
+    public static defaultProps: Partial<Props> = {
         width: 800,
         height: 900,
         margins: [25, 125, 25, 25],
@@ -33,10 +33,12 @@ class Chart extends React.Component<Props, State> {
     };
 
     static getDerivedStateFromProps(nextProps: Props, nextState: State) {
-        const {} = nextProps;
+        return null;
     }
 
     public render() {
+        console.log('hello');
         return null;
     }
 }
+export default Chart;
