@@ -1,0 +1,32 @@
+{
+  "name": "recycle",
+  "version": "0.1.0",
+  "description": "A set of React components to make charts rapidly",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seracio/recycle.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seracio/recycle/issues"
+  },
+  "homepage": "https://github.com/seracio/recycle#readme",
+  "devDependencies": {
+    "react-scripts-ts": "^2.16.0"
+  },
+  "dependencies": {
+    "@types/react": "^16.4.7",
+    "d3-array": "^1.2.1",
+    "d3-force": "^1.1.0",
+    "d3-scale": "^2.1.0",
+    "d3-shape": "^1.2.0",
+    "lodash": "^4.17.10",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
+  }
+}
