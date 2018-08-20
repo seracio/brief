@@ -19789,11 +19789,16 @@ var Chart = /** @class */function (_super) {
         return _this;
     }
     Chart.getDerivedStateFromProps = function (nextProps, nextState) {
+        var _a = nextProps;
         return null;
     };
     Chart.prototype.render = function () {
-        console.log('hello');
-        return null;
+        var _a = this.props,
+            width = _a.width,
+            height = _a.height,
+            margins = _a.margins,
+            children = _a.children;
+        return react_1.default.createElement("svg", { preserveAspectRatio: "xMidYMid meet", viewBox: "0 0 " + margins[0] + " " + margins[1] }, react_1.default.createElement("g", null));
     };
     Chart.defaultProps = {
         width: 800,
@@ -19849,7 +19854,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '56997' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '55989' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
