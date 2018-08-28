@@ -6,11 +6,16 @@ const recycleConnect = () => (WrappedComponent: any) => {
     class Connect extends React.Component {
         render() {
             return (
-                <Provider value={this.props}>
-                    <Consumer>
-                        {props => <WrappedComponent {...props} />}
-                    </Consumer>
-                </Provider>
+                <Consumer>
+                    {props => {
+                        const newProps = { ...props, ...this.props };
+                        return (
+                            <Provider value={newProps}>
+                                <WrappedComponent {...newProps} />
+                            </Provider>
+                        );
+                    }}
+                </Consumer>
             );
         }
     }

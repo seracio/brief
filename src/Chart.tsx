@@ -1,6 +1,7 @@
 import { extent } from 'd3-array';
 import { scaleLinear } from 'd3-scale';
 import React from 'react';
+import { recycleConnect } from './recycleConnect';
 
 type Props = {
     data: Array<any>;
@@ -39,26 +40,14 @@ class Chart extends React.PureComponent<Props> {
             yScale
         } = this.props;
 
-        const xExtent = extent(data, x);
-        const _xScale =
-            xScale ||
-            scaleLinear
-                .domain(xExtent)
-                .rangeRound([margins[0], width - margins[2]]);
-
-        const yExtent = extent(data, y);
-        const _yScale =
-            yScale ||
-            scaleLinear()
-                .domain([Math.min(0, yExtent[0]), Math.max(0, yExtent[1])])
-                .rangeRound([height - margins[3], margins[1]]);
-
         return (
             <svg
                 preserveAspectRatio="xMidYMid meet"
-                viewBox={`0 0 ${margins[0]} ${margins[1]}`}
-            />
+                viewBox={`0 0 ${width} ${height}`}
+            >
+                {children}
+            </svg>
         );
     }
 }
-export default Chart;
+export default recycleConnect()(Chart);

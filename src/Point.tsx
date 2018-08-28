@@ -1,4 +1,5 @@
 import React from 'react';
+import { recycleConnect } from './recycleConnect';
 
 type Props = {
     data?: Array<any>;
@@ -11,12 +12,15 @@ type Props = {
 class Point extends React.Component<Props> {
     __propsToInherit = ['data', 'x', 'y', 'xScale', 'yScale', 'color'];
 
-    static getDerivedStateFromProps() {}
+    static defaultProps = {
+        data: []
+    };
 
-    public render() {
+    render() {
         const { data, x, y, xScale, yScale } = this.props;
-        return <g>{data.map((datum, i) => {})}</g>;
+        console.log('Point', this.props);
+        return <g />;
     }
 }
 
-export default Point;
+export default recycleConnect()(Point);
