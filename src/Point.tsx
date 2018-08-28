@@ -2,9 +2,9 @@ import React from 'react';
 import { recycleConnect } from './recycleConnect';
 
 type Props = {
-    data?: Array<any>;
-    x?: Function | number | Date | string;
-    y?: Function | number | Date | string;
+    data: Array<any>;
+    x: Function;
+    y: Function;
     xScale?: Function;
     yScale?: Function;
 };
@@ -18,8 +18,21 @@ class Point extends React.Component<Props> {
 
     render() {
         const { data, x, y, xScale, yScale } = this.props;
-        console.log('Point', this.props);
-        return <g />;
+        return (
+            <g>
+                {data.map((datum, i) => {
+                    return (
+                        <circle
+                            key={i}
+                            cx={x(datum)}
+                            cy={y(datum)}
+                            r={3}
+                            fill="red"
+                        />
+                    );
+                })}
+            </g>
+        );
     }
 }
 

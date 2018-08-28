@@ -20964,7 +20964,7 @@ var Chart = /** @class */function (_super) {
             children = _a.children,
             xScale = _a.xScale,
             yScale = _a.yScale;
-        return react_1.default.createElement(RecycleContext_1.Provider, { value: { data: data } }, react_1.default.createElement("svg", { preserveAspectRatio: "xMidYMid meet", viewBox: "0 0 " + width + " " + height }, children));
+        return react_1.default.createElement(RecycleContext_1.Provider, { value: { data: data, x: x, y: y } }, react_1.default.createElement("svg", { preserveAspectRatio: "xMidYMid meet", viewBox: "0 0 " + width + " " + height }, children));
     };
     Chart.defaultProps = {
         width: 800,
@@ -21025,8 +21025,9 @@ var Point = /** @class */function (_super) {
             y = _a.y,
             xScale = _a.xScale,
             yScale = _a.yScale;
-        console.log('Point', this.props);
-        return react_1.default.createElement("g", null);
+        return react_1.default.createElement("g", null, data.map(function (datum, i) {
+            return react_1.default.createElement("circle", { key: i, cx: x(datum), cy: y(datum), r: 3, fill: "red" });
+        }));
     };
     Point.defaultProps = {
         data: []
@@ -21049,6 +21050,12 @@ var Point_1 = __importDefault(require("./Point"));
 var data = [{
     x: 0,
     y: 5
+}, {
+    x: 50,
+    y: 30
+}, {
+    x: 20,
+    y: 15
 }];
 react_dom_1.default.render(react_1.default.createElement("div", null, react_1.default.createElement(Chart_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement("g", null, react_1.default.createElement(Point_1.default, null)))), document.querySelector('#root'));
 },{"lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./Chart":"src/Chart.tsx","./Point":"src/Point.tsx"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -21080,7 +21087,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '51985' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '59681' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

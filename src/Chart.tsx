@@ -42,7 +42,7 @@ class Chart extends React.PureComponent<Props> {
         } = this.props;
 
         return (
-            <Provider value={{ data }}>
+            <Provider value={{ data, x, y }}>
                 <svg
                     preserveAspectRatio="xMidYMid meet"
                     viewBox={`0 0 ${width} ${height}`}
