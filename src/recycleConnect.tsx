@@ -2,7 +2,7 @@ import _ from 'lodash/fp';
 import React from 'react';
 import { Consumer } from './RecycleContext';
 
-const recycleConnect = () => (WrappedComponent: any) => {
+const recycleConnect = () => (WrappedComponent: any): any => {
     class Connect extends React.Component {
         render() {
             return (
