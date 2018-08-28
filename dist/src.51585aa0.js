@@ -20910,7 +20910,7 @@ var recycleConnect = function recycleConnect() {
                 var _this = this;
                 return react_1.default.createElement(RecycleContext_1.Consumer, null, function (props) {
                     var newProps = __assign({}, props, _this.props);
-                    return react_1.default.createElement(RecycleContext_1.Provider, { value: newProps }, react_1.default.createElement(WrappedComponent, __assign({}, newProps)));
+                    return react_1.default.createElement(WrappedComponent, __assign({}, newProps));
                 });
             };
             return Connect;
@@ -20947,6 +20947,7 @@ var __importDefault = this && this.__importDefault || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = __importDefault(require("react"));
 var recycleConnect_1 = require("./recycleConnect");
+var RecycleContext_1 = require("./RecycleContext");
 var Chart = /** @class */function (_super) {
     __extends(Chart, _super);
     function Chart() {
@@ -20963,7 +20964,7 @@ var Chart = /** @class */function (_super) {
             children = _a.children,
             xScale = _a.xScale,
             yScale = _a.yScale;
-        return react_1.default.createElement("svg", { preserveAspectRatio: "xMidYMid meet", viewBox: "0 0 " + width + " " + height }, children);
+        return react_1.default.createElement(RecycleContext_1.Provider, { value: { data: data } }, react_1.default.createElement("svg", { preserveAspectRatio: "xMidYMid meet", viewBox: "0 0 " + width + " " + height }, children));
     };
     Chart.defaultProps = {
         width: 800,
@@ -20982,7 +20983,7 @@ var Chart = /** @class */function (_super) {
     return Chart;
 }(react_1.default.PureComponent);
 exports.default = recycleConnect_1.recycleConnect()(Chart);
-},{"react":"node_modules/react/index.js","./recycleConnect":"src/recycleConnect.tsx"}],"src/Point.tsx":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./recycleConnect":"src/recycleConnect.tsx","./RecycleContext":"src/RecycleContext.tsx"}],"src/Point.tsx":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -21079,7 +21080,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '63458' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '51985' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

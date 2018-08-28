@@ -2,6 +2,7 @@ import { extent } from 'd3-array';
 import { scaleLinear } from 'd3-scale';
 import React from 'react';
 import { recycleConnect } from './recycleConnect';
+import { Provider } from './RecycleContext';
 
 type Props = {
     data: Array<any>;
@@ -41,12 +42,14 @@ class Chart extends React.PureComponent<Props> {
         } = this.props;
 
         return (
-            <svg
-                preserveAspectRatio="xMidYMid meet"
-                viewBox={`0 0 ${width} ${height}`}
-            >
-                {children}
-            </svg>
+            <Provider value={{ data }}>
+                <svg
+                    preserveAspectRatio="xMidYMid meet"
+                    viewBox={`0 0 ${width} ${height}`}
+                >
+                    {children}
+                </svg>
+            </Provider>
         );
     }
 }

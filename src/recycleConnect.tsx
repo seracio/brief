@@ -1,6 +1,6 @@
 import _ from 'lodash/fp';
 import React from 'react';
-import { Provider, Consumer } from './RecycleContext';
+import { Consumer } from './RecycleContext';
 
 const recycleConnect = () => (WrappedComponent: any) => {
     class Connect extends React.Component {
@@ -9,11 +9,7 @@ const recycleConnect = () => (WrappedComponent: any) => {
                 <Consumer>
                     {props => {
                         const newProps = { ...props, ...this.props };
-                        return (
-                            <Provider value={newProps}>
-                                <WrappedComponent {...newProps} />
-                            </Provider>
-                        );
+                        return <WrappedComponent {...newProps} />;
                     }}
                 </Consumer>
             );
