@@ -64,19 +64,27 @@ ReactDOM.render(
             fontFamily: 'sans-serif'
         }}
     >
-        <h3>Test of scatterplot</h3>
+        <h3>scatterplot</h3>
         <Chart data={data} x={_.get('x')} y={_.get('y')}>
             <Point />
         </Chart>
-        <h3>Test of a line chart</h3>
+        <h3>line chart</h3>
         <Chart data={data} x={_.get('x')} y={_.get('y')}>
             <Line by={_.get('label')} size={_.constant(2)} />
         </Chart>
-        <h3>Test of a line chart with points</h3>
+        <h3>line chart with points</h3>
         <Chart data={data} x={_.get('x')} y={_.get('y')}>
             <Line by={_.get('label')} size={_.constant(2)}>
                 <Point size={_.constant(3)} />
             </Line>
+        </Chart>
+        <h3>line chart with highlights</h3>
+        <Chart data={data} x={_.get('x')} y={_.get('y')}>
+            <Hightlight by={d => d.label === 'toto'}>
+                <Line by={_.get('label')} size={_.constant(2)}>
+                    <Point size={_.constant(3)} />
+                </Line>
+            </Hightlight>
         </Chart>
     </div>,
     document.querySelector('#root') as HTMLElement

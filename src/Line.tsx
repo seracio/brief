@@ -58,7 +58,7 @@ class Line extends React.Component<Props> {
                         <Provider key={key} value={{ ...this.props, data }}>
                             <path
                                 fill="none"
-                                stroke={color(data)}
+                                stroke={color()}
                                 strokeWidth={size()}
                                 d={lineGenerator(_.orderBy(x, 'asc', data))}
                             />
@@ -71,4 +71,6 @@ class Line extends React.Component<Props> {
     }
 }
 
-export default recycleConnect()(Line);
+export default recycleConnect(
+    _.pick(['data', 'x', 'y', 'color', 'size', 'xScale', 'yScale'])
+)(Line);

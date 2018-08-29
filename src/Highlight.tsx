@@ -15,7 +15,7 @@ class Highlight extends React.Component<Props> {
             <>
                 <Provider
                     value={{
-                        ...this.props,
+                        ..._.omit(['children'], this.props),
                         data: others,
                         color: _.constant('#ccc')
                     }}
@@ -24,7 +24,7 @@ class Highlight extends React.Component<Props> {
                 </Provider>
                 <Provider
                     value={{
-                        ...this.props,
+                        ..._.omit(['children'], this.props),
                         data: highlighted,
                         color: _.constant('rgb(0,0,238)')
                     }}

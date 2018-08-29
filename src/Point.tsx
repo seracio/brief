@@ -45,4 +45,6 @@ class Point extends React.Component<Props> {
     }
 }
 
-export default recycleConnect()(Point);
+export default recycleConnect(
+    _.pick(['data', 'x', 'y', 'color', 'size', 'xScale', 'yScale'])
+)(Point);
