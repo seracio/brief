@@ -30999,8 +30999,9 @@ var data = [{
 react_dom_1.default.render(react_1.default.createElement("div", { style: {
         width: '100%',
         maxWidth: '600px',
-        margin: 'auto'
-    } }, react_1.default.createElement("h3", null, "Test of a line chart"), react_1.default.createElement(Chart_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Group_1.default, { by: fp_1.default.get('label') }, react_1.default.createElement(Line_1.default, null), react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) }))), react_1.default.createElement("h3", null, "Test of a bar chart")), document.querySelector('#root'));
+        margin: 'auto',
+        fontFamily: 'sans-serif'
+    } }, react_1.default.createElement("h3", null, "Test of a line chart"), react_1.default.createElement(Chart_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Group_1.default, { by: fp_1.default.get('label') }, react_1.default.createElement(Line_1.default, null), react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) }))), react_1.default.createElement("h3", null, "Test of a bar chart"), react_1.default.createElement(Chart_1.default, { data: data })), document.querySelector('#root'));
 },{"lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./Chart":"src/Chart.tsx","./Point":"src/Point.tsx","./Group":"src/Group.tsx","./Line":"src/Line.tsx"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -31030,7 +31031,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '57546' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '57894' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

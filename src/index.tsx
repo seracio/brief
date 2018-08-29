@@ -44,7 +44,8 @@ ReactDOM.render(
         style={{
             width: '100%',
             maxWidth: '600px',
-            margin: 'auto'
+            margin: 'auto',
+            fontFamily: 'sans-serif'
         }}
     >
         <h3>Test of a line chart</h3>
@@ -55,6 +56,7 @@ ReactDOM.render(
             </Group>
         </Chart>
         <h3>Test of a bar chart</h3>
+        <Chart data={data}>{/**/}</Chart>
     </div>,
     document.querySelector('#root') as HTMLElement
 );
