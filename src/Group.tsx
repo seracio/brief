@@ -29,7 +29,7 @@ class Group extends React.Component<Props> {
                         <Provider
                             key={key}
                             value={{
-                                ...this.props,
+                                ..._.omit(['children', 'by'], this.props),
                                 data: groups[key],
                                 color: _.constant(
                                     palette[index % palette.length]
