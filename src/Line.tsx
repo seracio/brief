@@ -39,7 +39,7 @@ class Line extends React.Component<Props> {
             <path
                 fill="none"
                 stroke={color(data)}
-                d={lineGenerator(_.orderBy(y, 'asc', data))}
+                d={lineGenerator(_.orderBy(x, 'asc', data))}
             />
         );
     }

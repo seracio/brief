@@ -5,6 +5,7 @@ import Chart from './Chart';
 import Point from './Point';
 import Group from './Group';
 import Line from './Line';
+import Hightlight from './Highlight';
 
 const data = [
     {
@@ -36,6 +37,21 @@ const data = [
         x: 10,
         y: 15,
         label: 'tutu'
+    },
+    {
+        x: 0,
+        y: 30,
+        label: 'tata'
+    },
+    {
+        x: 20,
+        y: 10,
+        label: 'tata'
+    },
+    {
+        x: 10,
+        y: 20,
+        label: 'tata'
     }
 ];
 
@@ -55,6 +71,16 @@ ReactDOM.render(
                 <Point size={_.constant(3)} />
             </Group>
         </Chart>
+        <h3>Test of a line chart with a highlight</h3>
+        <Chart data={data} x={_.get('x')} y={_.get('y')}>
+            <Group by={_.get('label')}>
+                <Hightlight by={d => d.label === 'toto'}>
+                    <Line />
+                    <Point size={_.constant(3)} />
+                </Hightlight>
+            </Group>
+        </Chart>
+
         <h3>Test of a bar chart</h3>
         <Chart data={data}>{/**/}</Chart>
     </div>,

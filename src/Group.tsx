@@ -7,15 +7,35 @@ type Props = {
     by: Function;
 };
 
+const palette = [
+    '#6bcab6',
+    '#c71e1d',
+    '#15607a',
+    '#ffb55e',
+    '#46b1d3',
+    '#ff4739',
+    '#d1d388'
+];
+
 class Group extends React.Component<Props> {
     render() {
         const { data, by, children } = this.props;
         const groups = _.groupBy(by, data);
+        const keys = _.keys(groups);
         return (
             <>
-                {_.keys(groups).map(key => {
+                {keys.map((key, index) => {
                     return (
-                        <Provider value={{ ...this.props, data: groups[key] }}>
+                        <Provider
+                            key={key}
+                            value={{
+                                ...this.props,
+                                data: groups[key],
+                                color: _.constant(
+                                    palette[index % palette.length]
+                                )
+                            }}
+                        >
                             {children}
                         </Provider>
                     );
