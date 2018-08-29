@@ -8,8 +8,8 @@ const recycleConnect = () => (WrappedComponent: any): any => {
         render() {
             return (
                 <Consumer>
-                    {props => {
-                        const newProps = { ...props, ...this.props };
+                    {context => {
+                        const newProps = { ...context, ...this.props };
                         return <WrappedComponent {...newProps} />;
                     }}
                 </Consumer>

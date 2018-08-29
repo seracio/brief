@@ -20,8 +20,8 @@ type Props = {
 
 class Chart extends React.PureComponent<Props> {
     static defaultProps: Partial<Props> = {
-        width: 800,
-        height: 800,
+        width: 500,
+        height: 500,
         margins: [25, 25, 25, 25],
         x: (d: any) => d.x,
         y: (d: any) => d.y,
