@@ -34,18 +34,18 @@ class Line extends React.Component<Props> {
         } = this.props;
 
         const lineGenerator = line()
-            .x((datum, i) =>
+            .x(
                 _.flow(
-                    () => x(datum, i),
+                    x,
                     xScale
-                )()
+                )
             )
-            .y((datum, i) =>
+            .y(
                 _.flow(
-                    () => y(datum, i),
+                    y,
                     yScale,
                     val => -val
-                )()
+                )
             );
 
         const groups = _.groupBy(by, data);
@@ -55,7 +55,13 @@ class Line extends React.Component<Props> {
                 {keys.map(key => {
                     const data = groups[key];
                     return (
-                        <Provider key={key} value={{ ...this.props, data }}>
+                        <Provider
+                            key={key}
+                            value={{
+                                ..._.omit(['children'], this.props),
+                                data
+                            }}
+                        >
                             <path
                                 fill="none"
                                 stroke={color()}

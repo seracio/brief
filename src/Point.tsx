@@ -27,14 +27,14 @@ class Point extends React.Component<Props> {
                         <circle
                             key={i}
                             cx={_.flow(
-                                () => x(datum, i),
+                                x,
                                 xScale
-                            )()}
+                            )(datum)}
                             cy={_.flow(
-                                () => y(datum, i),
+                                y,
                                 yScale,
                                 val => -val
-                            )()}
+                            )(datum)}
                             r={size(datum, i)}
                             fill={color(datum, i)}
                         />

@@ -68,16 +68,19 @@ ReactDOM.render(
         <Chart data={data} x={_.get('x')} y={_.get('y')}>
             <Point />
         </Chart>
+
         <h3>line chart</h3>
         <Chart data={data} x={_.get('x')} y={_.get('y')}>
             <Line by={_.get('label')} size={_.constant(2)} />
         </Chart>
+
         <h3>line chart with points</h3>
         <Chart data={data} x={_.get('x')} y={_.get('y')}>
             <Line by={_.get('label')} size={_.constant(2)}>
                 <Point size={_.constant(3)} />
             </Line>
         </Chart>
+
         <h3>line chart with highlights</h3>
         <Chart data={data} x={_.get('x')} y={_.get('y')}>
             <Hightlight by={d => d.label === 'toto'}>

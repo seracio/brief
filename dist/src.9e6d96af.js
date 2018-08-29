@@ -27750,13 +27750,9 @@ var Point = /** @class */function (_super) {
             color = _a.color,
             size = _a.size;
         return react_1.default.createElement("g", null, data.map(function (datum, i) {
-            return react_1.default.createElement("circle", { key: i, cx: fp_1.default.flow(function () {
-                    return x(datum, i);
-                }, xScale)(), cy: fp_1.default.flow(function () {
-                    return y(datum, i);
-                }, yScale, function (val) {
+            return react_1.default.createElement("circle", { key: i, cx: fp_1.default.flow(x, xScale)(datum), cy: fp_1.default.flow(y, yScale, function (val) {
                     return -val;
-                })(), r: size(datum, i), fill: color(datum, i) });
+                })(datum), r: size(datum, i), fill: color(datum, i) });
         }));
     };
     Point.defaultProps = {
@@ -30900,22 +30896,14 @@ var Line = /** @class */function (_super) {
             size = _a.size,
             by = _a.by,
             children = _a.children;
-        var lineGenerator = d3_shape_1.line().x(function (datum, i) {
-            return fp_1.default.flow(function () {
-                return x(datum, i);
-            }, xScale)();
-        }).y(function (datum, i) {
-            return fp_1.default.flow(function () {
-                return y(datum, i);
-            }, yScale, function (val) {
-                return -val;
-            })();
-        });
+        var lineGenerator = d3_shape_1.line().x(fp_1.default.flow(x, xScale)).y(fp_1.default.flow(y, yScale, function (val) {
+            return -val;
+        }));
         var groups = fp_1.default.groupBy(by, data);
         var keys = fp_1.default.keys(groups);
         return react_1.default.createElement(react_1.default.Fragment, null, keys.map(function (key) {
             var data = groups[key];
-            return react_1.default.createElement(recycle_1.Provider, { key: key, value: __assign({}, _this.props, { data: data }) }, react_1.default.createElement("path", { fill: "none", stroke: color(), strokeWidth: size(), d: lineGenerator(fp_1.default.orderBy(x, 'asc', data)) }), children);
+            return react_1.default.createElement(recycle_1.Provider, { key: key, value: __assign({}, fp_1.default.omit(['children'], _this.props), { data: data }) }, react_1.default.createElement("path", { fill: "none", stroke: color(), strokeWidth: size(), d: lineGenerator(fp_1.default.orderBy(x, 'asc', data)) }), children);
         }));
     };
     Line.defaultProps = {
