@@ -11,7 +11,8 @@
         "moduleResolution": "node",
         "rootDir": "src",
         "strict": true,
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "noImplicitAny": false
     },
     "exclude": ["node_modules", "build", "scripts", "data"]
 }

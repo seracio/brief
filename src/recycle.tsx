@@ -1,6 +1,7 @@
 import _ from 'lodash/fp';
 import React from 'react';
-import { Consumer } from './RecycleContext';
+
+const { Provider, Consumer } = React.createContext({});
 
 const recycleConnect = () => (WrappedComponent: any): any => {
     class Connect extends React.Component {
@@ -19,4 +20,4 @@ const recycleConnect = () => (WrappedComponent: any): any => {
     return Connect;
 };
 
-export { recycleConnect };
+export { recycleConnect, Provider, Consumer };

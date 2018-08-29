@@ -1,5 +1,6 @@
+import _ from 'lodash/fp';
 import React from 'react';
-import { recycleConnect } from './recycleConnect';
+import { recycleConnect } from './recycle';
 
 type Props = {
     data: Array<any>;
@@ -7,27 +8,35 @@ type Props = {
     y: Function;
     xScale?: Function;
     yScale?: Function;
+    color: Function;
+    size: Function;
 };
 
 class Point extends React.Component<Props> {
-    __propsToInherit = ['data', 'x', 'y', 'xScale', 'yScale', 'color'];
-
     static defaultProps = {
-        data: []
+        data: [],
+        size: _.constant(5)
     };
 
     render() {
-        const { data, x, y, xScale, yScale } = this.props;
+        const { data, x, y, xScale, yScale, color, size } = this.props;
         return (
             <g>
                 {data.map((datum, i) => {
                     return (
                         <circle
                             key={i}
-                            cx={x(datum)}
-                            cy={y(datum)}
-                            r={3}
-                            fill="red"
+                            cx={_.flow(
+                                () => x(datum, i),
+                                xScale
+                            )()}
+                            cy={_.flow(
+                                () => y(datum, i),
+                                yScale,
+                                val => -val
+                            )()}
+                            r={size(datum, i)}
+                            fill={color(datum, i)}
                         />
                     );
                 })}

@@ -20,7 +20,13 @@ const data = [
 ];
 
 ReactDOM.render(
-    <div>
+    <div
+        style={{
+            width: '100%',
+            maxWidth: '800px',
+            margin: 'auto'
+        }}
+    >
         <Chart data={data} x={_.get('x')} y={_.get('y')}>
             <g>
                 <Point />
