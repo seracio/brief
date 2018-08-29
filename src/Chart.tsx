@@ -64,19 +64,22 @@ class Chart extends React.PureComponent<Props> {
 
         return (
             <Provider value={{ data, x, y, xScale, yScale, color }}>
-                <svg
-                    preserveAspectRatio="xMidYMid meet"
-                    viewBox={`0 0 ${margins[0] +
-                        width +
-                        margins[2]} ${margins[1] + height + margins[3]}`}
-                >
-                    <g
-                        transform={`translate(${margins[0]} ${margins[1] +
-                            height})`}
+                <div>
+                    <div className="legend">legend</div>
+                    <svg
+                        preserveAspectRatio="xMidYMid meet"
+                        viewBox={`0 0 ${margins[0] +
+                            width +
+                            margins[2]} ${margins[1] + height + margins[3]}`}
                     >
-                        {children}
-                    </g>
-                </svg>
+                        <g
+                            transform={`translate(${margins[0]} ${margins[1] +
+                                height})`}
+                        >
+                            {children}
+                        </g>
+                    </svg>
+                </div>
             </Provider>
         );
     }

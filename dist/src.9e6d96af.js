@@ -30761,7 +30761,7 @@ var Chart = /** @class */function (_super) {
             var yExtent = d3_array_1.extent(data, y);
             yScale = d3_scale_1.scaleLinear().domain([Math.min(0, yExtent[0]), Math.max(0, yExtent[1]) * 1.1]).rangeRound([0, height]);
         }
-        return react_1.default.createElement(recycle_1.Provider, { value: { data: data, x: x, y: y, xScale: xScale, yScale: yScale, color: color } }, react_1.default.createElement("svg", { preserveAspectRatio: "xMidYMid meet", viewBox: "0 0 " + (margins[0] + width + margins[2]) + " " + (margins[1] + height + margins[3]) }, react_1.default.createElement("g", { transform: "translate(" + margins[0] + " " + (margins[1] + height) + ")" }, children)));
+        return react_1.default.createElement(recycle_1.Provider, { value: { data: data, x: x, y: y, xScale: xScale, yScale: yScale, color: color } }, react_1.default.createElement("div", null, react_1.default.createElement("div", { className: "legend" }, "legend"), react_1.default.createElement("svg", { preserveAspectRatio: "xMidYMid meet", viewBox: "0 0 " + (margins[0] + width + margins[2]) + " " + (margins[1] + height + margins[3]) }, react_1.default.createElement("g", { transform: "translate(" + margins[0] + " " + (margins[1] + height) + ")" }, children))));
     };
     Chart.defaultProps = {
         width: 500,
@@ -30969,7 +30969,7 @@ var Highlight = /** @class */function (_super) {
         var _b = fp_1.default.partition(by, data),
             highlighted = _b[0],
             others = _b[1];
-        return react_1.default.createElement(react_1.default.Fragment, null, react_1.default.createElement(recycle_1.Provider, { value: __assign({}, fp_1.default.omit(['children'], this.props), { data: others, color: fp_1.default.constant('#ccc') }) }, children), react_1.default.createElement(recycle_1.Provider, { value: __assign({}, fp_1.default.omit(['children'], this.props), { data: highlighted, color: fp_1.default.constant('rgb(0,0,238)') }) }, children));
+        return react_1.default.createElement(react_1.default.Fragment, null, react_1.default.createElement(recycle_1.Provider, { value: __assign({}, fp_1.default.omit(['children', 'by'], this.props), { data: others, color: fp_1.default.constant('#ccc') }) }, children), react_1.default.createElement(recycle_1.Provider, { value: __assign({}, fp_1.default.omit(['children', 'by'], this.props), { data: highlighted, color: fp_1.default.constant('rgb(0,0,238)') }) }, children));
     };
     return Highlight;
 }(react_1.default.Component);
@@ -31065,7 +31065,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '50847' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '51841' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
