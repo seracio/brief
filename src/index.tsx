@@ -1,3 +1,4 @@
+import { curveCardinal } from 'd3-shape';
 import _ from 'lodash/fp';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -85,6 +86,19 @@ ReactDOM.render(
         <Chart data={data} x={_.get('x')} y={_.get('y')}>
             <Hightlight by={d => d.label === 'toto'}>
                 <Line by={_.get('label')} size={_.constant(2)}>
+                    <Point size={_.constant(3)} />
+                </Line>
+            </Hightlight>
+        </Chart>
+
+        <h3>line chart with a curve</h3>
+        <Chart data={data} x={_.get('x')} y={_.get('y')}>
+            <Hightlight by={d => d.label === 'tata'}>
+                <Line
+                    by={_.get('label')}
+                    size={_.constant(2)}
+                    curve={curveCardinal.tension(0.1)}
+                >
                     <Point size={_.constant(3)} />
                 </Line>
             </Hightlight>

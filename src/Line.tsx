@@ -1,4 +1,4 @@
-import { line } from 'd3-shape';
+import { line, curveLinear } from 'd3-shape';
 import _ from 'lodash/fp';
 import React from 'react';
 import { recycleConnect, Provider } from './recycle';
@@ -12,12 +12,14 @@ type Props = {
     color: Function;
     size: Function;
     by: Function;
+    curve: Function;
 };
 
 class Line extends React.Component<Props> {
     static defaultProps = {
         data: [],
-        size: _.constant(1)
+        size: _.constant(1),
+        curve: curveLinear
     };
 
     render() {
@@ -30,6 +32,7 @@ class Line extends React.Component<Props> {
             color,
             size,
             by,
+            curve,
             children
         } = this.props;
 
@@ -46,7 +49,8 @@ class Line extends React.Component<Props> {
                     yScale,
                     val => -val
                 )
-            );
+            )
+            .curve(curve);
 
         const groups = _.groupBy(by, data);
         const keys = _.keys(groups);
