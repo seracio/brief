@@ -24,7 +24,7 @@ class Chart extends React.PureComponent<Props> {
     static defaultProps: Partial<Props> = {
         width: 500,
         height: 500,
-        margins: [25, 25, 25, 25],
+        margins: [50, 50, 50, 50],
         x: (d: any) => d.x,
         y: (d: any) => d.y,
         color: _.constant('#ccc'),
