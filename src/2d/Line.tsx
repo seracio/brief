@@ -13,6 +13,8 @@ type Props = {
     size: Function;
     by: Function;
     curve: Function;
+    xTransform: Function;
+    yTransform: Function;
 };
 
 class Line extends React.Component<Props> {
@@ -33,21 +35,24 @@ class Line extends React.Component<Props> {
             size,
             by,
             curve,
-            children
+            children,
+            xTransform,
+            yTransform
         } = this.props;
 
         const lineGenerator = line()
             .x(
                 _.flow(
                     x,
-                    xScale
+                    xScale,
+                    xTransform
                 )
             )
             .y(
                 _.flow(
                     y,
                     yScale,
-                    val => -val
+                    yTransform
                 )
             )
             .curve(curve);
@@ -89,4 +94,15 @@ class Line extends React.Component<Props> {
     }
 }
 
-export default recycleConnect(Line);
+export default recycleConnect(
+    _.pick([
+        'data',
+        'x',
+        'y',
+        'xScale',
+        'yScale',
+        'xTransform',
+        'yTransform',
+        'color'
+    ])
+)(Line);

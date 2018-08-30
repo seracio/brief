@@ -42,4 +42,4 @@ class Highlight extends React.Component<Props> {
     }
 }
 
-export default recycleConnect(Highlight);
+export default recycleConnect(_.pick(['data']))(Highlight);

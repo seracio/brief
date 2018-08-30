@@ -10,6 +10,8 @@ type Props = {
     yScale?: Function;
     color: Function;
     size: Function;
+    xTransform: Function;
+    yTransform: Function;
 };
 
 class Point extends React.Component<Props> {
@@ -19,7 +21,17 @@ class Point extends React.Component<Props> {
     };
 
     render() {
-        const { data, x, y, xScale, yScale, color, size } = this.props;
+        const {
+            data,
+            x,
+            y,
+            xScale,
+            yScale,
+            color,
+            size,
+            xTransform,
+            yTransform
+        } = this.props;
         return (
             <g>
                 {data.map((datum, i) => {
@@ -28,12 +40,13 @@ class Point extends React.Component<Props> {
                             key={i}
                             cx={_.flow(
                                 x,
-                                xScale
+                                xScale,
+                                xTransform
                             )(datum)}
                             cy={_.flow(
                                 y,
                                 yScale,
-                                val => -val
+                                yTransform
                             )(datum)}
                             r={size(datum, i)}
                             fill={color(datum, i)}
@@ -45,4 +58,15 @@ class Point extends React.Component<Props> {
     }
 }
 
-export default recycleConnect(Point);
+export default recycleConnect(
+    _.pick([
+        'data',
+        'x',
+        'y',
+        'xScale',
+        'yScale',
+        'xTransform',
+        'yTransform',
+        'color'
+    ])
+)(Point);

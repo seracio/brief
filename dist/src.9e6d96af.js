@@ -30669,6 +30669,7 @@ var __importDefault = this && this.__importDefault || function (mod) {
     return mod && mod.__esModule ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var fp_1 = __importDefault(require("lodash/fp"));
 var react_1 = __importDefault(require("react"));
 var _a = react_1.default.createContext({}),
     Provider = _a.Provider,
@@ -30679,25 +30680,30 @@ exports.Consumer = Consumer;
  * This hoc allows to connect a given component to the current context
  * and add it on its own props
  */
-var recycleConnect = function recycleConnect(WrappedComponent) {
-    var Connect = /** @class */function (_super) {
-        __extends(Connect, _super);
-        function Connect() {
-            return _super !== null && _super.apply(this, arguments) || this;
-        }
-        Connect.prototype.render = function () {
-            var _this = this;
-            return react_1.default.createElement(Consumer, null, function (context) {
-                var newProps = __assign({}, context, _this.props);
-                return react_1.default.createElement(WrappedComponent, __assign({}, newProps));
-            });
-        };
+var recycleConnect = function recycleConnect(pick) {
+    if (pick === void 0) {
+        pick = fp_1.default.identity;
+    }
+    return function (WrappedComponent) {
+        var Connect = /** @class */function (_super) {
+            __extends(Connect, _super);
+            function Connect() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            Connect.prototype.render = function () {
+                var _this = this;
+                return react_1.default.createElement(Consumer, null, function (context) {
+                    var newProps = __assign({}, pick(context), _this.props);
+                    return react_1.default.createElement(WrappedComponent, __assign({}, newProps));
+                });
+            };
+            return Connect;
+        }(react_1.default.Component);
         return Connect;
-    }(react_1.default.Component);
-    return Connect;
+    };
 };
 exports.recycleConnect = recycleConnect;
-},{"react":"node_modules/react/index.js"}],"src/2d/Chart2D.tsx":[function(require,module,exports) {
+},{"lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js"}],"src/2d/Chart2D.tsx":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -30744,18 +30750,37 @@ var Chart = /** @class */function (_super) {
             children = _a.children,
             pxScale = _a.xScale,
             pyScale = _a.yScale,
-            color = _a.color;
+            color = _a.color,
+            xTransform = _a.xTransform,
+            yTransform = _a.yTransform;
         var xScale = pxScale;
         if (!xScale) {
             var xExtent = d3_array_1.extent(data, x);
-            xScale = d3_scale_1.scaleLinear().domain([xExtent[0], xExtent[1] * 1.1]).rangeRound([0, width]);
+            var xDist = Math.abs(xExtent[1] - xExtent[0]);
+            xScale = d3_scale_1.scaleLinear().domain([xExtent[0] - xDist * 0.1, xExtent[1] + xDist * 0.1]).rangeRound([0, width]);
         }
         var yScale = pyScale;
         if (!pyScale) {
-            var yExtent = d3_array_1.extent(data, y);
-            yScale = d3_scale_1.scaleLinear().domain([Math.min(0, yExtent[0]), Math.max(0, yExtent[1]) * 1.1]).rangeRound([0, height]);
+            var yExtent = d3_array_1.extent(data, y).map(function (val, i) {
+                if (i === 0) {
+                    return Math.min(0, val);
+                } else {
+                    return Math.max(0, val);
+                }
+            });
+            var yDist = Math.abs(yExtent[1] - yExtent[0]);
+            yScale = d3_scale_1.scaleLinear().domain([yExtent[0] - yDist * 0.1, yExtent[1] + yDist * 0.1]).rangeRound([0, height]);
         }
-        return react_1.default.createElement(recycle_1.Provider, { value: { data: data, x: x, y: y, xScale: xScale, yScale: yScale, color: color } }, react_1.default.createElement("div", null, react_1.default.createElement("div", { className: "legend" }, "legend"), react_1.default.createElement("svg", { preserveAspectRatio: "xMidYMid meet", viewBox: "0 0 " + (margins[0] + width + margins[2]) + " " + (margins[1] + height + margins[3]) }, react_1.default.createElement("g", { transform: "translate(" + margins[0] + " " + (margins[1] + height) + ")" }, children))));
+        return react_1.default.createElement(recycle_1.Provider, { value: {
+                data: data,
+                x: x,
+                y: y,
+                xScale: xScale,
+                yScale: yScale,
+                color: color,
+                xTransform: xTransform,
+                yTransform: yTransform
+            } }, react_1.default.createElement("div", null, react_1.default.createElement("div", { className: "legend" }, "legend"), react_1.default.createElement("svg", { preserveAspectRatio: "xMidYMid meet", viewBox: "0 0 " + (margins[0] + width + margins[2]) + " " + (margins[1] + height + margins[3]) }, react_1.default.createElement("g", { transform: "translate(" + margins[0] + " " + (margins[1] + height) + ")" }, children))));
     };
     Chart.defaultProps = {
         width: 500,
@@ -30767,11 +30792,17 @@ var Chart = /** @class */function (_super) {
         y: function y(d) {
             return d.y;
         },
-        color: fp_1.default.constant('#ccc')
+        color: fp_1.default.constant('#ccc'),
+        xTransform: function xTransform(x) {
+            return x;
+        },
+        yTransform: function yTransform(y) {
+            return -y;
+        }
     };
     return Chart;
 }(react_1.default.PureComponent);
-exports.default = recycle_1.recycleConnect(Chart);
+exports.default = recycle_1.recycleConnect()(Chart);
 },{"d3-array":"node_modules/d3-array/src/index.js","d3-scale":"node_modules/d3-scale/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/2d/Point.tsx":[function(require,module,exports) {
 "use strict";
 
@@ -30814,11 +30845,11 @@ var Point = /** @class */function (_super) {
             xScale = _a.xScale,
             yScale = _a.yScale,
             color = _a.color,
-            size = _a.size;
+            size = _a.size,
+            xTransform = _a.xTransform,
+            yTransform = _a.yTransform;
         return react_1.default.createElement("g", null, data.map(function (datum, i) {
-            return react_1.default.createElement("circle", { key: i, cx: fp_1.default.flow(x, xScale)(datum), cy: fp_1.default.flow(y, yScale, function (val) {
-                    return -val;
-                })(datum), r: size(datum, i), fill: color(datum, i) });
+            return react_1.default.createElement("circle", { key: i, cx: fp_1.default.flow(x, xScale, xTransform)(datum), cy: fp_1.default.flow(y, yScale, yTransform)(datum), r: size(datum, i), fill: color(datum, i) });
         }));
     };
     Point.defaultProps = {
@@ -30827,7 +30858,7 @@ var Point = /** @class */function (_super) {
     };
     return Point;
 }(react_1.default.Component);
-exports.default = recycle_1.recycleConnect(Point);
+exports.default = recycle_1.recycleConnect(fp_1.default.pick(['data', 'x', 'y', 'xScale', 'yScale', 'xTransform', 'yTransform', 'color']))(Point);
 },{"lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/2d/Line.tsx":[function(require,module,exports) {
 "use strict";
 
@@ -30886,10 +30917,10 @@ var Line = /** @class */function (_super) {
             size = _a.size,
             by = _a.by,
             curve = _a.curve,
-            children = _a.children;
-        var lineGenerator = d3_shape_1.line().x(fp_1.default.flow(x, xScale)).y(fp_1.default.flow(y, yScale, function (val) {
-            return -val;
-        })).curve(curve);
+            children = _a.children,
+            xTransform = _a.xTransform,
+            yTransform = _a.yTransform;
+        var lineGenerator = d3_shape_1.line().x(fp_1.default.flow(x, xScale, xTransform)).y(fp_1.default.flow(y, yScale, yTransform)).curve(curve);
         var groups = fp_1.default.groupBy(by, data);
         var keys = fp_1.default.keys(groups);
         return react_1.default.createElement(recycle_1.Consumer, null, function (context) {
@@ -30906,7 +30937,7 @@ var Line = /** @class */function (_super) {
     };
     return Line;
 }(react_1.default.Component);
-exports.default = recycle_1.recycleConnect(Line);
+exports.default = recycle_1.recycleConnect(fp_1.default.pick(['data', 'x', 'y', 'xScale', 'yScale', 'xTransform', 'yTransform', 'color']))(Line);
 },{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/2d/Highlight.tsx":[function(require,module,exports) {
 "use strict";
 
@@ -30967,8 +30998,66 @@ var Highlight = /** @class */function (_super) {
     };
     return Highlight;
 }(react_1.default.Component);
-exports.default = recycle_1.recycleConnect(Highlight);
-},{"lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/index.tsx":[function(require,module,exports) {
+exports.default = recycle_1.recycleConnect(fp_1.default.pick(['data']))(Highlight);
+},{"lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/2d/Axis.tsx":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+    var _extendStatics = function extendStatics(d, b) {
+        _extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+            d.__proto__ = b;
+        } || function (d, b) {
+            for (var p in b) {
+                if (b.hasOwnProperty(p)) d[p] = b[p];
+            }
+        };
+        return _extendStatics(d, b);
+    };
+    return function (d, b) {
+        _extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+var __importDefault = this && this.__importDefault || function (mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var d3_shape_1 = require("d3-shape");
+var fp_1 = __importDefault(require("lodash/fp"));
+var react_1 = __importDefault(require("react"));
+var recycle_1 = require("../recycle");
+var Axis = /** @class */function (_super) {
+    __extends(Axis, _super);
+    function Axis() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Axis.prototype.render = function () {
+        var _a = this.props,
+            xScale = _a.xScale,
+            yScale = _a.yScale,
+            xTransform = _a.xTransform,
+            yTransform = _a.yTransform,
+            size = _a.size;
+        var x = fp_1.default.flow(fp_1.default.map(xTransform), fp_1.default.maxBy(function (val) {
+            return Math.abs(val);
+        }))(xScale.range());
+        var y = fp_1.default.flow(fp_1.default.map(yTransform), fp_1.default.maxBy(function (val) {
+            return Math.abs(val);
+        }))(yScale.range());
+        return react_1.default.createElement(react_1.default.Fragment, null, react_1.default.createElement("path", { d: d3_shape_1.line()([[-x, 0], [x, 0]]), stroke: "black", strokeWidth: size() }), react_1.default.createElement("path", { d: d3_shape_1.line()([[0, -y], [0, y]]), stroke: "black", strokeWidth: size() }));
+    };
+    Axis.defaultProps = {
+        size: fp_1.default.constant(1),
+        xLabel: fp_1.default.constant('x label'),
+        yLabel: fp_1.default.constant('y label')
+    };
+    return Axis;
+}(react_1.default.Component);
+exports.default = recycle_1.recycleConnect(fp_1.default.pick(['xScale', 'yScale', 'xTransform', 'yTransform']))(Axis);
+},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/index.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -30983,7 +31072,12 @@ var Chart2D_1 = __importDefault(require("./2d/Chart2D"));
 var Point_1 = __importDefault(require("./2d/Point"));
 var Line_1 = __importDefault(require("./2d/Line"));
 var Highlight_1 = __importDefault(require("./2d/Highlight"));
+var Axis_1 = __importDefault(require("./2d/Axis"));
 var data = [{
+    x: -10,
+    y: -30,
+    label: 'toto'
+}, {
     x: 0,
     y: 5,
     label: 'toto'
@@ -30996,8 +31090,12 @@ var data = [{
     y: 20,
     label: 'toto'
 }, {
+    x: -10,
+    y: -20,
+    label: 'tutu'
+}, {
     x: 0,
-    y: 0,
+    y: 7,
     label: 'tutu'
 }, {
     x: 20,
@@ -31007,6 +31105,10 @@ var data = [{
     x: 10,
     y: 15,
     label: 'tutu'
+}, {
+    x: -10,
+    y: -50,
+    label: 'tata'
 }, {
     x: 0,
     y: 30,
@@ -31025,12 +31127,12 @@ react_dom_1.default.render(react_1.default.createElement("div", { style: {
         maxWidth: '600px',
         margin: 'auto',
         fontFamily: 'sans-serif'
-    } }, react_1.default.createElement("h3", null, "scatterplot"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Point_1.default, null)), react_1.default.createElement("h3", null, "line chart"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2) })), react_1.default.createElement("h3", null, "line chart with points"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2) }, react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) }))), react_1.default.createElement("h3", null, "line chart with highlights"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Highlight_1.default, { by: function by(d) {
+    } }, react_1.default.createElement("h3", null, "scatterplot"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Axis_1.default, null), react_1.default.createElement(Point_1.default, null)), react_1.default.createElement("h3", null, "line chart"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2) })), react_1.default.createElement("h3", null, "line chart with points"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2) }, react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) }))), react_1.default.createElement("h3", null, "line chart with highlights"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Highlight_1.default, { by: function by(d) {
         return d.label === 'toto';
-    } }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2) }, react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) })))), react_1.default.createElement("h3", null, "line chart with a curve"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Highlight_1.default, { by: function by(d) {
+    } }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2) }, react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) })))), react_1.default.createElement("h3", null, "line chart with a curve"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Axis_1.default, null), react_1.default.createElement(Highlight_1.default, { by: function by(d) {
         return d.label === 'tata';
     } }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2), curve: d3_shape_1.curveCardinal.tension(0.1) }, react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) }))))), document.querySelector('#root'));
-},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./2d/Chart2D":"src/2d/Chart2D.tsx","./2d/Point":"src/2d/Point.tsx","./2d/Line":"src/2d/Line.tsx","./2d/Highlight":"src/2d/Highlight.tsx"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./2d/Chart2D":"src/2d/Chart2D.tsx","./2d/Point":"src/2d/Point.tsx","./2d/Line":"src/2d/Line.tsx","./2d/Highlight":"src/2d/Highlight.tsx","./2d/Axis":"src/2d/Axis.tsx"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -31059,7 +31161,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '57828' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '63502' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

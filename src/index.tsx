@@ -4,11 +4,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Chart2D from './2d/Chart2D';
 import Point from './2d/Point';
-import Group from './Group';
 import Line from './2d/Line';
 import Hightlight from './2d/Highlight';
+import Axis from './2d/Axis';
 
 const data = [
+    {
+        x: -10,
+        y: -30,
+        label: 'toto'
+    },
     {
         x: 0,
         y: 5,
@@ -25,8 +30,13 @@ const data = [
         label: 'toto'
     },
     {
+        x: -10,
+        y: -20,
+        label: 'tutu'
+    },
+    {
         x: 0,
-        y: 0,
+        y: 7,
         label: 'tutu'
     },
     {
@@ -38,6 +48,11 @@ const data = [
         x: 10,
         y: 15,
         label: 'tutu'
+    },
+    {
+        x: -10,
+        y: -50,
+        label: 'tata'
     },
     {
         x: 0,
@@ -67,6 +82,7 @@ ReactDOM.render(
     >
         <h3>scatterplot</h3>
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+            <Axis />
             <Point />
         </Chart2D>
 
@@ -93,6 +109,7 @@ ReactDOM.render(
 
         <h3>line chart with a curve</h3>
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+            <Axis />
             <Hightlight by={d => d.label === 'tata'}>
                 <Line
                     by={_.get('label')}
