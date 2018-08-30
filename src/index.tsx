@@ -2,11 +2,11 @@ import { curveCardinal } from 'd3-shape';
 import _ from 'lodash/fp';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Chart from './Chart';
-import Point from './Point';
+import Chart2D from './2d/Chart2D';
+import Point from './2d/Point';
 import Group from './Group';
-import Line from './Line';
-import Hightlight from './Highlight';
+import Line from './2d/Line';
+import Hightlight from './2d/Highlight';
 
 const data = [
     {
@@ -66,33 +66,33 @@ ReactDOM.render(
         }}
     >
         <h3>scatterplot</h3>
-        <Chart data={data} x={_.get('x')} y={_.get('y')}>
+        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
             <Point />
-        </Chart>
+        </Chart2D>
 
         <h3>line chart</h3>
-        <Chart data={data} x={_.get('x')} y={_.get('y')}>
+        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
             <Line by={_.get('label')} size={_.constant(2)} />
-        </Chart>
+        </Chart2D>
 
         <h3>line chart with points</h3>
-        <Chart data={data} x={_.get('x')} y={_.get('y')}>
+        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
             <Line by={_.get('label')} size={_.constant(2)}>
                 <Point size={_.constant(3)} />
             </Line>
-        </Chart>
+        </Chart2D>
 
         <h3>line chart with highlights</h3>
-        <Chart data={data} x={_.get('x')} y={_.get('y')}>
+        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
             <Hightlight by={d => d.label === 'toto'}>
                 <Line by={_.get('label')} size={_.constant(2)}>
                     <Point size={_.constant(3)} />
                 </Line>
             </Hightlight>
-        </Chart>
+        </Chart2D>
 
         <h3>line chart with a curve</h3>
-        <Chart data={data} x={_.get('x')} y={_.get('y')}>
+        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
             <Hightlight by={d => d.label === 'tata'}>
                 <Line
                     by={_.get('label')}
@@ -102,7 +102,7 @@ ReactDOM.render(
                     <Point size={_.constant(3)} />
                 </Line>
             </Hightlight>
-        </Chart>
+        </Chart2D>
     </div>,
     document.querySelector('#root') as HTMLElement
 );

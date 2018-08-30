@@ -1,6 +1,6 @@
 import _ from 'lodash/fp';
 import React from 'react';
-import { recycleConnect } from './recycle';
+import { recycleConnect } from '../recycle';
 
 type Props = {
     data: Array<any>;
@@ -45,6 +45,4 @@ class Point extends React.Component<Props> {
     }
 }
 
-export default recycleConnect(
-    _.pick(['data', 'x', 'y', 'color', 'size', 'xScale', 'yScale'])
-)(Point);
+export default recycleConnect(Point);

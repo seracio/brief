@@ -2,7 +2,7 @@ import { extent } from 'd3-array';
 import { scaleLinear } from 'd3-scale';
 import _ from 'lodash/fp';
 import React from 'react';
-import { recycleConnect, Provider } from './recycle';
+import { recycleConnect, Provider } from '../recycle';
 
 type Props = {
     data: Array<any>;
@@ -12,10 +12,10 @@ type Props = {
     x: Function;
     y: Function;
     k: any;
-    xScale?: Function;
-    yScale?: Function;
-    color?: Function;
-    children?: any;
+    xScale: Function;
+    yScale: Function;
+    color: Function;
+    children: any;
 };
 
 class Chart extends React.PureComponent<Props> {
@@ -25,7 +25,6 @@ class Chart extends React.PureComponent<Props> {
         margins: [25, 25, 25, 25],
         x: (d: any) => d.x,
         y: (d: any) => d.y,
-        k: (d: any, i: number) => i,
         color: _.constant('#ccc')
     };
 
@@ -84,4 +83,4 @@ class Chart extends React.PureComponent<Props> {
         );
     }
 }
-export default recycleConnect()(Chart);
+export default recycleConnect(Chart);
