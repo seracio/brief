@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import Chart2D from './2d/Chart2D';
 import Point from './2d/Point';
 import Line from './2d/Line';
-import Highlight from './2d/Highlight';
+import Highlight from './operators/Highlight';
 import Axis from './2d/Axis';
 
 const data = [
@@ -119,6 +119,15 @@ ReactDOM.render(
                     <Point size={_.constant(3)} />
                 </Line>
             </Highlight>
+        </Chart2D>
+
+        <h3>line chart with no group by</h3>
+        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+            <Line
+                size={_.constant(2)}
+                curve={curveCardinal.tension(0)}
+                order={_.orderBy(() => _.random(0, 2), 'asc')}
+            />
         </Chart2D>
     </div>,
     document.querySelector('#root') as HTMLElement

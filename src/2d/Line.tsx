@@ -15,13 +15,15 @@ type Props = {
     curve: Function;
     xTransform: Function;
     yTransform: Function;
+    order?: Function;
 };
 
 class Line extends React.Component<Props> {
     static defaultProps = {
         data: [],
         size: _.constant(1),
-        curve: curveLinear
+        curve: curveLinear,
+        by: _.constant(true)
     };
 
     render() {
@@ -37,7 +39,8 @@ class Line extends React.Component<Props> {
             curve,
             children,
             xTransform,
-            yTransform
+            yTransform,
+            order
         } = this.props;
 
         const lineGenerator = line()
@@ -79,7 +82,9 @@ class Line extends React.Component<Props> {
                                             stroke={color()}
                                             strokeWidth={size()}
                                             d={lineGenerator(
-                                                _.orderBy(x, 'asc', data)
+                                                !order
+                                                    ? _.orderBy(x, 'asc', data)
+                                                    : order(data)
                                             )}
                                         />
                                         {children}

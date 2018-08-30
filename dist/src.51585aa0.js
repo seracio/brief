@@ -30919,26 +30919,28 @@ var Line = /** @class */function (_super) {
             curve = _a.curve,
             children = _a.children,
             xTransform = _a.xTransform,
-            yTransform = _a.yTransform;
+            yTransform = _a.yTransform,
+            order = _a.order;
         var lineGenerator = d3_shape_1.line().x(fp_1.default.flow(x, xScale, xTransform)).y(fp_1.default.flow(y, yScale, yTransform)).curve(curve);
         var groups = fp_1.default.groupBy(by, data);
         var keys = fp_1.default.keys(groups);
         return react_1.default.createElement(recycle_1.Consumer, null, function (context) {
             return react_1.default.createElement(react_1.default.Fragment, null, keys.map(function (key) {
                 var data = groups[key];
-                return react_1.default.createElement(recycle_1.Provider, { key: key, value: __assign({}, context, { data: data }) }, react_1.default.createElement("path", { fill: "none", stroke: color(), strokeWidth: size(), d: lineGenerator(fp_1.default.orderBy(x, 'asc', data)) }), children);
+                return react_1.default.createElement(recycle_1.Provider, { key: key, value: __assign({}, context, { data: data }) }, react_1.default.createElement("path", { fill: "none", stroke: color(), strokeWidth: size(), d: lineGenerator(!order ? fp_1.default.orderBy(x, 'asc', data) : order(data)) }), children);
             }));
         });
     };
     Line.defaultProps = {
         data: [],
         size: fp_1.default.constant(1),
-        curve: d3_shape_1.curveLinear
+        curve: d3_shape_1.curveLinear,
+        by: fp_1.default.constant(true)
     };
     return Line;
 }(react_1.default.Component);
 exports.default = recycle_1.recycleConnect(fp_1.default.pick(['data', 'x', 'y', 'xScale', 'yScale', 'xTransform', 'yTransform', 'color']))(Line);
-},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/2d/Highlight.tsx":[function(require,module,exports) {
+},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/operators/Highlight.tsx":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -33015,7 +33017,7 @@ var react_dom_1 = __importDefault(require("react-dom"));
 var Chart2D_1 = __importDefault(require("./2d/Chart2D"));
 var Point_1 = __importDefault(require("./2d/Point"));
 var Line_1 = __importDefault(require("./2d/Line"));
-var Highlight_1 = __importDefault(require("./2d/Highlight"));
+var Highlight_1 = __importDefault(require("./operators/Highlight"));
 var Axis_1 = __importDefault(require("./2d/Axis"));
 var data = [{
     x: -10,
@@ -33075,8 +33077,10 @@ react_dom_1.default.render(react_1.default.createElement("div", { style: {
         return d.label === 'toto';
     } }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2) }, react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) })))), react_1.default.createElement("h3", null, "line chart with a curve"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Axis_1.default, null), react_1.default.createElement(Highlight_1.default, { by: function by(d) {
         return d.label === 'tata';
-    } }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2), curve: d3_shape_1.curveCardinal.tension(0.1) }, react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) }))))), document.querySelector('#root'));
-},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./2d/Chart2D":"src/2d/Chart2D.tsx","./2d/Point":"src/2d/Point.tsx","./2d/Line":"src/2d/Line.tsx","./2d/Highlight":"src/2d/Highlight.tsx","./2d/Axis":"src/2d/Axis.tsx"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+    } }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2), curve: d3_shape_1.curveCardinal.tension(0.1) }, react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) })))), react_1.default.createElement("h3", null, "line chart with no group by"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Line_1.default, { size: fp_1.default.constant(2), curve: d3_shape_1.curveCardinal.tension(0), order: fp_1.default.orderBy(function () {
+        return fp_1.default.random(0, 2);
+    }, 'asc') }))), document.querySelector('#root'));
+},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./2d/Chart2D":"src/2d/Chart2D.tsx","./2d/Point":"src/2d/Point.tsx","./2d/Line":"src/2d/Line.tsx","./operators/Highlight":"src/operators/Highlight.tsx","./2d/Axis":"src/2d/Axis.tsx"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
