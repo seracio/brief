@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import Chart2D from './2d/Chart2D';
 import Point from './2d/Point';
 import Line from './2d/Line';
-import Hightlight from './2d/Highlight';
+import Highlight from './2d/Highlight';
 import Axis from './2d/Axis';
 
 const data = [
@@ -100,17 +100,17 @@ ReactDOM.render(
 
         <h3>line chart with highlights</h3>
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
-            <Hightlight by={d => d.label === 'toto'}>
+            <Highlight by={d => d.label === 'toto'}>
                 <Line by={_.get('label')} size={_.constant(2)}>
                     <Point size={_.constant(3)} />
                 </Line>
-            </Hightlight>
+            </Highlight>
         </Chart2D>
 
         <h3>line chart with a curve</h3>
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
             <Axis />
-            <Hightlight by={d => d.label === 'tata'}>
+            <Highlight by={d => d.label === 'tata'}>
                 <Line
                     by={_.get('label')}
                     size={_.constant(2)}
@@ -118,7 +118,7 @@ ReactDOM.render(
                 >
                     <Point size={_.constant(3)} />
                 </Line>
-            </Hightlight>
+            </Highlight>
         </Chart2D>
     </div>,
     document.querySelector('#root') as HTMLElement
