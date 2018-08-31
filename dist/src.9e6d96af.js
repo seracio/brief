@@ -33003,7 +33003,74 @@ var Axis = /** @class */function (_super) {
     return Axis;
 }(react_1.default.Component);
 exports.default = recycle_1.recycleConnect(fp_1.default.pick(['xScale', 'yScale', 'xTransform', 'yTransform']))(Axis);
-},{"d3-axis":"node_modules/d3-axis/src/index.js","d3-selection":"node_modules/d3-selection/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/index.tsx":[function(require,module,exports) {
+},{"d3-axis":"node_modules/d3-axis/src/index.js","d3-selection":"node_modules/d3-selection/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/2d/Area.tsx":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+    var _extendStatics = function extendStatics(d, b) {
+        _extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+            d.__proto__ = b;
+        } || function (d, b) {
+            for (var p in b) {
+                if (b.hasOwnProperty(p)) d[p] = b[p];
+            }
+        };
+        return _extendStatics(d, b);
+    };
+    return function (d, b) {
+        _extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+var __importDefault = this && this.__importDefault || function (mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var d3_shape_1 = require("d3-shape");
+var fp_1 = __importDefault(require("lodash/fp"));
+var react_1 = __importDefault(require("react"));
+var recycle_1 = require("../recycle");
+var Area = /** @class */function (_super) {
+    __extends(Area, _super);
+    function Area() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Area.prototype.render = function () {
+        var _a = this.props,
+            data = _a.data,
+            x = _a.x,
+            y = _a.y,
+            y0 = _a.y0,
+            xScale = _a.xScale,
+            yScale = _a.yScale,
+            color = _a.color,
+            by = _a.by,
+            curve = _a.curve,
+            xTransform = _a.xTransform,
+            yTransform = _a.yTransform,
+            order = _a.order;
+        var lineGenerator = d3_shape_1.area().x(fp_1.default.flow(x, xScale, xTransform)).y0(fp_1.default.flow(y0, yScale, yTransform)).y1(fp_1.default.flow(y, yScale, yTransform)).curve(curve);
+        var groups = fp_1.default.groupBy(by, data);
+        var keys = fp_1.default.keys(groups);
+        return react_1.default.createElement(react_1.default.Fragment, null, keys.map(function (key) {
+            var data = groups[key];
+            return react_1.default.createElement("path", { key: key, stroke: "none", opacity: ".5", fill: color(), d: lineGenerator(!order ? fp_1.default.orderBy(x, 'asc', data) : order(data)) });
+        }));
+    };
+    Area.defaultProps = {
+        data: [],
+        size: fp_1.default.constant(1),
+        curve: d3_shape_1.curveLinear,
+        by: fp_1.default.constant(true),
+        y0: fp_1.default.constant(0)
+    };
+    return Area;
+}(react_1.default.Component);
+exports.default = recycle_1.recycleConnect(fp_1.default.pick(['data', 'x', 'y', 'xScale', 'yScale', 'xTransform', 'yTransform', 'color']))(Area);
+},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/index.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -33019,6 +33086,7 @@ var Point_1 = __importDefault(require("./2d/Point"));
 var Line_1 = __importDefault(require("./2d/Line"));
 var Highlight_1 = __importDefault(require("./operators/Highlight"));
 var Axis_1 = __importDefault(require("./2d/Axis"));
+var Area_1 = __importDefault(require("./2d/Area"));
 var data = [{
     x: -10,
     y: -30,
@@ -33079,8 +33147,10 @@ react_dom_1.default.render(react_1.default.createElement("div", { style: {
         return d.label === 'tata';
     } }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2), curve: d3_shape_1.curveCardinal.tension(0.1) }, react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) })))), react_1.default.createElement("h3", null, "line chart with no group by"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Line_1.default, { size: fp_1.default.constant(2), curve: d3_shape_1.curveCardinal.tension(0), order: fp_1.default.orderBy(function () {
         return fp_1.default.random(0, 2);
-    }, 'asc') }))), document.querySelector('#root'));
-},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./2d/Chart2D":"src/2d/Chart2D.tsx","./2d/Point":"src/2d/Point.tsx","./2d/Line":"src/2d/Line.tsx","./operators/Highlight":"src/operators/Highlight.tsx","./2d/Axis":"src/2d/Axis.tsx"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+    }, 'asc') })), react_1.default.createElement("h3", null, "area chart"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Axis_1.default, null), react_1.default.createElement(Highlight_1.default, { by: function by(d) {
+        return d.label === 'toto';
+    } }, react_1.default.createElement(Area_1.default, { by: fp_1.default.get('label'), curve: d3_shape_1.curveCardinal.tension(0.25), y0: fp_1.default.constant(-50) })))), document.querySelector('#root'));
+},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./2d/Chart2D":"src/2d/Chart2D.tsx","./2d/Point":"src/2d/Point.tsx","./2d/Line":"src/2d/Line.tsx","./operators/Highlight":"src/operators/Highlight.tsx","./2d/Axis":"src/2d/Axis.tsx","./2d/Area":"src/2d/Area.tsx"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -33109,7 +33179,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '49740' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '61929' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

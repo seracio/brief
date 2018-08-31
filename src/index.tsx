@@ -7,6 +7,7 @@ import Point from './2d/Point';
 import Line from './2d/Line';
 import Highlight from './operators/Highlight';
 import Axis from './2d/Axis';
+import Area from './2d/Area';
 
 const data = [
     {
@@ -128,6 +129,18 @@ ReactDOM.render(
                 curve={curveCardinal.tension(0)}
                 order={_.orderBy(() => _.random(0, 2), 'asc')}
             />
+        </Chart2D>
+
+        <h3>area chart</h3>
+        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+            <Axis />
+            <Highlight by={d => d.label === 'toto'}>
+                <Area
+                    by={_.get('label')}
+                    curve={curveCardinal.tension(0.25)}
+                    y0={_.constant(-50)}
+                />
+            </Highlight>
         </Chart2D>
     </div>,
     document.querySelector('#root') as HTMLElement
