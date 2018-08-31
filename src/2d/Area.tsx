@@ -11,7 +11,6 @@ type Props = {
     xScale?: Function;
     yScale?: Function;
     color: Function;
-    by: Function;
     curve: Function;
     xTransform: Function;
     yTransform: Function;
@@ -23,7 +22,6 @@ class Area extends React.Component<Props> {
         data: [],
         size: _.constant(1),
         curve: curveLinear,
-        by: _.constant(true),
         y0: _.constant(0)
     };
 
@@ -36,7 +34,6 @@ class Area extends React.Component<Props> {
             xScale,
             yScale,
             color,
-            by,
             curve,
             xTransform,
             yTransform,
@@ -67,25 +64,15 @@ class Area extends React.Component<Props> {
             )
             .curve(curve);
 
-        const groups = _.groupBy(by, data);
-        const keys = _.keys(groups);
         return (
-            <>
-                {keys.map(key => {
-                    const data = groups[key];
-                    return (
-                        <path
-                            key={key}
-                            stroke="none"
-                            opacity=".5"
-                            fill={color()}
-                            d={lineGenerator(
-                                !order ? _.orderBy(x, 'asc', data) : order(data)
-                            )}
-                        />
-                    );
-                })}
-            </>
+            <path
+                stroke="none"
+                opacity=".5"
+                fill={color()}
+                d={lineGenerator(
+                    !order ? _.orderBy(x, 'asc', data) : order(data)
+                )}
+            />
         );
     }
 }

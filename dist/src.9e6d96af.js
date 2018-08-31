@@ -30881,18 +30881,6 @@ var __extends = this && this.__extends || function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 }();
-var __assign = this && this.__assign || function () {
-    __assign = Object.assign || function (t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) {
-                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-            }
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __importDefault = this && this.__importDefault || function (mod) {
     return mod && mod.__esModule ? mod : { "default": mod };
 };
@@ -30915,93 +30903,23 @@ var Line = /** @class */function (_super) {
             yScale = _a.yScale,
             color = _a.color,
             size = _a.size,
-            by = _a.by,
             curve = _a.curve,
             children = _a.children,
             xTransform = _a.xTransform,
             yTransform = _a.yTransform,
             order = _a.order;
         var lineGenerator = d3_shape_1.line().x(fp_1.default.flow(x, xScale, xTransform)).y(fp_1.default.flow(y, yScale, yTransform)).curve(curve);
-        var groups = fp_1.default.groupBy(by, data);
-        var keys = fp_1.default.keys(groups);
-        return react_1.default.createElement(recycle_1.Consumer, null, function (context) {
-            return react_1.default.createElement(react_1.default.Fragment, null, keys.map(function (key) {
-                var data = groups[key];
-                return react_1.default.createElement(recycle_1.Provider, { key: key, value: __assign({}, context, { data: data }) }, react_1.default.createElement("path", { fill: "none", stroke: color(), strokeWidth: size(), d: lineGenerator(!order ? fp_1.default.orderBy(x, 'asc', data) : order(data)) }), children);
-            }));
-        });
+        return react_1.default.createElement("path", { fill: "none", stroke: color(), strokeWidth: size(), d: lineGenerator(!order ? fp_1.default.orderBy(x, 'asc', data) : order(data)) });
     };
     Line.defaultProps = {
         data: [],
         size: fp_1.default.constant(1),
-        curve: d3_shape_1.curveLinear,
-        by: fp_1.default.constant(true)
+        curve: d3_shape_1.curveLinear
     };
     return Line;
 }(react_1.default.Component);
 exports.default = recycle_1.recycleConnect(fp_1.default.pick(['data', 'x', 'y', 'xScale', 'yScale', 'xTransform', 'yTransform', 'color']))(Line);
-},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/operators/Highlight.tsx":[function(require,module,exports) {
-"use strict";
-
-var __extends = this && this.__extends || function () {
-    var _extendStatics = function extendStatics(d, b) {
-        _extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
-            d.__proto__ = b;
-        } || function (d, b) {
-            for (var p in b) {
-                if (b.hasOwnProperty(p)) d[p] = b[p];
-            }
-        };
-        return _extendStatics(d, b);
-    };
-    return function (d, b) {
-        _extendStatics(d, b);
-        function __() {
-            this.constructor = d;
-        }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-}();
-var __assign = this && this.__assign || function () {
-    __assign = Object.assign || function (t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) {
-                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-            }
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-var __importDefault = this && this.__importDefault || function (mod) {
-    return mod && mod.__esModule ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var fp_1 = __importDefault(require("lodash/fp"));
-var react_1 = __importDefault(require("react"));
-var recycle_1 = require("../recycle");
-var Highlight = /** @class */function (_super) {
-    __extends(Highlight, _super);
-    function Highlight() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Highlight.prototype.render = function () {
-        var _a = this.props,
-            data = _a.data,
-            by = _a.by,
-            children = _a.children;
-        var _b = fp_1.default.partition(by, data),
-            highlighted = _b[0],
-            others = _b[1];
-        return react_1.default.createElement(recycle_1.Consumer, null, function (context) {
-            return react_1.default.createElement(react_1.default.Fragment, null, react_1.default.createElement(recycle_1.Provider, { value: __assign({}, context, { data: others, color: fp_1.default.constant('#ccc') }) }, children), react_1.default.createElement(recycle_1.Provider, { value: __assign({}, context, { data: highlighted, color: fp_1.default.constant('rgb(0,0,238)') }) }, children));
-        });
-    };
-    return Highlight;
-}(react_1.default.Component);
-exports.default = recycle_1.recycleConnect(fp_1.default.pick(['data']))(Highlight);
-},{"lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"node_modules/d3-axis/src/array.js":[function(require,module,exports) {
+},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"node_modules/d3-axis/src/array.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33047,30 +32965,162 @@ var Area = /** @class */function (_super) {
             xScale = _a.xScale,
             yScale = _a.yScale,
             color = _a.color,
-            by = _a.by,
             curve = _a.curve,
             xTransform = _a.xTransform,
             yTransform = _a.yTransform,
             order = _a.order;
         var lineGenerator = d3_shape_1.area().x(fp_1.default.flow(x, xScale, xTransform)).y0(fp_1.default.flow(y0, yScale, yTransform)).y1(fp_1.default.flow(y, yScale, yTransform)).curve(curve);
-        var groups = fp_1.default.groupBy(by, data);
-        var keys = fp_1.default.keys(groups);
-        return react_1.default.createElement(react_1.default.Fragment, null, keys.map(function (key) {
-            var data = groups[key];
-            return react_1.default.createElement("path", { key: key, stroke: "none", opacity: ".5", fill: color(), d: lineGenerator(!order ? fp_1.default.orderBy(x, 'asc', data) : order(data)) });
-        }));
+        return react_1.default.createElement("path", { stroke: "none", opacity: ".5", fill: color(), d: lineGenerator(!order ? fp_1.default.orderBy(x, 'asc', data) : order(data)) });
     };
     Area.defaultProps = {
         data: [],
         size: fp_1.default.constant(1),
         curve: d3_shape_1.curveLinear,
-        by: fp_1.default.constant(true),
         y0: fp_1.default.constant(0)
     };
     return Area;
 }(react_1.default.Component);
 exports.default = recycle_1.recycleConnect(fp_1.default.pick(['data', 'x', 'y', 'xScale', 'yScale', 'xTransform', 'yTransform', 'color']))(Area);
-},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/index.tsx":[function(require,module,exports) {
+},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/operators/Group.tsx":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+    var _extendStatics = function extendStatics(d, b) {
+        _extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+            d.__proto__ = b;
+        } || function (d, b) {
+            for (var p in b) {
+                if (b.hasOwnProperty(p)) d[p] = b[p];
+            }
+        };
+        return _extendStatics(d, b);
+    };
+    return function (d, b) {
+        _extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+var __assign = this && this.__assign || function () {
+    __assign = Object.assign || function (t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) {
+                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+            }
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __importDefault = this && this.__importDefault || function (mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var fp_1 = __importDefault(require("lodash/fp"));
+var react_1 = __importDefault(require("react"));
+var recycle_1 = require("../recycle");
+var Group = /** @class */function (_super) {
+    __extends(Group, _super);
+    function Group() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Group.prototype.render = function () {
+        var _a = this.props,
+            data = _a.data,
+            by = _a.by,
+            children = _a.children,
+            color = _a.color,
+            order = _a.order;
+        var groupsByKey = fp_1.default.groupBy(by, data);
+        var keys = fp_1.default.flow(fp_1.default.keys, order)(groupsByKey);
+        return react_1.default.createElement(recycle_1.Consumer, null, function (context) {
+            return react_1.default.createElement(react_1.default.Fragment, null, keys.map(function (key) {
+                var data = groupsByKey[key];
+                return react_1.default.createElement(recycle_1.Provider, { key: key, value: __assign({}, context, { data: data, color: fp_1.default.constant(color(key)) }) }, children);
+            }));
+        });
+    };
+    Group.defaultProps = {
+        by: fp_1.default.constant(true),
+        order: fp_1.default.identity,
+        color: fp_1.default.constant('#ccc')
+    };
+    return Group;
+}(react_1.default.Component);
+exports.default = recycle_1.recycleConnect(fp_1.default.pick(['data']))(Group);
+},{"lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/operators/GroupHighlight.tsx":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+    var _extendStatics = function extendStatics(d, b) {
+        _extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function (d, b) {
+            d.__proto__ = b;
+        } || function (d, b) {
+            for (var p in b) {
+                if (b.hasOwnProperty(p)) d[p] = b[p];
+            }
+        };
+        return _extendStatics(d, b);
+    };
+    return function (d, b) {
+        _extendStatics(d, b);
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+}();
+var __assign = this && this.__assign || function () {
+    __assign = Object.assign || function (t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) {
+                if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+            }
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __importDefault = this && this.__importDefault || function (mod) {
+    return mod && mod.__esModule ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var fp_1 = __importDefault(require("lodash/fp"));
+var react_1 = __importDefault(require("react"));
+var recycle_1 = require("../recycle");
+var GroupHighlight = /** @class */function (_super) {
+    __extends(GroupHighlight, _super);
+    function GroupHighlight() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    GroupHighlight.prototype.render = function () {
+        var _a = this.props,
+            data = _a.data,
+            by = _a.by,
+            children = _a.children,
+            highlight = _a.highlight;
+        var groupsByKey = fp_1.default.groupBy(by, data);
+        var _b = fp_1.default.flow(fp_1.default.keys, fp_1.default.partition(highlight))(groupsByKey),
+            highlightedKey = _b[0],
+            otherKeys = _b[1];
+        return react_1.default.createElement(recycle_1.Consumer, null, function (context) {
+            return react_1.default.createElement(react_1.default.Fragment, null, otherKeys.map(function (key) {
+                var data = groupsByKey[key];
+                return react_1.default.createElement(recycle_1.Provider, { key: key, value: __assign({}, context, { data: data, color: fp_1.default.constant('#ccc') }) }, children);
+            }), highlightedKey.map(function (key) {
+                var data = groupsByKey[key];
+                return react_1.default.createElement(recycle_1.Provider, { key: key, value: __assign({}, context, { data: data, color: fp_1.default.constant('rgb(0,0,238)') }) }, children);
+            }));
+        });
+    };
+    return GroupHighlight;
+}(react_1.default.Component);
+exports.default = recycle_1.recycleConnect(fp_1.default.pick(['data']))(GroupHighlight);
+},{"lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","../recycle":"src/recycle.tsx"}],"src/index.tsx":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -33084,9 +33134,10 @@ var react_dom_1 = __importDefault(require("react-dom"));
 var Chart2D_1 = __importDefault(require("./2d/Chart2D"));
 var Point_1 = __importDefault(require("./2d/Point"));
 var Line_1 = __importDefault(require("./2d/Line"));
-var Highlight_1 = __importDefault(require("./operators/Highlight"));
 var Axis_1 = __importDefault(require("./2d/Axis"));
 var Area_1 = __importDefault(require("./2d/Area"));
+var Group_1 = __importDefault(require("./operators/Group"));
+var GroupHighlight_1 = __importDefault(require("./operators/GroupHighlight"));
 var data = [{
     x: -10,
     y: -30,
@@ -33141,16 +33192,10 @@ react_dom_1.default.render(react_1.default.createElement("div", { style: {
         maxWidth: '600px',
         margin: 'auto',
         fontFamily: 'sans-serif'
-    } }, react_1.default.createElement("h3", null, "scatterplot"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Axis_1.default, null), react_1.default.createElement(Point_1.default, null)), react_1.default.createElement("h3", null, "line chart"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2) })), react_1.default.createElement("h3", null, "line chart with points"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2) }, react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) }))), react_1.default.createElement("h3", null, "line chart with highlights"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Highlight_1.default, { by: function by(d) {
-        return d.label === 'toto';
-    } }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2) }, react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) })))), react_1.default.createElement("h3", null, "line chart with a curve"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Axis_1.default, null), react_1.default.createElement(Highlight_1.default, { by: function by(d) {
-        return d.label === 'tata';
-    } }, react_1.default.createElement(Line_1.default, { by: fp_1.default.get('label'), size: fp_1.default.constant(2), curve: d3_shape_1.curveCardinal.tension(0.1) }, react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) })))), react_1.default.createElement("h3", null, "line chart with no group by"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Line_1.default, { size: fp_1.default.constant(2), curve: d3_shape_1.curveCardinal.tension(0), order: fp_1.default.orderBy(function () {
+    } }, react_1.default.createElement("h3", null, "scatterplot"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Axis_1.default, null), react_1.default.createElement(Point_1.default, null)), react_1.default.createElement("h3", null, "line chart"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Group_1.default, { by: fp_1.default.get('label') }, react_1.default.createElement(Line_1.default, { size: fp_1.default.constant(2) }))), react_1.default.createElement("h3", null, "line chart with points"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Group_1.default, { by: fp_1.default.get('label') }, react_1.default.createElement(Line_1.default, { size: fp_1.default.constant(2) }), react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) }))), react_1.default.createElement("h3", null, "line chart with highlights"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(GroupHighlight_1.default, { by: fp_1.default.get('label'), highlight: fp_1.default.isEqual('toto') }, react_1.default.createElement(Line_1.default, { size: fp_1.default.constant(2) }), react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) }))), react_1.default.createElement("h3", null, "line chart with a curve"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Axis_1.default, null), react_1.default.createElement(GroupHighlight_1.default, { by: fp_1.default.get('label'), highlight: fp_1.default.isEqual('tata') }, react_1.default.createElement(Line_1.default, { size: fp_1.default.constant(2), curve: d3_shape_1.curveCardinal.tension(0.1) }), react_1.default.createElement(Point_1.default, { size: fp_1.default.constant(3) }))), react_1.default.createElement("h3", null, "line chart without group"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Line_1.default, { size: fp_1.default.constant(2), curve: d3_shape_1.curveCardinal.tension(0), order: fp_1.default.orderBy(function () {
         return fp_1.default.random(0, 2);
-    }, 'asc') })), react_1.default.createElement("h3", null, "area chart"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Axis_1.default, null), react_1.default.createElement(Highlight_1.default, { by: function by(d) {
-        return d.label === 'toto';
-    } }, react_1.default.createElement(Area_1.default, { by: fp_1.default.get('label'), curve: d3_shape_1.curveCardinal.tension(0.25), y0: fp_1.default.constant(-50) })))), document.querySelector('#root'));
-},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./2d/Chart2D":"src/2d/Chart2D.tsx","./2d/Point":"src/2d/Point.tsx","./2d/Line":"src/2d/Line.tsx","./operators/Highlight":"src/operators/Highlight.tsx","./2d/Axis":"src/2d/Axis.tsx","./2d/Area":"src/2d/Area.tsx"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+    }, 'asc') })), react_1.default.createElement("h3", null, "area chart"), react_1.default.createElement(Chart2D_1.default, { data: data, x: fp_1.default.get('x'), y: fp_1.default.get('y') }, react_1.default.createElement(Axis_1.default, null), react_1.default.createElement(GroupHighlight_1.default, { by: fp_1.default.get('label'), highlight: fp_1.default.isEqual('toto') }, react_1.default.createElement(Area_1.default, { by: fp_1.default.get('label'), curve: d3_shape_1.curveCardinal.tension(0.25), y0: fp_1.default.constant(-50) })))), document.querySelector('#root'));
+},{"d3-shape":"node_modules/d3-shape/src/index.js","lodash/fp":"node_modules/lodash/fp.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./2d/Chart2D":"src/2d/Chart2D.tsx","./2d/Point":"src/2d/Point.tsx","./2d/Line":"src/2d/Line.tsx","./2d/Axis":"src/2d/Axis.tsx","./2d/Area":"src/2d/Area.tsx","./operators/Group":"src/operators/Group.tsx","./operators/GroupHighlight":"src/operators/GroupHighlight.tsx"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -33179,7 +33224,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '61929' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '65171' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

@@ -5,9 +5,10 @@ import ReactDOM from 'react-dom';
 import Chart2D from './2d/Chart2D';
 import Point from './2d/Point';
 import Line from './2d/Line';
-import Highlight from './operators/Highlight';
 import Axis from './2d/Axis';
 import Area from './2d/Area';
+import Group from './operators/Group';
+import GroupHighlight from './operators/GroupHighlight';
 
 const data = [
     {
@@ -89,40 +90,37 @@ ReactDOM.render(
 
         <h3>line chart</h3>
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
-            <Line by={_.get('label')} size={_.constant(2)} />
+            <Group by={_.get('label')}>
+                <Line size={_.constant(2)} />
+            </Group>
         </Chart2D>
 
         <h3>line chart with points</h3>
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
-            <Line by={_.get('label')} size={_.constant(2)}>
+            <Group by={_.get('label')}>
+                <Line size={_.constant(2)} />
                 <Point size={_.constant(3)} />
-            </Line>
+            </Group>
         </Chart2D>
 
         <h3>line chart with highlights</h3>
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
-            <Highlight by={d => d.label === 'toto'}>
-                <Line by={_.get('label')} size={_.constant(2)}>
-                    <Point size={_.constant(3)} />
-                </Line>
-            </Highlight>
+            <GroupHighlight by={_.get('label')} highlight={_.isEqual('toto')}>
+                <Line size={_.constant(2)} />
+                <Point size={_.constant(3)} />
+            </GroupHighlight>
         </Chart2D>
 
         <h3>line chart with a curve</h3>
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
             <Axis />
-            <Highlight by={d => d.label === 'tata'}>
-                <Line
-                    by={_.get('label')}
-                    size={_.constant(2)}
-                    curve={curveCardinal.tension(0.1)}
-                >
-                    <Point size={_.constant(3)} />
-                </Line>
-            </Highlight>
+            <GroupHighlight by={_.get('label')} highlight={_.isEqual('tata')}>
+                <Line size={_.constant(2)} curve={curveCardinal.tension(0.1)} />
+                <Point size={_.constant(3)} />
+            </GroupHighlight>
         </Chart2D>
 
-        <h3>line chart with no group by</h3>
+        <h3>line chart without group</h3>
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
             <Line
                 size={_.constant(2)}
@@ -134,13 +132,13 @@ ReactDOM.render(
         <h3>area chart</h3>
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
             <Axis />
-            <Highlight by={d => d.label === 'toto'}>
+            <GroupHighlight by={_.get('label')} highlight={_.isEqual('toto')}>
                 <Area
                     by={_.get('label')}
                     curve={curveCardinal.tension(0.25)}
                     y0={_.constant(-50)}
                 />
-            </Highlight>
+            </GroupHighlight>
         </Chart2D>
     </div>,
     document.querySelector('#root') as HTMLElement
