@@ -66,4 +66,4 @@ typings/
 # dist
 dist/index.html
 dist/*.js
-dist/*map
+dist/*.map
