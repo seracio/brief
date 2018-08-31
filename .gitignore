@@ -62,3 +62,8 @@ typings/
 
 # parcel cache
 .cache
+
+# dist
+dist/index.html
+dist/*.js
+dist/*map
