@@ -134,7 +134,6 @@ ReactDOM.render(
             <Axis />
             <GroupHighlight by={_.get('label')} highlight={_.isEqual('toto')}>
                 <Area
-                    by={_.get('label')}
                     curve={curveCardinal.tension(0.25)}
                     y0={_.constant(-50)}
                 />
