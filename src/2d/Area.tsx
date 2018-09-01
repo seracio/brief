@@ -1,13 +1,13 @@
 import { area, curveLinear } from 'd3-shape';
 import _ from 'lodash/fp';
 import React from 'react';
-import { recycleConnect, Provider, Consumer } from '../recycle';
+import { recycleConnect } from '../recycle';
 
 type Props = {
     data: Array<any>;
     x: Function;
     y: Function;
-    y0: Function;
+    floor: Function;
     xScale?: Function;
     yScale?: Function;
     color: Function;
@@ -22,7 +22,7 @@ class Area extends React.Component<Props> {
         data: [],
         size: _.constant(1),
         curve: curveLinear,
-        y0: _.constant(0)
+        floor: _.constant(0)
     };
 
     render() {
@@ -30,7 +30,7 @@ class Area extends React.Component<Props> {
             data,
             x,
             y,
-            y0,
+            floor,
             xScale,
             yScale,
             color,
@@ -50,7 +50,7 @@ class Area extends React.Component<Props> {
             )
             .y0(
                 _.flow(
-                    y0,
+                    floor,
                     yScale,
                     yTransform
                 )

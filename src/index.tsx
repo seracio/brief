@@ -7,6 +7,7 @@ import Point from './2d/Point';
 import Line from './2d/Line';
 import Axis from './2d/Axis';
 import Area from './2d/Area';
+import Label from './2d/Label';
 import Group from './operators/Group';
 import GroupHighlight from './operators/GroupHighlight';
 
@@ -82,10 +83,16 @@ ReactDOM.render(
             fontFamily: 'sans-serif'
         }}
     >
-        <h3>scatterplot</h3>
+        <h3>dot chart</h3>
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
             <Axis />
             <Point />
+        </Chart2D>
+
+        <h3>scatterplot</h3>
+        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+            <Axis />
+            <Point size={() => _.random(3, 20)} />
         </Chart2D>
 
         <h3>line chart</h3>
@@ -133,10 +140,7 @@ ReactDOM.render(
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
             <Axis />
             <GroupHighlight by={_.get('label')} highlight={_.isEqual('toto')}>
-                <Area
-                    curve={curveCardinal.tension(0.25)}
-                    y0={_.constant(-50)}
-                />
+                <Area curve={curveCardinal.tension(0.25)} />
             </GroupHighlight>
         </Chart2D>
     </div>,
