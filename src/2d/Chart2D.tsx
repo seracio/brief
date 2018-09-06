@@ -10,7 +10,6 @@ type Props = {
     margins: [number, number, number, number];
     x: Function;
     y: Function;
-    k: any;
     xScale: Function;
     yScale: Function;
     xTransform: Function;
