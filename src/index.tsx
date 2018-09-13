@@ -127,6 +127,15 @@ ReactDOM.render(
             </GroupHighlight>
         </Chart2D>
 
+        <h3>line chart with a curve and change ratio</h3>
+        <Chart2D data={data} x={_.get('x')} y={_.get('y')} height={250}>
+            <Axis />
+            <GroupHighlight by={_.get('label')} highlight={_.isEqual('tata')}>
+                <Line size={_.constant(2)} curve={curveCardinal.tension(0.1)} />
+                <Point size={_.constant(3)} />
+            </GroupHighlight>
+        </Chart2D>
+
         <h3>line chart without group</h3>
         <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
             <Line
@@ -142,6 +151,18 @@ ReactDOM.render(
             <GroupHighlight by={_.get('label')} highlight={_.isEqual('toto')}>
                 <Area curve={curveCardinal.tension(0.25)} />
             </GroupHighlight>
+        </Chart2D>
+
+        <h3>chart with labels</h3>
+        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+            <Axis />
+            <Point />
+            <Label
+                text={_.get('label')}
+                style={_.constant({
+                    transform: 'translate3d(0,-10px, 0)'
+                })}
+            />
         </Chart2D>
     </div>,
     document.querySelector('#root') as HTMLElement

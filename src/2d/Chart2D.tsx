@@ -7,6 +7,7 @@ import { recycleConnect, Provider } from '../recycle';
 type Props = {
     data: Array<any>;
     width: number;
+    height: number;
     margins: [number, number, number, number];
     x: Function;
     y: Function;
@@ -21,6 +22,7 @@ type Props = {
 class Chart extends React.PureComponent<Props> {
     static defaultProps: Partial<Props> = {
         width: 500,
+        height: 500,
         margins: [50, 5, 5, 50],
         x: (d: any) => d.x,
         y: (d: any) => d.y,
@@ -35,6 +37,7 @@ class Chart extends React.PureComponent<Props> {
             x,
             y,
             width,
+            height,
             margins,
             children,
             xScale: pxScale,
@@ -65,7 +68,7 @@ class Chart extends React.PureComponent<Props> {
             const yDist = Math.abs(yExtent[1] - yExtent[0]);
             yScale = scaleLinear()
                 .domain([yExtent[0] - yDist * 0.05, yExtent[1] + yDist * 0.05])
-                .rangeRound([0, width]);
+                .rangeRound([0, height]);
         }
 
         return (
@@ -87,11 +90,11 @@ class Chart extends React.PureComponent<Props> {
                         preserveAspectRatio="xMidYMid meet"
                         viewBox={`0 0 ${margins[0] +
                             width +
-                            margins[2]} ${margins[1] + width + margins[3]}`}
+                            margins[2]} ${margins[1] + height + margins[3]}`}
                     >
                         <g
                             transform={`translate(${margins[0]} ${margins[1] +
-                                width})`}
+                                height})`}
                         >
                             {children}
                         </g>

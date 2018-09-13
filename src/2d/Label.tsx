@@ -9,16 +9,16 @@ type Props = {
     text: Function;
     xScale?: Function;
     yScale?: Function;
-    size: Function;
     xTransform: Function;
     yTransform: Function;
+    style: Function;
 };
 
 class Label extends React.Component<Props> {
     static defaultProps = {
         data: [],
-        size: _.constant(12),
-        text: _.constant('')
+        text: _.constant(''),
+        style: _.constant({})
     };
 
     render() {
@@ -29,9 +29,9 @@ class Label extends React.Component<Props> {
             text,
             xScale,
             yScale,
-            size,
             xTransform,
-            yTransform
+            yTransform,
+            style
         } = this.props;
         return (
             <g>
@@ -49,7 +49,13 @@ class Label extends React.Component<Props> {
                                 yScale,
                                 yTransform
                             )(datum)}
-                            fill={'black'}
+                            style={{
+                                ...{
+                                    fill: 'black',
+                                    textAnchor: 'middle'
+                                },
+                                ...style(datum)
+                            }}
                         >
                             {text(datum)}
                         </text>
