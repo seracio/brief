@@ -2,12 +2,12 @@ import { curveCardinal } from 'd3-shape';
 import _ from 'lodash/fp';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Chart2D from './2d/Chart2D';
-import Point from './2d/Point';
-import Line from './2d/Line';
-import Axis from './2d/Axis';
-import Area from './2d/Area';
-import Label from './2d/Label';
+import ChartCoord from './coord/ChartCoord';
+import Point from './coord/Point';
+import Line from './coord/Line';
+import Axis from './coord/Axis';
+import Area from './coord/Area';
+import Label from './coord/Label';
 import Group from './operators/Group';
 import GroupHighlight from './operators/GroupHighlight';
 
@@ -84,77 +84,77 @@ ReactDOM.render(
         }}
     >
         <h3>dot chart</h3>
-        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+        <ChartCoord data={data} x={_.get('x')} y={_.get('y')}>
             <Axis />
             <Point />
-        </Chart2D>
+        </ChartCoord>
 
         <h3>scatterplot</h3>
-        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+        <ChartCoord data={data} x={_.get('x')} y={_.get('y')}>
             <Axis />
             <Point size={() => _.random(3, 20)} />
-        </Chart2D>
+        </ChartCoord>
 
         <h3>line chart</h3>
-        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+        <ChartCoord data={data} x={_.get('x')} y={_.get('y')}>
             <Group by={_.get('label')}>
                 <Line size={_.constant(2)} />
             </Group>
-        </Chart2D>
+        </ChartCoord>
 
         <h3>line chart with points</h3>
-        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+        <ChartCoord data={data} x={_.get('x')} y={_.get('y')}>
             <Group by={_.get('label')}>
                 <Line size={_.constant(2)} />
                 <Point size={_.constant(3)} />
             </Group>
-        </Chart2D>
+        </ChartCoord>
 
         <h3>line chart with highlights</h3>
-        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+        <ChartCoord data={data} x={_.get('x')} y={_.get('y')}>
             <GroupHighlight by={_.get('label')} highlight={_.isEqual('toto')}>
                 <Line size={_.constant(2)} />
                 <Point size={_.constant(3)} />
             </GroupHighlight>
-        </Chart2D>
+        </ChartCoord>
 
         <h3>line chart with a curve</h3>
-        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+        <ChartCoord data={data} x={_.get('x')} y={_.get('y')}>
             <Axis />
             <GroupHighlight by={_.get('label')} highlight={_.isEqual('tata')}>
                 <Line size={_.constant(2)} curve={curveCardinal.tension(0.1)} />
                 <Point size={_.constant(3)} />
             </GroupHighlight>
-        </Chart2D>
+        </ChartCoord>
 
         <h3>line chart with a curve and change ratio</h3>
-        <Chart2D data={data} x={_.get('x')} y={_.get('y')} height={250}>
+        <ChartCoord data={data} x={_.get('x')} y={_.get('y')} height={250}>
             <Axis />
             <GroupHighlight by={_.get('label')} highlight={_.isEqual('tata')}>
                 <Line size={_.constant(2)} curve={curveCardinal.tension(0.1)} />
                 <Point size={_.constant(3)} />
             </GroupHighlight>
-        </Chart2D>
+        </ChartCoord>
 
         <h3>line chart without group</h3>
-        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+        <ChartCoord data={data} x={_.get('x')} y={_.get('y')}>
             <Line
                 size={_.constant(2)}
                 curve={curveCardinal.tension(0)}
                 order={_.orderBy(() => _.random(0, 2), 'asc')}
             />
-        </Chart2D>
+        </ChartCoord>
 
         <h3>area chart</h3>
-        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+        <ChartCoord data={data} x={_.get('x')} y={_.get('y')}>
             <Axis />
             <GroupHighlight by={_.get('label')} highlight={_.isEqual('toto')}>
                 <Area curve={curveCardinal.tension(0.25)} />
             </GroupHighlight>
-        </Chart2D>
+        </ChartCoord>
 
         <h3>chart with labels</h3>
-        <Chart2D data={data} x={_.get('x')} y={_.get('y')}>
+        <ChartCoord data={data} x={_.get('x')} y={_.get('y')}>
             <Axis />
             <Point />
             <Label
@@ -163,7 +163,7 @@ ReactDOM.render(
                     transform: 'translate3d(0,-10px, 0)'
                 })}
             />
-        </Chart2D>
+        </ChartCoord>
     </div>,
     document.querySelector('#root') as HTMLElement
 );

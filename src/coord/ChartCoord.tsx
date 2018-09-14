@@ -19,7 +19,7 @@ type Props = {
     children: any;
 };
 
-class Chart extends React.PureComponent<Props> {
+class ChartCoord extends React.PureComponent<Props> {
     static defaultProps: Partial<Props> = {
         width: 500,
         height: 500,
@@ -104,4 +104,4 @@ class Chart extends React.PureComponent<Props> {
         );
     }
 }
-export default recycleConnect()(Chart);
+export default recycleConnect()(ChartCoord);
