@@ -1,6 +1,4 @@
-import _ from 'lodash/fp';
 import React from 'react';
-import update from 'react-addons-update';
 import stickybits from 'stickybits';
 import styled from 'styled-components';
 
@@ -14,6 +12,7 @@ const Container = styled.div.attrs({
     margin: auto;
     position: relative;
     .scrollytelling__card-container {
+        -webkit-transform: translateZ(1px);
         position: relative;
         pointer-events: none;
         user-select: none;
@@ -53,34 +52,16 @@ const Container = styled.div.attrs({
     }
 `;
 
-////////
-// PROPS
-////////
-type Card = {
-    title: string | null;
-    text: string | null;
-    data: any;
-};
-
-type Props = {
-    cards: Array<Card>;
-    children: Function;
-    threshold: number;
-    id: string;
-};
-
-type State = {
-    currentCard: Card;
-};
-
-class LayerScrollytelling extends React.Component<Props, State> {
+class Scrollytelling extends React.Component<any, any> {
     static defaultProps = {
         threshold: 0.5
     };
 
+    observer: null | IntersectionObserver;
+    refCardContainer: any;
+
     constructor(props: Props) {
         super(props);
-        // $FlowFixMe
         this.observer = null;
         this.refCardContainer = React.createRef();
         this.state = {
@@ -107,13 +88,9 @@ class LayerScrollytelling extends React.Component<Props, State> {
                 if (!!indexes.length) {
                     const index = indexes[0];
                     const card = this.props.cards[index];
-                    this.setState(
-                        update(this.state, {
-                            currentCard: {
-                                $set: card
-                            }
-                        })
-                    );
+                    this.setState({
+                        currentCard: card
+                    });
                 }
             },
             {
@@ -130,13 +107,11 @@ class LayerScrollytelling extends React.Component<Props, State> {
         cards.forEach(card => this.observer.observe(card));
     }
 
-    // TODO
     componentWillUnmount() {}
 
     render() {
         const { cards, children, id } = this.props;
         const { currentCard } = this.state;
-
         return (
             <Container id={id} size={cards.length}>
                 <div className="scrollytelling__sticky-container">
@@ -165,4 +140,4 @@ class LayerScrollytelling extends React.Component<Props, State> {
     }
 }
 
-export default LayerScrollytelling;
+export default Scrollytelling;
