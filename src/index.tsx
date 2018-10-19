@@ -10,6 +10,7 @@ import Area from './coord/Area';
 import Label from './coord/Label';
 import Group from './operators/Group';
 import GroupHighlight from './operators/GroupHighlight';
+import Annotation from './util/Annotation';
 
 const data = [
     {
@@ -163,6 +164,12 @@ ReactDOM.render(
                     transform: 'translate3d(0,-10px, 0)'
                 })}
             />
+        </ChartCoord>
+
+        <h3>chart with annotations</h3>
+        <ChartCoord data={data} x={_.get('x')} y={_.get('y')}>
+            <Axis />
+            <Point />
         </ChartCoord>
     </div>,
     document.querySelector('#root') as HTMLElement
