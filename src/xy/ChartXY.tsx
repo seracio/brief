@@ -2,7 +2,7 @@ import { extent } from 'd3-array';
 import { scaleLinear } from 'd3-scale';
 import _ from 'lodash/fp';
 import React from 'react';
-import { recycleConnect, RecycleContext } from '../recycle';
+import { RecycleContext } from '../recycle';
 
 type Props = {
     data: Array<any>;
@@ -90,4 +90,4 @@ const ChartXY = ({
     );
 };
 
-export default recycleConnect()(ChartXY);
+export default ChartXY;

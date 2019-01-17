@@ -1,30 +1,34 @@
 import _ from 'lodash/fp';
-import React from 'react';
-import { recycleConnect } from '../recycle';
+import React, { useContext } from 'react';
+import { RecycleContext } from '../recycle';
 
 type Props = {
-    data: Array<any>;
-    x: Function;
-    y: Function;
+    data?: any;
+    x?: Function;
+    y?: Function;
     xScale?: Function;
     yScale?: Function;
-    color: Function;
+    color?: any;
     size?: Function;
-    xTransform: Function;
-    yTransform: Function;
+    xTransform?: Function;
+    yTransform?: Function;
 };
 
-const Dot = ({
-    data,
-    x,
-    y,
-    xScale,
-    yScale,
-    color,
-    xTransform,
-    yTransform,
-    size = _.constant(5)
-}: Props) => {
+const Dot = (props: Props) => {
+    const context = useContext(RecycleContext);
+
+    const {
+        data,
+        x,
+        y,
+        xScale,
+        yScale,
+        color,
+        xTransform,
+        yTransform,
+        size = _.constant(5)
+    } = { ...context, ...props };
+
     return (
         <g>
             {data.map((datum, i) => {
@@ -50,15 +54,4 @@ const Dot = ({
     );
 };
 
-export default recycleConnect(
-    _.pick([
-        'data',
-        'x',
-        'y',
-        'xScale',
-        'yScale',
-        'xTransform',
-        'yTransform',
-        'color'
-    ])
-)(Dot);
+export default Dot;

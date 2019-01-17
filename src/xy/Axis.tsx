@@ -1,34 +1,37 @@
 import { axisBottom, axisLeft } from 'd3-axis';
 import * as d3 from 'd3-selection';
 import _ from 'lodash/fp';
-import React from 'react';
-import { recycleConnect } from '../recycle';
+import React, { useContext } from 'react';
+import { RecycleContext } from '../recycle';
 
 type Props = {
-    xScale: any;
-    yScale: any;
-    xTransform: Function;
-    yTransform: Function;
-    xLabel: Function;
-    yLabel: Function;
-    xFormat: Function;
-    yFormat: Function;
-    xTicks: Function;
-    yTicks: Function;
+    xScale?: any;
+    yScale?: any;
+    xTransform?: any;
+    yTransform?: any;
+    xLabel?: any;
+    yLabel?: any;
+    xFormat?: any;
+    yFormat?: any;
+    xTicks?: any;
+    yTicks?: any;
 };
 
-const Axis = ({
-    xScale,
-    yScale,
-    xTransform,
-    yTransform,
-    xLabel = _.constant('x axis'),
-    yLabel = _.constant('y axis'),
-    xFormat = _.identity,
-    yFormat = _.identity,
-    xTicks = _.constant(10),
-    yTicks = _.constant(10)
-}: Props) => {
+const Axis = (props: Props) => {
+    const context = useContext(RecycleContext);
+    const {
+        xScale,
+        yScale,
+        xTransform,
+        yTransform,
+        xLabel = _.constant('x axis'),
+        yLabel = _.constant('y axis'),
+        xFormat = _.identity,
+        yFormat = _.identity,
+        xTicks = _.constant(10),
+        yTicks = _.constant(10)
+    } = { ...context, ...props };
+
     const [x0, x1] = xScale.range().map(xTransform);
     const [y0, y1] = yScale.range().map(yTransform);
 
@@ -74,6 +77,4 @@ const Axis = ({
     );
 };
 
-export default recycleConnect(
-    _.pick(['xScale', 'yScale', 'xTransform', 'yTransform'])
-)(Axis);
+export default Axis;
