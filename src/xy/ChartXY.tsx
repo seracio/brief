@@ -12,8 +12,10 @@ type Props = {
     margins?: [number, number, number, number];
     x?: Function;
     y?: Function;
-    xScale?: Function;
-    yScale?: Function;
+    xScale?: any;
+    yScale?: any;
+    xDomain?: [number, number];
+    yDomain?: [number, number];
     xTransform?: Function;
     yTransform?: Function;
     color?: Function;
@@ -27,35 +29,25 @@ const ChartXY = ({
     margins = [50, 5, 5, 50],
     x = (d: any) => d.x,
     y = (d: any) => d.y,
-    xScale: pxScale = undefined,
-    yScale: pyScale = undefined,
+    xScale: xScaleGen = scaleLinear,
+    yScale: yScaleGen = scaleLinear,
+    xDomain,
+    yDomain,
     xTransform = x => x,
     yTransform = y => -y,
     color = _.constant('#ccc')
 }: Props) => {
-    let xScale = pxScale;
-    if (!xScale) {
-        const xExtent = extent(data, x);
-        const xDist = Math.abs(xExtent[1] - xExtent[0]);
-        xScale = scaleLinear()
-            .domain([xExtent[0] - xDist * 0.05, xExtent[1] + xDist * 0.05])
-            .rangeRound([0, width]);
-    }
+    const xExtent = xDomain ? [...xDomain] : extent(data, x);
+    const xDist = Math.abs(xExtent[1] - xExtent[0]);
+    const xScale = xScaleGen()
+        .domain([xExtent[0] - xDist * 0.05, xExtent[1] + xDist * 0.05])
+        .rangeRound([0, width]);
 
-    let yScale = pyScale;
-    if (!pyScale) {
-        const yExtent = extent(data, y).map((val, i) => {
-            if (i === 0) {
-                return Math.min(0, val);
-            } else {
-                return Math.max(0, val);
-            }
-        });
-        const yDist = Math.abs(yExtent[1] - yExtent[0]);
-        yScale = scaleLinear()
-            .domain([yExtent[0] - yDist * 0.05, yExtent[1] + yDist * 0.05])
-            .rangeRound([0, height]);
-    }
+    const yExtent = yDomain ? [...yDomain] : extent(data, y);
+    const yDist = Math.abs(yExtent[1] - yExtent[0]);
+    const yScale = yScaleGen()
+        .domain([yExtent[0] - yDist * 0.05, yExtent[1] + yDist * 0.05])
+        .rangeRound([0, height]);
 
     return (
         // @ts-ignore
