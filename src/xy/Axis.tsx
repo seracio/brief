@@ -28,8 +28,8 @@ const Axis = (props: Props) => {
         yLabel = _.constant('y axis'),
         xFormat = _.identity,
         yFormat = _.identity,
-        xTicks = _.constant(10),
-        yTicks = _.constant(10)
+        xTicks = _.constant(5),
+        yTicks = _.constant(5)
     } = { ...context, ...props };
 
     const [x0, x1] = xScale.range().map(xTransform);

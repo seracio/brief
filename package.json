@@ -4,7 +4,7 @@
     "description": "A set of React components to make charts rapidly",
     "main": "index.js",
     "scripts": {
-        "style": "npx styleguidist server",
+        "start": "npx styleguidist server",
         "style:build": "npx styleguidist build"
     },
     "repository": {

@@ -1,5 +1,5 @@
 module.exports = {
-    components: ['src/xy/*.tsx'],
+    components: ['src/xy/*.tsx', 'src/op/*.tsx'],
     styleguideDir: 'docs',
     webpackConfig: {
         resolve: {

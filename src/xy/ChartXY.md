@@ -84,5 +84,11 @@ const data = [
         <Axis />
         <Dot />
     </ChartXY>
+    <h3>Line chart</h3>
+    <ChartXY data={data} x={_.get('x')} y={_.get('y')}>
+        <Group by={_.get('label')}>
+            <Line size={_.constant(2)} />
+        </Group>
+    </ChartXY>
 </div>;
 ```
