@@ -12,13 +12,10 @@ type Props = {
 
 const Group = (props: Props) => {
     const context = useContext(RecycleContext);
-    const {
-        data,
-        children,
-        by = _.constant(true),
-        order = _.identity,
-        color = _.constant('red')
-    } = { ...context, ...props };
+    const { data, children, by, order = _.identity, color } = {
+        ...context,
+        ...props
+    };
 
     const groupsByKey = _.groupBy(by, data);
     const keys = _.flow(
@@ -37,7 +34,7 @@ const Group = (props: Props) => {
                         value={{
                             ...context,
                             data,
-                            color: _.constant(color(key))
+                            color: _.constant((color as Function)(key))
                         }}
                     >
                         {children}

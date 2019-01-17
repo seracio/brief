@@ -8,6 +8,7 @@ ChartXY is the container for all X/Y charts:
 It offers several enhancements
 
 ```js
+const _ = require('lodash/fp');
 const data = [
     {
         x: -10,
@@ -86,6 +87,7 @@ const data = [
     </ChartXY>
     <h3>Line chart</h3>
     <ChartXY data={data} x={_.get('x')} y={_.get('y')}>
+        <Axis />
         <Group by={_.get('label')}>
             <Line size={_.constant(2)} />
         </Group>
