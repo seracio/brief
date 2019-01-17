@@ -1,26 +1,18 @@
 import _ from 'lodash/fp';
-import React from 'react';
+import React, { useContext } from 'react';
 
-const { Provider, Consumer } = React.createContext({});
+const RecycleContext = React.createContext({});
 
 /**
  * This hoc allows to connect a given component to the current context
  * and add it on its own props
  */
 const recycleConnect = (pick = _.identity) => (WrappedComponent: any): any => {
-    class Connect extends React.Component {
-        render() {
-            return (
-                <Consumer>
-                    {context => {
-                        const newProps = { ...pick(context), ...this.props };
-                        return <WrappedComponent {...newProps} />;
-                    }}
-                </Consumer>
-            );
-        }
-    }
-
+    const Connect = props => {
+        const context = useContext(RecycleContext);
+        const newProps = { ...pick(context), ...props };
+        return <WrappedComponent {...newProps} />;
+    };
     return Connect;
 };
 
@@ -28,4 +20,4 @@ const recycleConnect = (pick = _.identity) => (WrappedComponent: any): any => {
  *
  */
 
-export { recycleConnect, Provider, Consumer };
+export { recycleConnect, RecycleContext };
