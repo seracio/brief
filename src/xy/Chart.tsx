@@ -21,7 +21,7 @@ type Props = {
     color?: Function;
 };
 
-const ChartXY = ({
+const Chart = ({
     data,
     children,
     width = 500,
@@ -82,4 +82,4 @@ const ChartXY = ({
     );
 };
 
-export default ChartXY;
+export default Chart;

@@ -1,11 +1,16 @@
 {
-    "name": "recycle",
+    "name": "@seracio/recycle",
     "version": "0.1.0",
     "description": "A set of React components to make charts rapidly",
-    "main": "index.js",
+    "main": "dist/recycle.js",
+    "umd:main": "dist/recycle.umd.js",
+    "module": "dist/recycle.mjs",
+    "source": "src/index.tsx",
     "scripts": {
         "start": "npx styleguidist server",
-        "style:build": "npx styleguidist build"
+        "doc": "npx styleguidist build",
+        "prepublishOnly": "npm run build",
+        "build": "microbundle"
     },
     "repository": {
         "type": "git",

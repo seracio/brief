@@ -83,34 +83,47 @@ const data = [
     }}
 >
     <h3>Scatterplot</h3>
-    <ChartXY data={data} x={_.get('x')} y={_.get('y')}>
+    <Chart data={data} x={_.get('x')} y={_.get('y')}>
         <Axis />
         <Dot size={d => 2 + Math.random() * 20} />
-    </ChartXY>
+    </Chart>
     <h3>Line chart</h3>
-    <ChartXY data={data} x={_.get('x')} y={_.get('y')}>
+    <Chart data={data} x={_.get('x')} y={_.get('y')}>
         <Axis />
         <Group by={_.get('label')}>
             <Line size={_.constant(2)} />
         </Group>
-    </ChartXY>
+    </Chart>
     <h3>Highlights</h3>
-    <ChartXY data={data} x={_.get('x')} y={_.get('y')}>
+    <Chart data={data} x={_.get('x')} y={_.get('y')}>
         <Axis />
         <Highlight by={d => d.label === 'toto'}>
             <Group by={_.get('label')}>
                 <Line size={_.constant(2)} />
             </Group>
         </Highlight>
-    </ChartXY>
-    <h3>area chart</h3>
-    <ChartXY data={data} x={_.get('x')} y={_.get('y')}>
+    </Chart>
+    <h3>Area chart</h3>
+    <Chart data={data} x={_.get('x')} y={_.get('y')}>
         <Axis />
         <Highlight by={d => d.label === 'toto'}>
             <Group by={_.get('label')}>
                 <Area curve={curveCardinal.tension(0.5)} />
             </Group>
         </Highlight>
-    </ChartXY>
+    </Chart>
+    <h3>Chart with labels</h3>
+    <Chart data={data} x={_.get('x')} y={_.get('y')}>
+        <Axis />
+        <Dot />
+        <Transform by={_.sampleSize(3)}>
+            <Label
+                text={_.get('label')}
+                style={_.constant({
+                    transform: 'translate3d(0,-10px, 0)'
+                })}
+            />
+        </Transform>
+    </Chart>
 </div>;
 ```
