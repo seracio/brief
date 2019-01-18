@@ -9,6 +9,7 @@ It offers several enhancements
 
 ```js
 const _ = require('lodash/fp');
+const { histogram } = require('d3-array');
 const data = [
     {
         x: -10,
@@ -92,5 +93,15 @@ const data = [
             <Line size={_.constant(2)} />
         </Group>
     </ChartXY>
+    <h3>Highlights</h3>
+    <ChartXY data={data} x={_.get('x')} y={_.get('y')}>
+        <Axis />
+        <Highlight by={d => d.label === 'toto'}>
+            <Group by={_.get('label')}>
+                <Line size={_.constant(2)} />
+            </Group>
+        </Highlight>
+    </ChartXY>
+    <h3>Distribution</h3>
 </div>;
 ```
