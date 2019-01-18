@@ -2,7 +2,7 @@
     "name": "@seracio/recycle",
     "version": "0.2.3",
     "description": "A set of React components to make charts rapidly",
-    "main": "dist/recycle.js",
+    "main": "dist/index.js",
     "source": "src/index.tsx",
     "scripts": {
         "start": "npx styleguidist server",
