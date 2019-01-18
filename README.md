@@ -2,6 +2,20 @@
 
 A set of React components to make charts rapidly
 
+## Usage
+
+```jsx
+import { xy } from '@seracio/recycle';
+
+render(
+    <xy.Chart data={data} x={_.get('x')} y={_.get('y')}>
+        <xy.Dot size={d => 2 + Math.random() * 20} />
+        <xy.Axis />
+    </xy.Chart>,
+    document.querySelector('#root')
+);
+```
+
 ## Resources
 
 -   [React / typescript cheatsheet](https://github.com/sw-yx/react-typescript-cheatsheet)
