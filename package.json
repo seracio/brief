@@ -1,6 +1,6 @@
 {
     "name": "@seracio/recycle",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "description": "A set of React components to make charts rapidly",
     "main": "dist/index.js",
     "source": "src/index.tsx",
