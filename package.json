@@ -3,8 +3,6 @@
     "version": "0.2.2",
     "description": "A set of React components to make charts rapidly",
     "main": "dist/recycle.js",
-    "umd:main": "dist/recycle.umd.js",
-    "module": "dist/recycle.mjs",
     "source": "src/index.tsx",
     "scripts": {
         "start": "npx styleguidist server",
