@@ -9,7 +9,8 @@ It offers several enhancements
 
 ```js
 const _ = require('lodash/fp');
-const { histogram } = require('d3-array');
+const { curveCardinal } = require('d3-shape');
+
 const data = [
     {
         x: -10,
@@ -84,7 +85,7 @@ const data = [
     <h3>Scatterplot</h3>
     <ChartXY data={data} x={_.get('x')} y={_.get('y')}>
         <Axis />
-        <Dot />
+        <Dot size={d => 2 + Math.random() * 20} />
     </ChartXY>
     <h3>Line chart</h3>
     <ChartXY data={data} x={_.get('x')} y={_.get('y')}>
@@ -102,6 +103,14 @@ const data = [
             </Group>
         </Highlight>
     </ChartXY>
-    <h3>Distribution</h3>
+    <h3>area chart</h3>
+    <ChartXY data={data} x={_.get('x')} y={_.get('y')}>
+        <Axis />
+        <Highlight by={d => d.label === 'toto'}>
+            <Group by={_.get('label')}>
+                <Area curve={curveCardinal.tension(0.5)} />
+            </Group>
+        </Highlight>
+    </ChartXY>
 </div>;
 ```

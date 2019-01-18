@@ -45,8 +45,10 @@ const Dot = (props: Props) => {
                             yScale,
                             yTransform
                         )(datum)}
-                        r={size(datum, i)}
-                        fill={color(datum, i)}
+                        r={size(datum)}
+                        fill={color(datum)}
+                        fillOpacity={0.5}
+                        stroke={color(datum)}
                     />
                 );
             })}
