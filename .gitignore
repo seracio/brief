@@ -60,10 +60,8 @@ typings/
 # next.js build output
 .next
 
-# parcel cache
-.cache
+# microbundle cache
+.rts*
 
-# dist
-dist/index.html
-dist/*.js
-dist/*.map
+# dist dir
+dist
