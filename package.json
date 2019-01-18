@@ -1,6 +1,6 @@
 {
     "name": "@seracio/recycle",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "A set of React components to make charts rapidly",
     "main": "dist/recycle.js",
     "umd:main": "dist/recycle.umd.js",
