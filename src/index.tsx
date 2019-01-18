@@ -24,4 +24,4 @@ const xy = {
     Label
 };
 
-export { RecycleContext, op, xy }: any;
+export { RecycleContext, op, xy };
