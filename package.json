@@ -1,5 +1,5 @@
 {
-    "name": "@seracio/recycle",
+    "name": "@seracio/brief",
     "version": "0.2.5",
     "description": "A set of React components to make charts rapidly",
     "main": "dist/index.js",

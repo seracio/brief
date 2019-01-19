@@ -1,11 +1,11 @@
-# recycle
+# brief
 
-A set of React components to make charts rapidly
+A React library to quickly make charts
 
 ## Usage
 
 ```jsx
-import { xy } from '@seracio/recycle';
+import { xy } from '@seracio/brief';
 
 render(
     <xy.Chart data={data} x={_.get('x')} y={_.get('y')}>
