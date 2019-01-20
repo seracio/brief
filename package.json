@@ -1,6 +1,6 @@
 {
     "name": "@seracio/fulgur",
-    "version": "0.2.5",
+    "version": "0.3.0",
     "description": "A set of React components to make charts",
     "main": "dist/index.js",
     "source": "src/index.tsx",
