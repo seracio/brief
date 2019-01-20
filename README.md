@@ -1,4 +1,4 @@
-# brief
+# fulgur
 
 A React library to quickly make charts
 
