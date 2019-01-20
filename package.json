@@ -1,7 +1,7 @@
 {
-    "name": "@seracio/brief",
+    "name": "@seracio/fulgur",
     "version": "0.2.5",
-    "description": "A set of React components to make charts rapidly",
+    "description": "A set of React components to make charts",
     "main": "dist/index.js",
     "source": "src/index.tsx",
     "scripts": {

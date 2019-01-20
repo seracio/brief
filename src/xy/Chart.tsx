@@ -2,7 +2,7 @@ import { extent } from 'd3-array';
 import { scaleLinear } from 'd3-scale';
 import _ from 'lodash/fp';
 import React from 'react';
-import { RecycleContext } from '../recycle';
+import FulgurContext from '../context/FulgurContext';
 
 type Props = {
     data: Array<any>;
@@ -51,7 +51,7 @@ const Chart = ({
 
     return (
         // @ts-ignore
-        <RecycleContext.Provider
+        <FulgurContext.Provider
             value={{
                 data,
                 x,
@@ -78,7 +78,7 @@ const Chart = ({
                     </g>
                 </svg>
             </div>
-        </RecycleContext.Provider>
+        </FulgurContext.Provider>
     );
 };
 

@@ -5,12 +5,12 @@ A React library to quickly make charts
 ## Usage
 
 ```jsx
-import { xy } from '@seracio/brief';
+import { xy } from '@seracio/fulgur';
 
 render(
     <xy.Chart data={data} x={_.get('x')} y={_.get('y')}>
-        <xy.Dot size={d => 2 + Math.random() * 20} />
         <xy.Axis />
+        <xy.Dot size={d => 2 + Math.random() * 20} />
     </xy.Chart>,
     document.querySelector('#root')
 );

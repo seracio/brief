@@ -1,6 +1,6 @@
 import _ from 'lodash/fp';
 import React, { useContext } from 'react';
-import { RecycleContext } from '../recycle';
+import FulgurContext from '../context/FulgurContext';
 
 type Props = {
     data: Array<any>;
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const Label = (props: Props) => {
-    const context = useContext(RecycleContext);
+    const context = useContext(FulgurContext);
     const {
         data,
         x,

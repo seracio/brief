@@ -1,6 +1,6 @@
 import _ from 'lodash/fp';
 import React, { useContext } from 'react';
-import { RecycleContext } from '../recycle';
+import FulgurContext from '../context/FulgurContext';
 
 type Props = {
     data: Array<any>;
@@ -9,19 +9,19 @@ type Props = {
 };
 
 const Transform = (props: Props) => {
-    const context = useContext(RecycleContext);
+    const context = useContext(FulgurContext);
     const { data, by, children } = { ...context, ...props };
     const newData = by(data);
     return (
         // @ts-ignore
-        <RecycleContext.Provider
+        <FulgurContext.Provider
             value={{
                 ...context,
                 data: newData
             }}
         >
             {children}
-        </RecycleContext.Provider>
+        </FulgurContext.Provider>
     );
 };
 

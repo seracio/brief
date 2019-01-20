@@ -6,3 +6,4 @@ LICENSE
 styleguide.config.js
 tsconfig.json
 yarn.lock
+.rts2*

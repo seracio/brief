@@ -1,6 +1,6 @@
 import _ from 'lodash/fp';
 import React, { useContext } from 'react';
-import { RecycleContext } from '../recycle';
+import FulgurContext from '../context/FulgurContext';
 
 type Props = {
     data: Array<any>;
@@ -9,12 +9,12 @@ type Props = {
 };
 
 const Highlight = (props: Props) => {
-    const context = useContext(RecycleContext);
+    const context = useContext(FulgurContext);
     const { data, by, children } = { ...context, ...props };
     const [highlightedData, otherData] = _.partition(by, data);
     return [
         // @ts-ignore
-        <RecycleContext.Provider
+        <FulgurContext.Provider
             value={{
                 ...context,
                 data: otherData,
@@ -22,9 +22,9 @@ const Highlight = (props: Props) => {
             }}
         >
             {children}
-        </RecycleContext.Provider>,
+        </FulgurContext.Provider>,
         // @ts-ignore
-        <RecycleContext.Provider
+        <FulgurContext.Provider
             value={{
                 ...context,
                 data: highlightedData,
@@ -32,7 +32,7 @@ const Highlight = (props: Props) => {
             }}
         >
             {children}
-        </RecycleContext.Provider>
+        </FulgurContext.Provider>
     ];
 };
 

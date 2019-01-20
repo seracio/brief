@@ -1,6 +1,6 @@
 import _ from 'lodash/fp';
 import React, { useContext } from 'react';
-import { RecycleContext } from '../recycle';
+import FulgurContext from '../context/FulgurContext';
 
 type Props = {
     data?: Array<any>;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const Group = (props: Props) => {
-    const context = useContext(RecycleContext);
+    const context = useContext(FulgurContext);
     const { data, children, by, order = _.identity, color } = {
         ...context,
         ...props
@@ -29,7 +29,7 @@ const Group = (props: Props) => {
                 const data = groupsByKey[key];
                 return (
                     // @ts-ignore
-                    <RecycleContext.Provider
+                    <FulgurContext.Provider
                         key={key}
                         value={{
                             ...context,
@@ -38,7 +38,7 @@ const Group = (props: Props) => {
                         }}
                     >
                         {children}
-                    </RecycleContext.Provider>
+                    </FulgurContext.Provider>
                 );
             })}
         </>

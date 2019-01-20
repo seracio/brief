@@ -2,7 +2,7 @@ import { axisBottom, axisLeft } from 'd3-axis';
 import * as d3 from 'd3-selection';
 import _ from 'lodash/fp';
 import React, { useContext } from 'react';
-import { RecycleContext } from '../recycle';
+import FulgurContext from '../context/FulgurContext';
 
 type Props = {
     xScale?: any;
@@ -18,7 +18,7 @@ type Props = {
 };
 
 const Axis = (props: Props) => {
-    const context = useContext(RecycleContext);
+    const context = useContext(FulgurContext);
     const {
         xScale,
         yScale,

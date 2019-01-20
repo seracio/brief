@@ -1,4 +1,4 @@
-import { RecycleContext } from './recycle';
+import FulgurContext from './context/FulgurContext';
 import Group from './op/Group';
 import Highlight from './op/Highlight';
 import Transform from './op/Transform';
@@ -24,4 +24,4 @@ const xy = {
     Label
 };
 
-export { RecycleContext, op, xy };
+export { FulgurContext, op, xy };
