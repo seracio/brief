@@ -2,6 +2,15 @@
 
 A React library to quickly make charts
 
+## installation
+
+This lib currently relies on numerous peer dependencies, we hope to improve that
+
+```bash
+npm i d3-array d3-axis d3-scale d3-selection d3-shape lodash react react-dom
+npm i @seracio/fulgur
+```
+
 ## Usage
 
 ```jsx

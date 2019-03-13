@@ -1,5 +1,5 @@
 import _ from 'lodash/fp';
-import React, { useContext } from 'react';
+import React, { useContext, memo } from 'react';
 import FulgurContext from '../context/FulgurContext';
 
 type Props = {
@@ -45,4 +45,4 @@ const Group = (props: Props) => {
     );
 };
 
-export default Group;
+export default memo(Group);

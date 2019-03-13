@@ -1,12 +1,4 @@
-## xy/Chart
-
-xy/Chart is the container for all X/Y charts:
-
--   line charts
--   scatterplots
--   distributions
-
-It offers several enhancements
+## xy/Area
 
 ```js
 const _ = require('lodash/fp');
@@ -83,40 +75,14 @@ const data = [
         fontFamily: 'sans-serif'
     }}
 >
-    <h3>Scatterplot</h3>
-    <Chart data={data} x={_.get('x')} y={_.get('y')}>
-        <Axis />
-        <Dot size={d => 2 + Math.random() * 20} />
-    </Chart>
-    <h3>Line chart</h3>
-    <Chart data={data} x={_.get('x')} y={_.get('y')}>
-        <Axis />
-        <Group by={_.get('label')}>
-            <Line size={_.constant(2)} />
-        </Group>
-    </Chart>
-    <h3>Highlights</h3>
+    <h3>Area chart</h3>
     <Chart data={data} x={_.get('x')} y={_.get('y')}>
         <Axis />
         <Highlight by={d => d.label === 'toto'}>
             <Group by={_.get('label')}>
-                <Line size={_.constant(2)} />
+                <Area curve={curveCardinal.tension(0.5)} />
             </Group>
         </Highlight>
-    </Chart>
-
-    <h3>Chart with labels</h3>
-    <Chart data={data} x={_.get('x')} y={_.get('y')}>
-        <Axis />
-        <Dot />
-        <Transform by={_.sampleSize(3)}>
-            <Label
-                text={_.get('label')}
-                style={_.constant({
-                    transform: 'translate3d(0,-10px, 0)'
-                })}
-            />
-        </Transform>
     </Chart>
 </div>;
 ```
