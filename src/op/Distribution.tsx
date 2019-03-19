@@ -5,6 +5,7 @@ import FulgurContext from '../context/FulgurContext';
 
 type Props = {
     data?: Array<any>;
+    x?: Function;
     binCount?: Function;
     binSize?: Function;
     children: any;
