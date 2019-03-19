@@ -9,4 +9,6 @@ type Props = {
     color?: any;
     xTransform?: Function;
     yTransform?: Function;
+    binSize?: Function;
+    binCount?: Function;
 };
