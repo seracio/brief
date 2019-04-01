@@ -12,3 +12,7 @@ type Props = {
     binSize?: Function;
     binCount?: Function;
 };
+
+/* transform the data into 
+    bins data
+*/
