@@ -1,7 +1,7 @@
 import { extent } from 'd3-array';
 import { scaleLinear } from 'd3-scale';
 import _ from 'lodash/fp';
-import React from 'react';
+import React, { memo } from 'react';
 import FulgurContext from '../context/FulgurContext';
 
 type Props = {
@@ -82,4 +82,4 @@ const Chart = ({
     );
 };
 
-export default Chart;
+export default memo(Chart);
