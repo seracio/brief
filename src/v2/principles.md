@@ -31,85 +31,39 @@ const data = [{
     day: 1
 }]
 
-<Fulgur data={data} output="svg" y="value" x="day"> // l'équivalent d'une Figure en matplotlib
-    <Axe preset="bivariate"> // ici un Axes, le nom est nul
-        <Axis x label="Jours"/>
-        <Axis y label="Valeur" type="log"/>
-        <Transform>
-            <Group by={d => d.label}/>
-            <Filter by={d => d.label !== 'tutu'}/>
-            <Order by={d => d.day} asc />
-            <Highlight by={d => d.label === 'toto'}/>
-            <Render>
-                <Line /> // une seule ligne
-                <Circle r={3} /> // mais une liste de points
-            </Render>
-        <Transform>
-    </Axe>
+<Fulgur data={data} output="svg" x="day" y="value" origin=""> // x+y means bivariate
+    <Axis x label="Jours"/>
+    <Axis y label="Toto"/>
+    <Line data={transform} />
+    <Circle />
 </Fulgur>
-```
 
-#### Le même graphe mais avec des data non tidy en entrée
 
-```jsx
-const data = [{
-    toto: 10,
-    tata: 20,
-    tutu: 24,
-    day: 1
-}]
-
-<Fulgur data={data} output="svg" x="day" y={['toto', 'tata']}>
-    <Axe preset="bivariate">
-        <Axis x label="Jours"/>
-        <Axis y label="Valeur" type="log"/>
-        <Transform>
-            <Order by={d => d.day} asc />
-            <Highlight by={d => d.label === 'toto'}/>
-            <Render>
-                <Line />
-                <Circle r={3} />
-            </Render>
-        <Transform>
-    </Axe>
+<Fulgur data={data} output="svg" x="day" y="value">
+    <Axis x label="Jours" />
+    <Axis y label="Toto" />
+    <Line data={transform}>
+        <Circle data={_.last} cx={d => d.value}/>
+    </Line>
 </Fulgur>
-```
 
-### Avec des labels force à chaque dernier point
-
-```jsx
-const data = [{
-    label: 'toto',
-    value: 10,
-    day: 1
-}]
-
-
-<Fulgur data={data} output="svg" y="value" x="day"> // l'équivalent d'une Figure en matplotlib
-    <Axe preset="bivariate"> // ici un Axes, le nom est nul
-        <Axis x label="Jours"/>
-        <Axis y label="Valeur" type="log"/>
-        <Transform>
-            <Group by={d => d.label}/>
-            <Filter by={d => d.label !== 'tutu'}/>
-            <Order by={d => d.day} asc />
-            <Highlight by={d => d.label === 'toto'}/>
-            <Render>
-                <Line /> // une seule ligne
-                <Transform>
-                    <Last/>
-                    <Render>
-                        <Circle r={3} /> // mais une liste de points
-                        <ForceLabel text={d => d.label} />
-                    </Render>
-                </Transform>
-            </Render>
-        <Transform>
-    </Axe>
+<Fulgur data={data} output="svg" x="day" y="value">
+    <Axis x label="Jours" />
+    <Axis y label="Toto" />
+    <Transform by={bins}>
+        <Rect/>
+    </Transform>
 </Fulgur>
+
+<Fulgur data={data} output="svg" x="day" y={['tata', 'toto', 'tutu']} origin="se">
+    <Axis x label="Jours" />
+    <Axis y label="Toto" />
+    <Transform by={bins}>
+        <Rect/>
+    </Transform>
+</Fulgur>
+
 
 ```
 
-### Une distribution
-
-### Segmentation
+## Avec des tidy
