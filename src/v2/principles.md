@@ -31,7 +31,7 @@ const data = [{
     day: 1
 }]
 
-<Fulgur data={data} output="svg" x="day" y="value" origin=""> // x+y means bivariate
+<Fulgur data={data} output="svg" x="day" y="value" origin="" xScale="log"> // x+y means bivariate
     <Axis x label="Jours"/>
     <Axis y label="Toto"/>
     <Line data={transform} />
@@ -47,9 +47,8 @@ const data = [{
     </Line>
 </Fulgur>
 
-<Fulgur data={data} output="svg" x="day" y="value">
-    <Axis x label="Jours" />
-    <Axis y label="Toto" />
+<Fulgur data={data} output="svg" x="day" y="value" >
+
     <Transform by={bins}>
         <Rect/>
     </Transform>
