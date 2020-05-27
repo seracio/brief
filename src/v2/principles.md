@@ -20,6 +20,14 @@ rapidement et les configuer de manière poussée.
 -   Context
 -   {...props} on peut injecter des props facilement pour les composasnts terminaux : leafs
 
+-   Le data est mis dans le context :
+
+    -   Pour les props, si c'est un tableau... ok
+    -   si c'est une fonction, on fait fonction(context)
+    -   si c'est un hash : on passera l'entry plutôt que (d,i), on donnera (d,k)
+
+-   Tous les éléments sont nestables : ils passent un élément du tableau
+
 ## Quelques essais sur la syntaxe
 
 #### Un chart graphique
@@ -34,35 +42,40 @@ const data = [{
 <Fulgur data={data} output="svg" x="day" y="value" origin="" xScale="log"> // x+y means bivariate
     <Axis x label="Jours"/>
     <Axis y label="Toto"/>
-    <Line data={transform} />
+    <Line data={_.groupBy(_.get('label'))} />
     <Circle />
 </Fulgur>
 
-
-<Fulgur data={data} output="svg" x="day" y="value">
-    <Axis x label="Jours" />
-    <Axis y label="Toto" />
-    <Line data={transform}>
-        <Circle data={_.last} cx={d => d.value}/>
-    </Line>
-</Fulgur>
-
-<Fulgur data={data} output="svg" x="day" y="value" >
-
-    <Transform by={bins}>
-        <Rect/>
-    </Transform>
-</Fulgur>
-
+// comme si on avait trois graphes
+// on divise en trois contextes
 <Fulgur data={data} output="svg" x="day" y={['tata', 'toto', 'tutu']} origin="se">
     <Axis x label="Jours" />
     <Axis y label="Toto" />
-    <Transform by={bins}>
-        <Rect/>
-    </Transform>
+    <Line />
+    <Circle data={_.last} cx={d => d.value}/>
 </Fulgur>
 
+// un exemple nesté
+<Fulgur data={data} output="svg" x="day" y="value" origin="se">
+    <Axis x label="Jours" />
+    <Axis y label="Toto" />
+    <Line data={_.groupBy(_.get('label'))}>
+        <Circle data={_.last}/>
+        <Text data={_.last} value={(d) => }/> // où est le label ?
+    </Line>
+</Fulgur>
+
+ou
+
+<Fulgur data={data} output="svg" x="day" y="value" origin="se">
+    <Axis x label="Jours" />
+    <Axis y label="Toto" />
+    <Line data={_.groupBy(_.get('label'))}>
+        <Selection data={_.last}>
+            <Circle/>
+            <Text/>
+        </Selection>
+    </Line>
+</Fulgur>
 
 ```
-
-## Avec des tidy
