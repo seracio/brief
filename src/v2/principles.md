@@ -144,3 +144,16 @@ const wide = [
     <Line fill="red" />
 </Fulgur>;
 ```
+
+Choses à gérer :
+
+-   Les paths
+-   Le système de référence : graph ou business : [sysref="data|chart"]
+-   Comment on affiche les grids en mode [sub="grid"]
+-   Parsing ou affichage avec React
+-   Attributs centered : pour centrer des Rect par exemple
+-   Split : <Highlight>
+    <Line others />
+    <Line highlighted />
+    </Highlight>
+-   Bins?
