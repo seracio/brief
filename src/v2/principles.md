@@ -109,7 +109,7 @@ const data = [
 
 <Fulgur data={data} yScale="log" origin="es" x="day" y={_.get("value")}>
     <Line data={_.groupBy(_.get("label"))} fill="red">
-        <Circle data={_.last} is="scalar" /> {/*cx et cy deviennent x et y*/}
+        <Circle data={_.last} scalar /> {/*cx et cy deviennent x et y*/}
         <Text data={_.last} scalar />
         {/* scalar permet de transformer en array */}
     </Line>
@@ -144,7 +144,3 @@ const wide = [
     <Line fill="red" />
 </Fulgur>;
 ```
-
-Elements nestés :
-
-Tous les composants ont la possibilité d'avoir des children nestés.
