@@ -90,25 +90,25 @@ L'attribut data peut soit être :
 ```jsx
 const data = [
     {
-        label: "tata",
+        label: 'tata',
         value: 10,
-        day: 1,
+        day: 1
     },
     {
-        label: "toto",
+        label: 'toto',
         value: 10,
-        day: 1,
+        day: 1
     },
     {
-        label: "tutu",
+        label: 'tutu',
         value: 10,
-        day: 1,
-    },
+        day: 1
+    }
     // ...
 ];
 
-<Fulgur data={data} yScale="log" origin="es" x="day" y={_.get("value")}>
-    <Line data={_.groupBy(_.get("label"))} fill="red">
+<Fulgur data={data} yScale="log" origin="es" x="day" y={_.get('value')}>
+    <Line data={_.groupBy(_.get('label'))} fill="red">
         <Circle data={_.last} scalar /> {/*cx et cy deviennent x et y*/}
         <Text data={_.last} scalar />
         {/* scalar permet de transformer en array */}
@@ -117,8 +117,8 @@ const data = [
 
 // alternativement
 
-<Fulgur data={data} yScale="log" origin="es" x="day" y={_.get("value")}>
-    <Line data={_.groupBy(_.get("label"))} fill="red">
+<Fulgur data={data} yScale="log" origin="es" x="day" y={_.get('value')}>
+    <Line data={_.groupBy(_.get('label'))} fill="red">
         <Op data={_.last} scalar>
             <Circle />
             <Text />
@@ -133,14 +133,14 @@ const wide = [
         tata: 1,
         toto: 2,
         tutu: 2,
-        day: 1,
-    },
+        day: 1
+    }
     // ...
 ];
 
 // si y ou x prennent un array, cela crée automatiquement des sub plots
 
-<Fulgur data={wide} x={"day"} y={["tata", "toto", "tutu"]} sub="over|grid">
+<Fulgur data={wide} x={'day'} y={['tata', 'toto', 'tutu']} sub="over|grid">
     <Line fill="red" />
 </Fulgur>;
 ```
@@ -157,3 +157,8 @@ Choses à gérer :
     <Line highlighted />
     </Highlight>
 -   Bins?
+-   Gérer les bbox : createElement(render, bbox)
+
+==> Analyse statique, arbre AST https://github.com/facebook/react/tree/master/packages/react-reconciler
+
+createFulgurComponent(render, name, bbox)
