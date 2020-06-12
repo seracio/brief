@@ -118,10 +118,10 @@ const data = [
 // alternativement
 
 <Fulgur data={data} yScale="log" origin="es" x="day" y={_.get('value')}>
-    <Line data={_.groupBy(_.get('label'))} fill="red">
+    <Line data={_.groupBy(_.get('label'))} stroke="red">
         <Op data={_.last} scalar>
             <Circle />
-            <Text />
+            <Text label={(d, k) => k} />
         </Op>
     </Line>
 </Fulgur>;
