@@ -10,6 +10,8 @@
 -   rendu statique
 -   extensible
 -   tous les éléments peuvent avoir des enfants : ils héritent du contexte
+-   gestion des référentiels data et axes
+-   gestion des wide data
 
 ## Exemples
 
@@ -59,3 +61,5 @@ const data = [
     </Line>
 </Fulgur>;
 ```
+
+https://github.com/developit/htm
