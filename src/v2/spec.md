@@ -27,10 +27,12 @@
 </Node>
 
 // Sparkle
-<Line data={data} _x={_.get('toto')}>
+<Line data={data} $x={_.get('toto')} xRange={[0,100]}>
     <Node data={_.last} scalar>
         <Texts />
         <Circles />
     </Node>
 </Line>
+
+// Geo
 ```
