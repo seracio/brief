@@ -7,6 +7,7 @@
 -   toutes les autres props sont prises en compte mais nezon transmises au children
 
 ```jsx
+// Line chart
 <Node data={data} $x={'day'} xRange={[0,100]} $y={_.get('value')} yRange={[0,100]}>
     <XAxis />
     <YAxis />
@@ -18,6 +19,7 @@
     </Line>
 </Node>
 
+// Distribution
 <Node data={d3.bins()(data)}  $x={} xDomain={[]} xRange={[]}>
     <XAxis />
     <Bins />
