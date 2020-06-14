@@ -13,8 +13,8 @@
     <YAxis />
     <Line data={_.groupBy(_.get('label'))}>
         <Node data={_.last} scalar>
-            <Texts />
-            <Circles />
+            <Texts label={(d,k) => k} dx={10}/>
+            <Circles r={5}/>
         </Node>
     </Line>
 </Node>
@@ -28,9 +28,9 @@
 
 // Sparkle
 <Line data={data} $x={_.get('toto')} xRange={[0,100]}>
-    <Node data={_.last} scalar>
-        <Texts />
-        <Circles />
+    <Node data={_.last} scalar $fill="red">
+        <Texts label={(d,k) => k} dx={10} />
+        <Circles r={3}/>
     </Node>
 </Line>
 
