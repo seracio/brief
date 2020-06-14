@@ -60,6 +60,39 @@ const data = [
         </Op>
     </Line>
 </Fulgur>;
+
+// comment on gère les scales dans le cas d'une distribution? on est obligé de faire de l'AST
+<Fulgur>
+    <Op data={Fulgur.dist}>{(bins) => <Rect data={bins} />}</Op>
+</Fulgur>;
+
+// Highlights
+<Fulgur>
+    <Highlights></Highlights>
+</Fulgur>;
 ```
 
 https://github.com/developit/htm
+
+@toto
+
+$x $y
+
+\$\_x
+
+```js
+```
+
+Il nous faut un moyen de faire du propsToContext
+
+la fonction rendue ne reçoit qu'un set d'entrée qui est la résultante des deux
+
+Il faut une fonction qui permette de calculer un point donné suivant des props donnée
+
+genre, une fonction à qui on peut dire, je veux x(3) ou \_y(3), ou dx(10) et qui prenne en compte les scales et tout
+
+Il faut une fonction pour retourner des informations spécifiques aux enfants : highlight
+highlight by={}
+
+-   line
+-   line highlighted
