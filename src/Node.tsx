@@ -16,3 +16,5 @@ const Node = (props) => {
         </FulgurContext.Provider>
     );
 };
+
+export default Node;
