@@ -68,14 +68,14 @@ function removeScaleKeys(properties) {
 
 // Sert à transformer une clé en fonction :
 // en effet, on normalise toutes les props en fonction
-function getValueFunction(normalizedProperties, normalizedKey) {
+function getValueFunction(normalizedProperties, normalizedKey, data) {
     // si un scale, il faut le calculer
     // on recherche d'abord les indicateurs d'un scale
     const scaleProperties = _.flow(
         _.pick([
-            `${normalizedProperties}Scale`,
-            `${normalizedProperties}Domain`,
-            `${normalizedProperties}Range`
+            `${normalizedKey}Scale`,
+            `${normalizedKey}Domain`,
+            `${normalizedKey}Range`
         ]),
         // on les normlalise
         mapKeys((val, key) => {
@@ -95,14 +95,12 @@ function getValueFunction(normalizedProperties, normalizedKey) {
     // si une string
     if (typeof normalizedProperties[normalizedKey] === 'string') {
         // est une propriété de
-        if (
-            normalizedProperties[normalizedKey] in normalizedProperties.data[0]
-        ) {
+        if (normalizedProperties[normalizedKey] in data[0]) {
             // si scale
             if (isScale) {
                 const scale = buildScale(
                     scaleProperties,
-                    normalizedProperties.data,
+                    data,
                     _.get(normalizedProperties[normalizedKey])
                 );
                 return _.flow(
@@ -123,7 +121,7 @@ function getValueFunction(normalizedProperties, normalizedKey) {
             // attention pour les scales, ça peut être une fonction qui utilise l'index (d,i) => i
             const scale = buildScale(
                 scaleProperties,
-                normalizedProperties.data,
+                data,
                 normalizedProperties[normalizedKey]
             );
             return _.flow(normalizedProperties[normalizedKey], scale);
@@ -147,23 +145,22 @@ function getInheritedProperties(context, props, data) {
         _.filter((k) => k.startsWith('$'))
     )(properties);
 
-    const normalizedProperties = _.flow(
-        _.pick(keysToKeep),
-        // on ajoute data, nécessaire à ce stad
-        _.set('data', data),
-        // on normalise les keys
-        mapKeys((val, key) => normalizeKey(key))
-    )(properties);
+    const normalizedProperties = mapKeys(
+        (val, key) => normalizeKey(key),
+        properties
+    );
 
     return _.flow(
-        // on transforme toutes les values en fonctin
-        mapValues((val, key) => getValueFunction(normalizedProperties, key)),
-        // on contextualise toutes les clés
-        mapKeys((val, key) => (key === data ? key : contextualizeKey(key))),
-        // on enlève les scales keys
-        removeScaleKeys,
-        // on enlève scalar également
-        _.omit('scalar')
+        // on functionnalise les values
+        mapValues((val, key) =>
+            getValueFunction(normalizedProperties, key, data)
+        ),
+        // on contextualise les keys
+        mapKeys((val, key) => contextualizeKey(key)),
+        // on ne garde que les $
+        _.pick(keysToKeep),
+        // on ajoute data
+        _.set('data', data)
     )(normalizedProperties);
 }
 
@@ -183,10 +180,10 @@ function getProperties(context, props, data) {
         properties
     );
     return _.flow(
-        // on ajoute data
-        _.set('data', data),
         // on functionnalise les values
-        mapValues((val, key) => getValueFunction(normalizedProperties, key)),
+        mapValues((val, key) =>
+            getValueFunction(normalizedProperties, key, data)
+        ),
         // on enlève les scales keys
         removeScaleKeys,
         // on enlève aussi data
