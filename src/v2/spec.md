@@ -36,3 +36,13 @@
 
 // Geo
 ```
+
+## Lexique
+
+-   props
+-   context
+-   properties
+-   data
+-   datum
+-   index
+-   key

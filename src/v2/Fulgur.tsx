@@ -3,6 +3,7 @@ import _ from 'lodash/fp';
 import * as React from 'react';
 
 const mapKeys = _.mapKeys.convert({ cap: false });
+const mapValues = _.mapValues.convert({ cap: false });
 
 /////////////
 // Context
@@ -49,16 +50,25 @@ function buildScale(scaleProperties, data, getter) {
     return scale().domain(domain).range(range);
 }
 
-// Sert à transformer une clé en fonction
-function buildPropertyFunction(properties, key, data) {
-    const normalizedKey = key.replace(/^\$/, '');
-    const normalizedProperties = _.flow(
-        mapKeys((val, key) => key.replace(/^\$/, ''))
+function normalizeKey(key) {
+    return key.replace(/^\$/, '');
+}
+
+function contextualizeKey(key) {
+    return /^\$/.test(key) ? key : '$' + key;
+}
+
+function removeScaleKeys(properties) {
+    const scalesKeys = _.flow(
+        _.keys,
+        _.filter((key) => /(Scale|Range|Domain)$/.test(key))
     )(properties);
-    // si un number
-    if (typeof normalizedProperties[normalizedKey] === 'number') {
-        return _.constant(normalizedProperties[normalizedKey]);
-    }
+    return _.omit(scalesKeys, properties);
+}
+
+// Sert à transformer une clé en fonction :
+// en effet, on normalise toutes les props en fonction
+function getValueFunction(normalizedProperties, normalizedKey) {
     // si un scale, il faut le calculer
     // on recherche d'abord les indicateurs d'un scale
     const scaleProperties = _.flow(
@@ -85,12 +95,14 @@ function buildPropertyFunction(properties, key, data) {
     // si une string
     if (typeof normalizedProperties[normalizedKey] === 'string') {
         // est une propriété de
-        if (normalizedProperties[normalizedKey] in data[0]) {
+        if (
+            normalizedProperties[normalizedKey] in normalizedProperties.data[0]
+        ) {
             // si scale
             if (isScale) {
                 const scale = buildScale(
                     scaleProperties,
-                    data,
+                    normalizedProperties.data,
                     _.get(normalizedProperties[normalizedKey])
                 );
                 return _.flow(
@@ -111,7 +123,7 @@ function buildPropertyFunction(properties, key, data) {
             // attention pour les scales, ça peut être une fonction qui utilise l'index (d,i) => i
             const scale = buildScale(
                 scaleProperties,
-                data,
+                normalizedProperties.data,
                 normalizedProperties[normalizedKey]
             );
             return _.flow(normalizedProperties[normalizedKey], scale);
@@ -120,64 +132,72 @@ function buildPropertyFunction(properties, key, data) {
         return normalizedProperties[normalizedKey];
     }
 
-    throw new Error(
-        'Fulgur: buildPropertyFunction - props should be a number, a string or a function'
-    );
+    // sinon, on retourne la valeur sous forme de _.constant
+    return _.constant(normalizedProperties[normalizedKey]);
 }
 
 // quelles sont les props qui vont être transmises aux enfants?
 // - data
 // - inherited props
 // - attention, il faut construire les scales ici
-function getContextValue(context, props, data) {
+function getInheritedProperties(context, props, data) {
     const properties = { ...context, ...props };
     const keysToKeep = _.flow(
         _.keys,
         _.filter((k) => k.startsWith('$'))
     )(properties);
 
-    return _.flow(_.pick(keysToKeep), _.set('data', data))(properties);
+    const normalizedProperties = _.flow(
+        _.pick(keysToKeep),
+        // on ajoute data, nécessaire à ce stad
+        _.set('data', data),
+        // on normalise les keys
+        mapKeys((val, key) => normalizeKey(key))
+    )(properties);
+
+    return _.flow(
+        // on transforme toutes les values en fonctin
+        mapValues((val, key) => getValueFunction(normalizedProperties, key)),
+        // on contextualise toutes les clés
+        mapKeys((val, key) => (key === data ? key : contextualizeKey(key))),
+        // on enlève les scales keys
+        removeScaleKeys,
+        // on enlève scalar également
+        _.omit('scalar')
+    )(normalizedProperties);
 }
 
-// TODO : gérer les otherProps qui sont des fonctions, ou des attributs. Les autres, on les injectent directement
-// les données héritées aux enfants ne sont pas forcément celles que l'on va avoir ici
-// $x dans le context et un x ici ; on va surcharger juste pour le composant courant mais l'héritage continue
-function getValue(context, props, datum, pick) {
-    // pick
-    // prio au props
-    // attention au $
-    // si fonction, on regarde s'il y a un scale
+// Les properties dont on aura besoin pour le composant courant, ce ne sont pas nécessairement
+// les mêmes que les inherited properties transmises aux enfants :
+// si on a $x dans le context et x ici : on surcharge x seulement dans le composant courant
+// voilà pourquoi l'algo est différent
+function getProperties(context, props, data) {
+    const propsKeys = _.keys(props);
+    const cleanedContext = _.flow(
+        _.omit(propsKeys),
+        _.omit(propsKeys.map((key) => '$' + key))
+    )(context);
+    const properties = { ...cleanedContext, ...props };
+    const normalizedProperties = mapKeys(
+        (val, key) => normalizeKey(key),
+        properties
+    );
+    return _.flow(
+        // on ajoute data
+        _.set('data', data),
+        // on functionnalise les values
+        mapValues((val, key) => getValueFunction(normalizedProperties, key)),
+        // on enlève les scales keys
+        removeScaleKeys,
+        // on enlève aussi data
+        _.omit(['data', 'scalar'])
+    )(normalizedProperties);
 }
 
-const Node = (props) => {
-    const context = React.useContext(FulgurContext);
-    const { children, ...otherProps } = props;
-    // data
-    const data = buildData(context, otherProps);
-    // new context
-    const newContext = getContextValue(context, props, data);
-    return (
-        <FulgurContext.Provider value={newContext}>
-            {children}
-        </FulgurContext.Provider>
-    );
-};
-
-const Circles = (props) => {
-    const context = React.useContext(FulgurContext);
-    const { children, ...otherProps } = props;
-    // data
-    const data = buildData(context, otherProps);
-    // new context
-    const newContext = getContextValue(context, props, data);
-    const pick = ['x', 'c'];
-    const mapping = [];
-    return (
-        <>
-            {vectorize(data, function (d, index) {
-                return <circle key={index} />;
-            })}
-            <FulgurContext.Provider value={newContext}></FulgurContext.Provider>
-        </>
-    );
+export {
+    getInheritedProperties,
+    getProperties,
+    buildData,
+    vectorize,
+    FulgurContext
 };
