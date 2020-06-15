@@ -1,4 +1,3 @@
-import * as d3 from 'd3';
 import _ from 'lodash/fp';
 import * as React from 'react';
 import {
@@ -20,7 +19,7 @@ const Circles = (props) => {
     const { children, ...otherProps } = props;
     // data
     const data = buildData(context, otherProps);
-    const properties = getProperties(context, props, data);
+    const properties = getProperties(context, otherProps, data);
 
     return (
         <>
