@@ -1,13 +1,9 @@
-import { linkTo } from '@storybook/addon-links';
-import { Welcome } from '@storybook/react/demo';
 import * as d3 from 'd3';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import _ from 'lodash/fp';
 import Node from '../src/Node';
 import Line from '../src/Line';
 import Circles from '../src/Circles';
-import Texts from '../src/Texts';
 
 const days = d3.range(0, 10);
 const labels = ['toto', 'tata', 'tutu'];
@@ -24,11 +20,10 @@ for (const day of days) {
 }
 
 export default {
-    title: 'Welcome',
-    component: Welcome
+    title: 'Welcome'
 };
 
-export const Test = () => (
+export const Example = () => (
     <div
         style={{
             position: 'relative',
