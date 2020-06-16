@@ -2,13 +2,13 @@
     "name": "@seracio/fulgur",
     "version": "0.3.1",
     "description": "A set of React components to make charts",
-    "main": "dist/index.js",
-    "source": "src/index.tsx",
+    "source": "src/index.js",
+    "main": "dist/fulgur.js",
+    "module": "dist/fulgur.module.js",
+    "unpkg": "dist/fulgur.umd.js",
     "scripts": {
-        "start": "npx styleguidist server",
-        "doc": "npx styleguidist build",
-        "prepublishOnly": "npm run build",
-        "build": "rm -rf .rts2* && rm -rf dist && microbundle -f cjs --sourcemap false"
+        "build": "microbundle --no-sourcemap",
+        "dev": "microbundle watch --no-sourcemap"
     },
     "repository": {
         "type": "git",
@@ -25,5 +25,8 @@
         "lodash": "^4.17.15",
         "react": "^16.13.1",
         "react-dom": "^16.13.1"
+    },
+    "devDependencies": {
+        "microbundle": "^0.12.1"
     }
 }

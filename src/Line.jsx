@@ -1,21 +1,16 @@
 import * as d3 from 'd3';
 import _ from 'lodash/fp';
 import * as React from 'react';
-import {
-    FulgurContext,
-    buildData,
-    getInheritedProperties,
-    getProperties,
-    vectorize
-} from './Fulgur';
+import { FulgurContext, buildData, getProperties } from './Fulgur';
 
 const Line = (props) => {
     const context = React.useContext(FulgurContext);
+
     const { children, ...otherProps } = props;
     // data
     const data = buildData(context, otherProps);
     const properties = getProperties(context, otherProps, data);
-    const points = vectorize(data, function (datum, index) {
+    const points = data.map(function (datum, index) {
         return _.flow(
             // on récupère les properties x, y
             _.pick(['x', 'y']),
@@ -25,10 +20,12 @@ const Line = (props) => {
         )(properties);
     });
 
+    const { curve = d3.curveMonotoneX } = properties;
+
     return (
         <>
             <path
-                d={d3.line()(points)}
+                d={d3.line().curve(curve)(points)}
                 {..._.flow(
                     // on enlève x et y
                     _.omit(['x', 'y']),
@@ -39,11 +36,6 @@ const Line = (props) => {
                 )(properties)}
                 fill="none"
             />
-            <FulgurContext.Provider
-                value={getInheritedProperties(context, props, data)}
-            >
-                {children}
-            </FulgurContext.Provider>
         </>
     );
 };

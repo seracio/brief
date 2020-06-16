@@ -23,16 +23,8 @@ function buildData(context, props) {
                 ? context.data
                 : props.data,
         // si déclaré comme scalar, on encapsule dans un tableau
-        (data) => (!!props.scalar ? [data] : data)
+        (data) => (Array.isArray(data) ? data : [data])
     )();
-}
-
-// Les paramètres passés sont le datum et la clé / indice
-function vectorize(data, fn) {
-    if (Array.isArray(data)) {
-        return data.map(fn);
-    }
-    return Object.entries(data).map(([key, d]) => fn(d, key));
 }
 
 /////////////
@@ -90,26 +82,12 @@ function getValueFunction(normalizedProperties, normalizedKey, data) {
             }
         })
     )(normalizedProperties);
+
+    // is a scalable property
     const isScale = _.flow(_.keys, _.size, _.gt(_, 0))(scaleProperties);
 
     // si une string
     if (typeof normalizedProperties[normalizedKey] === 'string') {
-        // est une propriété de
-        if (normalizedProperties[normalizedKey] in data[0]) {
-            // si scale
-            if (isScale) {
-                const scale = buildScale(
-                    scaleProperties,
-                    data,
-                    _.get(normalizedProperties[normalizedKey])
-                );
-                return _.flow(
-                    _.get(normalizedProperties[normalizedKey]),
-                    scale
-                );
-            }
-            return _.get(normalizedProperties[normalizedKey]);
-        }
         // sinon
         return _.constant(normalizedProperties[normalizedKey]);
     }
@@ -187,14 +165,8 @@ function getProperties(context, props, data) {
         // on enlève les scales keys
         removeScaleKeys,
         // on enlève aussi data
-        _.omit(['data', 'scalar'])
+        _.omit(['data', 'by'])
     )(normalizedProperties);
 }
 
-export {
-    getInheritedProperties,
-    getProperties,
-    buildData,
-    vectorize,
-    FulgurContext
-};
+export { getInheritedProperties, getProperties, buildData, FulgurContext };

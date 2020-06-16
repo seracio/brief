@@ -1,12 +1,6 @@
 import _ from 'lodash/fp';
 import * as React from 'react';
-import {
-    FulgurContext,
-    buildData,
-    getInheritedProperties,
-    getProperties,
-    vectorize
-} from './Fulgur';
+import { FulgurContext, buildData, getProperties } from './Fulgur';
 
 const mapping = {
     x: 'cx',
@@ -23,7 +17,7 @@ const Circles = (props) => {
 
     return (
         <>
-            {vectorize(data, function (datum, index) {
+            {data.map(function (datum, index) {
                 const props = _.flow(
                     // mapping
                     mapKeys((val, key) => mapping[key] || key),
@@ -34,11 +28,6 @@ const Circles = (props) => {
                 )(properties);
                 return <circle key={index} {...props} />;
             })}
-            <FulgurContext.Provider
-                value={getInheritedProperties(context, props, data)}
-            >
-                {children}
-            </FulgurContext.Provider>
         </>
     );
 };
