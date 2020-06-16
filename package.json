@@ -1,12 +1,13 @@
 {
     "name": "@seracio/fulgur",
     "version": "0.3.1",
-    "description": "A set of React components to make charts",
+    "description": "An esoteric vis library",
     "source": "src/index.js",
     "main": "dist/fulgur.js",
     "module": "dist/fulgur.module.js",
     "unpkg": "dist/fulgur.umd.js",
     "scripts": {
+        "prepublishOnly": "rm -rf dist && yarn build",
         "build": "microbundle --no-sourcemap",
         "dev": "microbundle watch --no-sourcemap"
     },
@@ -20,13 +21,17 @@
         "url": "https://github.com/seracio/fulgur/issues"
     },
     "homepage": "https://github.com/seracio/fulgur#readme",
-    "dependencies": {
-        "d3": "^5.16.0",
-        "lodash": "^4.17.15",
-        "react": "^16.13.1",
-        "react-dom": "^16.13.1"
+    "peerDependencies": {
+        "d3": ">= 5.x",
+        "lodash": ">= 4.x",
+        "react": ">= 16.13",
+        "react-dom": ">= 16.13.1"
     },
     "devDependencies": {
-        "microbundle": "^0.12.1"
+        "d3": "^5.16.0",
+        "lodash": "^4.17.15",
+        "microbundle": "^0.12.1",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1"
     }
 }
