@@ -23,20 +23,18 @@ const Line = (props) => {
     const { curve = d3.curveMonotoneX } = properties;
 
     return (
-        <>
-            <path
-                d={d3.line().curve(curve)(points)}
-                {..._.flow(
-                    // on enlève x et y
-                    _.omit(['x', 'y']),
-                    // on exécute les val fonctions sans argument
-                    _.mapValues((val) => val()),
-                    // on supprime les properties nil
-                    _.omitBy(_.isNil)
-                )(properties)}
-                fill="none"
-            />
-        </>
+        <path
+            d={d3.line().curve(curve)(points)}
+            {..._.flow(
+                // on enlève x et y
+                _.omit(['x', 'y']),
+                // on exécute les val fonctions sans argument
+                _.mapValues((val) => val()),
+                // on supprime les properties nil
+                _.omitBy(_.isNil)
+            )(properties)}
+            fill="none"
+        />
     );
 };
 

@@ -4,9 +4,22 @@ import _ from 'lodash/fp';
 import Node from '../src/Node';
 import Line from '../src/Line';
 import Circles from '../src/Circles';
+import Rects from '../src/Rects';
+import XAxis from '../src/XAxis';
 
 const days = d3.range(0, 10);
-const labels = ['toto', 'tata', 'tutu'];
+const labels = [
+    'toto',
+    'tata',
+    'tutu',
+    'titi',
+    'tete',
+    'tyty',
+    'toutou',
+    'kiki',
+    'keke',
+    'koko'
+];
 
 let data = [];
 for (const day of days) {
@@ -14,7 +27,7 @@ for (const day of days) {
         data.push({
             day,
             label,
-            value: Math.random() * 100
+            value: Math.random() * 20 + 40
         });
     }
 }
@@ -22,6 +35,12 @@ for (const day of days) {
 export default {
     title: 'Welcome'
 };
+
+const highlight = _.flow(
+    _.groupBy(_.get('label')),
+    _.values,
+    _.partition((d) => d[0].label === 'toto')
+);
 
 export const Example = () => (
     <div
@@ -37,29 +56,37 @@ export const Example = () => (
             preserveAspectRatio="xMidYMid meet"
             viewBox={`0 0 500 300`}
             style={{
-                border: 'solid 1px red',
+                border: 'solid 1px black',
                 maxHeight: '75vh'
             }}
         >
-            <g transform={`translate(0 ${300})`}>
+            <g transform={`translate(20 280)`}>
                 <Node
                     data={data}
-                    by={_.groupBy(_.get('label'))}
+                    by={highlight}
                     $x={_.get('day')}
-                    xRange={[0, 500]}
+                    xRange={[0, 460]}
                     $y={_.get('value')}
-                    yRange={[0, -300]}
+                    yDomain={[0, 100]}
+                    yRange={[0, -260]}
                 >
-                    {(groups) => (
+                    {([highlighted, others]) => (
                         <>
-                            {_.entries(groups).map(([label, data]) => {
+                            {others.map((data, i) => {
                                 return (
-                                    <Node data={data} key={label}>
-                                        <Line stroke="black" />
-                                        <Circles
+                                    <Line data={data} key={i} stroke="#ccc" />
+                                );
+                            })}
+                            {highlighted.map((data, i) => {
+                                return (
+                                    <Node data={data} key={i}>
+                                        <Line stroke="red" strokeWidth="2" />
+                                        <Rects
                                             data={_.last}
-                                            r={4}
-                                            fill="black"
+                                            width="4"
+                                            height="4"
+                                            centered={'true'}
+                                            fill="red"
                                         />
                                     </Node>
                                 );
