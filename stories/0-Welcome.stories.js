@@ -1,11 +1,7 @@
 import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
-import Node from '../src/Node';
-import Line from '../src/Line';
-import Circles from '../src/Circles';
-import Rects from '../src/Rects';
-import XAxis from '../src/XAxis';
+import { Node, Line, Circles, Rects, XAxis, YAxis, Map } from '../src/index';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -72,25 +68,21 @@ export const Example = () => (
                 >
                     {([highlighted, others]) => (
                         <>
-                            {others.map((data, i) => {
-                                return (
-                                    <Line data={data} key={i} stroke="#ccc" />
-                                );
-                            })}
-                            {highlighted.map((data, i) => {
-                                return (
-                                    <Node data={data} key={i}>
-                                        <Line stroke="red" strokeWidth="2" />
-                                        <Rects
-                                            data={_.last}
-                                            width="4"
-                                            height="4"
-                                            centered={'true'}
-                                            fill="red"
-                                        />
-                                    </Node>
-                                );
-                            })}
+                            <XAxis />
+                            <YAxis />
+                            <Map data={others}>
+                                <Line stroke="#ccc" />
+                            </Map>
+                            <Map data={highlighted}>
+                                <Line stroke="red" strokeWidth="2" />
+                                <Rects
+                                    data={_.last}
+                                    width="4"
+                                    height="4"
+                                    centered={'true'}
+                                    fill="red"
+                                />
+                            </Map>
                         </>
                     )}
                 </Node>

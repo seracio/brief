@@ -102,7 +102,9 @@ function getValueFunction(normalizedProperties, normalizedKey, data) {
                 data,
                 normalizedProperties[normalizedKey]
             );
-            return _.flow(normalizedProperties[normalizedKey], scale);
+            const f = _.flow(normalizedProperties[normalizedKey], scale);
+            f.scale = scale;
+            return f;
         }
         // pas de scale
         return normalizedProperties[normalizedKey];

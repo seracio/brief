@@ -7,6 +7,7 @@ const Node = (props) => {
     const { children, ...otherProps } = props;
     // data
     const data = buildData(context, otherProps);
+
     return (
         <FulgurContext.Provider
             value={getInheritedProperties(context, props, data)}
