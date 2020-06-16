@@ -1,6 +1,4 @@
-# fulgur
-
-# Fulgur
+# fulgur ⚡️
 
 > Esoteric vis library
 
