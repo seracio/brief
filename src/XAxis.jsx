@@ -1,15 +1,21 @@
+import * as d3 from 'd3';
 import _ from 'lodash/fp';
 import * as React from 'react';
 import { FulgurContext, buildData, getProperties } from './Fulgur';
+import Texts from './Texts';
 
-const XAxis = (props) => {
+const XAxis = props => {
     const context = React.useContext(FulgurContext);
     const { children, ...otherProps } = props;
     // data
     const data = buildData(context, otherProps);
     const properties = getProperties(context, otherProps, data);
-    const { x, y, ticks, tickFormat, ...otherProperties } = properties;
+    const { x, y, ticks = 4, label = '', ...otherProperties } = properties;
     const range = x.scale.range();
+    const domain = x.scale.domain();
+    const graduations = Array.isArray(ticks)
+        ? ticks
+        : d3.ticks(domain[0], domain[1] + 1, ticks);
 
     return (
         <>
@@ -34,12 +40,26 @@ const XAxis = (props) => {
                     // on enlève x et y
                     _.omit(['x', 'y']),
                     // on exécute les val fonctions sans argument
-                    _.mapValues((val) => val()),
+                    _.mapValues(val => val()),
                     // on supprime les properties nil
                     _.omitBy(_.isNil)
                 )(otherProperties)}
                 stroke="black"
             />
+            <Texts
+                data={graduations}
+                x={d => d}
+                xDomain={domain}
+                xRange={range}
+                value={d => d}
+                dy={10}
+                dominantBaseline={'middle'}
+                textAnchor={'middle'}
+                fontSize={'0.75em'}
+            />
+            <text x={_.mean(range)} dy={'1.75em'} textAnchor="middle">
+                {label()}
+            </text>
         </>
     );
 };

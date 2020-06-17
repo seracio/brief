@@ -35,7 +35,7 @@ export default {
 const highlight = _.flow(
     _.groupBy(_.get('label')),
     _.values,
-    _.partition((d) => d[0].label === 'toto')
+    _.partition(d => d[0].label === 'toto')
 );
 
 export const Example = () => (
@@ -56,20 +56,20 @@ export const Example = () => (
                 maxHeight: '75vh'
             }}
         >
-            <g transform={`translate(20 280)`}>
+            <g transform={`translate(40 260)`}>
                 <Node
                     data={data}
                     by={highlight}
                     $x={_.get('day')}
-                    xRange={[0, 460]}
+                    xRange={[0, 420]}
                     $y={_.get('value')}
                     yDomain={[0, 100]}
-                    yRange={[0, -260]}
+                    yRange={[0, -220]}
                 >
                     {([highlighted, others]) => (
                         <>
-                            <XAxis />
-                            <YAxis />
+                            <XAxis label="day" />
+                            <YAxis label="value" />
                             <Map data={others}>
                                 <Line stroke="#ccc" />
                             </Map>
@@ -77,9 +77,9 @@ export const Example = () => (
                                 <Line stroke="red" strokeWidth="2" />
                                 <Rects
                                     data={_.last}
-                                    width="4"
-                                    height="4"
-                                    centered={'true'}
+                                    width="6"
+                                    height="6"
+                                    centered="true"
                                     fill="red"
                                 />
                             </Map>
