@@ -99,16 +99,16 @@ function getInheritedProperties(context, props, data) {
 // si on a $x dans le context et x ici : on surcharge x seulement dans le composant courant
 // voilà pourquoi l'algo est différent
 function getProperties(context, props, data) {
-    const propsKeys = _.flow(
-        _.keys,
-        _.filter((k) => /^_/.test(k))
-    )(props);
-
+    const propsKeys = _.flow(_.keys)(props);
+    const derivedKeys = _.flow(_.filter((k) => /^_/.test(k)))(propsKeys);
     const cleanedContext = _.flow(
         _.omit(propsKeys),
         _.omit(propsKeys.map((key) => '$' + key))
     )(context);
-    const properties = { ...cleanedContext, ...props };
+    const properties = _.flow(
+        () => ({ ...cleanedContext, ...props }),
+        _.omit(derivedKeys)
+    )();
     const normalizedProperties = mapKeys(
         (val, key) => normalizeKey(key),
         properties
@@ -186,10 +186,27 @@ function getValues(properties, datum, index) {
     return _.flow(_.mapValues((fn) => fn(datum, index)))(properties);
 }
 
+function getDerivedFunction(props) {
+    const keys = _.flow(
+        _.keys,
+        _.filter((k) => /^_/.test(k))
+    )(props);
+    return _.flow(
+        _.pick(keys),
+        mapKeys((val, key) => key.slice(1))
+    )(props);
+}
+
+function getDerivedValues(values, derivedFunctions) {
+    return _.mapValues((fn) => fn(values), derivedFunctions);
+}
+
 export {
     getInheritedProperties,
     getProperties,
     getValues,
+    getDerivedFunction,
+    getDerivedValues,
     buildData,
     FulgurContext
 };

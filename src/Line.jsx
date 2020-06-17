@@ -1,7 +1,14 @@
 import * as d3 from 'd3';
 import _ from 'lodash/fp';
 import * as React from 'react';
-import { FulgurContext, buildData, getProperties } from './Fulgur';
+import {
+    FulgurContext,
+    buildData,
+    getProperties,
+    getValues,
+    getDerivedFunction,
+    getDerivedValues
+} from './Fulgur';
 
 const Line = (props) => {
     const context = React.useContext(FulgurContext);
@@ -10,14 +17,15 @@ const Line = (props) => {
     // data
     const data = buildData(context, otherProps);
     const properties = getProperties(context, otherProps, data);
+    const derivedFunctions = getDerivedFunction(props);
     const points = data.map(function (datum, index) {
+        const values = getValues(properties, datum, index);
+        const derivedValues = getDerivedValues(values, derivedFunctions);
         return _.flow(
-            // on récupère les properties x, y
+            () => ({ ...values, ...derivedValues }),
             _.pick(['x', 'y']),
-            // on applique les fonctions au datum
-            _.mapValues((fn) => fn(datum, index)),
             ({ x, y }) => [x, y]
-        )(properties);
+        )();
     });
 
     const { curve = d3.curveMonotoneX } = properties;

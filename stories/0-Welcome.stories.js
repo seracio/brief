@@ -111,11 +111,20 @@ export const Example = () => (
                 <Node
                     data={bins}
                     $x={_.get('x0')}
-                    xDomain={[bins[0].x0, bins[1].x1]}
+                    xDomain={[bins[0].x0, _.last(bins).x1]}
                     xRange={[0, 420]}
+                    $x1={_.get('x1')}
+                    x1Domain={[bins[0].x0, _.last(bins).x1]}
+                    x1Range={[0, 420]}
                     $y={(d) => d.size}
                     yRange={[0, -220]}
                 >
+                    <Rects
+                        _width={(p) => p.x1 - p.x}
+                        _height={(p) => Math.abs(p.y)}
+                        fill="red"
+                        stroke="white"
+                    />
                     <XAxis label="value" />
                     <YAxis label="count" />
                 </Node>

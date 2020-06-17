@@ -21,7 +21,7 @@ const YAxis = (props) => {
     const domain = y.scale.domain();
     const graduations = Array.isArray(ticks)
         ? ticks
-        : d3.ticks(domain[0], domain[1] + 1, ticks);
+        : d3.ticks(...domain, ticks);
     return (
         <>
             <defs>

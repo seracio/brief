@@ -1,22 +1,32 @@
 import _ from 'lodash/fp';
 import * as React from 'react';
-import { FulgurContext, buildData, getProperties } from './Fulgur';
+import {
+    FulgurContext,
+    buildData,
+    getProperties,
+    getValues,
+    getDerivedFunction,
+    getDerivedValues
+} from './Fulgur';
 
-const Rects = props => {
+const Rects = (props) => {
     const context = React.useContext(FulgurContext);
     const { children, ...otherProps } = props;
     // data
     const data = buildData(context, otherProps);
     const properties = getProperties(context, otherProps, data);
+    const derivedFunctions = getDerivedFunction(props);
 
     return (
         <>
-            {data.map(function(datum, index) {
-                const props = _.flow(
-                    // on applique toutes les fonctions au datum
-                    _.mapValues(fn => fn(datum, index))
-                )(properties);
-                if (props.centered) {
+            {data.map(function (datum, index) {
+                const values = getValues(properties, datum, index);
+                const derivedValues = getDerivedValues(
+                    values,
+                    derivedFunctions
+                );
+                const finalProps = { ...values, ...derivedValues };
+                if (finalProps.centered) {
                     const {
                         x,
                         y,
@@ -24,7 +34,7 @@ const Rects = props => {
                         height,
                         centered,
                         ...otherProps
-                    } = props;
+                    } = finalProps;
                     return (
                         <rect
                             key={index}
@@ -36,7 +46,7 @@ const Rects = props => {
                         />
                     );
                 }
-                return <rect key={index} {...props} />;
+                return <rect key={index} {...finalProps} />;
             })}
         </>
     );

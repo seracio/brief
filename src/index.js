@@ -4,7 +4,9 @@ import {
     buildData,
     getInheritedProperties,
     getProperties,
-    getValues
+    getValues,
+    getDerivedFunction,
+    getDerivedValues
 } from './Fulgur';
 import Line from './Line';
 import Map from './Map';
@@ -27,5 +29,7 @@ export {
     buildData,
     getInheritedProperties,
     getProperties,
-    getValues
+    getValues,
+    getDerivedFunction,
+    getDerivedValues
 };
