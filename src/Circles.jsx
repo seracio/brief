@@ -10,23 +10,17 @@ const mapKeys = _.mapKeys.convert({ cap: false });
 
 const Circles = (props) => {
     const context = React.useContext(FulgurContext);
-    const { children, ...otherProps } = props;
     // data
-    const data = buildData(context, otherProps);
-    const properties = getProperties(context, otherProps, data);
-
+    const data = buildData(context, props);
+    const properties = getProperties(context, props, data);
     return (
         <>
             {data.map(function (datum, index) {
-                const props = _.flow(
-                    // mapping
-                    mapKeys((val, key) => mapping[key] || key),
-                    // pick ?
-                    // _.pick(pick)
-                    // on applique toutes les fonctions au datum
-                    _.mapValues((fn) => fn(datum, index))
-                )(properties);
-                return <circle key={index} {...props} />;
+                const values = _.flow(
+                    () => getValues(properties, datum, index),
+                    mapKeys((val, key) => mapping[key] || key)
+                )();
+                return <circle key={index} {...values} />;
             })}
         </>
     );

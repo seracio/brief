@@ -39,20 +39,6 @@ function buildScale(
     normalizedProperties,
     normalizedKey
 ) {
-    const { scaleMapping = {} } = normalizedProperties;
-    if (normalizedKey in scaleMapping) {
-        // si le scale est déjà défini auparavant, on doit le retrouver
-        if ('scale' in normalizedProperties[scaleMapping[normalizedKey]]) {
-            return normalizedProperties[scaleMapping[normalizedKey]].scale;
-        }
-        return buildScale(
-            scaleProperties,
-            data,
-            normalizedProperties,
-            scaleMapping[normalizedKey]
-        );
-    }
-
     const getter = normalizedProperties[normalizedKey];
     const {
         scale = d3.scaleLinear,
@@ -76,67 +62,6 @@ function removeScaleKeys(properties) {
         _.filter((key) => /(Scale|Range|Domain)$/.test(key))
     )(properties);
     return _.omit(scalesKeys, properties);
-}
-
-// Sert à transformer une clé en fonction :
-// en effet, on normalise toutes les props en fonction
-function getValueFunction(normalizedProperties, normalizedKey, data) {
-    // si un scale, il faut le calculer
-    // on recherche d'abord les indicateurs d'un scale
-    const scaleProperties = _.flow(
-        _.pick([
-            `${normalizedKey}Scale`,
-            `${normalizedKey}Domain`,
-            `${normalizedKey}Range`
-        ]),
-        // on les normlalise
-        mapKeys((val, key) => {
-            if (/Range$/.test(key)) {
-                return 'range';
-            }
-            if (/Domain$/.test(key)) {
-                return 'domain';
-            }
-            if (/Scale$/.test(key)) {
-                return 'scale';
-            }
-        })
-    )(normalizedProperties);
-
-    const { scaleMapping = {} } = normalizedProperties;
-
-    // is a scalable property
-    const isScale =
-        _.flow(_.keys, _.size, _.gt(_, 0))(scaleProperties) ||
-        normalizedKey in scaleMapping;
-
-    // si une string
-    if (typeof normalizedProperties[normalizedKey] === 'string') {
-        // sinon
-        return _.constant(normalizedProperties[normalizedKey]);
-    }
-
-    // si une fonction
-    if (typeof normalizedProperties[normalizedKey] === 'function') {
-        // si scale
-        if (isScale) {
-            // attention pour les scales, ça peut être une fonction qui utilise l'index (d,i) => i
-            const scale = buildScale(
-                scaleProperties,
-                data,
-                normalizedProperties,
-                normalizedKey
-            );
-            const f = _.flow(normalizedProperties[normalizedKey], scale);
-            f.scale = scale;
-            return f;
-        }
-        // pas de scale
-        return normalizedProperties[normalizedKey];
-    }
-
-    // sinon, on retourne la valeur sous forme de _.constant
-    return _.constant(normalizedProperties[normalizedKey]);
 }
 
 // quelles sont les props qui vont être transmises aux enfants?
@@ -174,7 +99,11 @@ function getInheritedProperties(context, props, data) {
 // si on a $x dans le context et x ici : on surcharge x seulement dans le composant courant
 // voilà pourquoi l'algo est différent
 function getProperties(context, props, data) {
-    const propsKeys = _.keys(props);
+    const propsKeys = _.flow(
+        _.keys,
+        _.filter((k) => /^_/.test(k))
+    )(props);
+
     const cleanedContext = _.flow(
         _.omit(propsKeys),
         _.omit(propsKeys.map((key) => '$' + key))
@@ -196,4 +125,71 @@ function getProperties(context, props, data) {
     )(normalizedProperties);
 }
 
-export { getInheritedProperties, getProperties, buildData, FulgurContext };
+// Sert à transformer une clé en fonction :
+// en effet, on normalise toutes les props en fonction
+function getValueFunction(normalizedProperties, normalizedKey, data) {
+    // si un scale, il faut le calculer
+    // on recherche d'abord les indicateurs d'un scale
+    const scaleProperties = _.flow(
+        _.pick([
+            `${normalizedKey}Scale`,
+            `${normalizedKey}Domain`,
+            `${normalizedKey}Range`
+        ]),
+        // on les normlalise
+        mapKeys((val, key) => {
+            if (/Range$/.test(key)) {
+                return 'range';
+            }
+            if (/Domain$/.test(key)) {
+                return 'domain';
+            }
+            if (/Scale$/.test(key)) {
+                return 'scale';
+            }
+        })
+    )(normalizedProperties);
+
+    // is a scalable property
+    const isScale = _.flow(_.keys, _.size, _.gt(_, 0))(scaleProperties);
+
+    // si une string
+    if (typeof normalizedProperties[normalizedKey] === 'string') {
+        // sinon
+        return _.constant(normalizedProperties[normalizedKey]);
+    }
+
+    // si une fonction
+    if (typeof normalizedProperties[normalizedKey] === 'function') {
+        // si scale
+        if (isScale) {
+            // attention pour les scales, ça peut être une fonction qui utilise l'index (d,i) => i
+            const scale = buildScale(
+                scaleProperties,
+                data,
+                normalizedProperties,
+                normalizedKey
+            );
+            const f = _.flow(normalizedProperties[normalizedKey], scale);
+            f.scale = scale;
+            return f;
+        }
+        // pas de scale
+        return normalizedProperties[normalizedKey];
+    }
+
+    // sinon, on retourne la valeur sous forme de _.constant
+    return _.constant(normalizedProperties[normalizedKey]);
+}
+
+function getValues(properties, datum, index) {
+    return _.flow(_.mapValues((fn) => fn(datum, index)))(properties);
+}
+
+export {
+    getInheritedProperties,
+    getProperties,
+    getValues,
+    buildData,
+    FulgurContext
+};

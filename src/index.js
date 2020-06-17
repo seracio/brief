@@ -1,10 +1,10 @@
-import Bins from './Bins';
 import Circles from './Circles';
 import {
     FulgurContext,
     buildData,
     getInheritedProperties,
-    getProperties
+    getProperties,
+    getValues
 } from './Fulgur';
 import Line from './Line';
 import Map from './Map';
@@ -15,7 +15,6 @@ import XAxis from './XAxis';
 import YAxis from './YAxis';
 
 export {
-    Bins,
     Circles,
     Line,
     Map,
@@ -27,5 +26,6 @@ export {
     FulgurContext,
     buildData,
     getInheritedProperties,
-    getProperties
+    getProperties,
+    getValues
 };

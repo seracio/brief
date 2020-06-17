@@ -1,16 +1,7 @@
 import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
-import {
-    Bins,
-    Node,
-    Line,
-    Circles,
-    Rects,
-    XAxis,
-    YAxis,
-    Map
-} from '../src/index';
+import { Node, Line, Circles, Rects, XAxis, YAxis, Map } from '../src/index';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -120,24 +111,11 @@ export const Example = () => (
                 <Node
                     data={bins}
                     $x={_.get('x0')}
-                    xDomain={[
-                        d3.min(bins, (d) => d.x0),
-                        d3.max(bins, (d) => d.x1)
-                    ]}
+                    xDomain={[bins[0].x0, bins[1].x1]}
                     xRange={[0, 420]}
                     $y={(d) => d.size}
                     yRange={[0, -220]}
                 >
-                    <Bins
-                        x0={_.get('x0')}
-                        x1={_.get('x1')}
-                        scaleMapping={{
-                            x0: 'x',
-                            x1: 'x'
-                        }}
-                        fill="red"
-                        stroke="white"
-                    />
                     <XAxis label="value" />
                     <YAxis label="count" />
                 </Node>
