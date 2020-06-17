@@ -33,7 +33,27 @@ function buildData(context, props) {
 
 // TODO : qu'est ce qui se passe si on utilise un index dans le getter ? (d,i) => i
 // Sert à construire une fonction de scale
-function buildScale(scaleProperties, data, getter) {
+function buildScale(
+    scaleProperties,
+    data,
+    normalizedProperties,
+    normalizedKey
+) {
+    const { scaleMapping = {} } = normalizedProperties;
+    if (normalizedKey in scaleMapping) {
+        // si le scale est déjà défini auparavant, on doit le retrouver
+        if ('scale' in normalizedProperties[scaleMapping[normalizedKey]]) {
+            return normalizedProperties[scaleMapping[normalizedKey]].scale;
+        }
+        return buildScale(
+            scaleProperties,
+            data,
+            normalizedProperties,
+            scaleMapping[normalizedKey]
+        );
+    }
+
+    const getter = normalizedProperties[normalizedKey];
     const {
         scale = d3.scaleLinear,
         domain = d3.extent(data, getter),
@@ -83,8 +103,12 @@ function getValueFunction(normalizedProperties, normalizedKey, data) {
         })
     )(normalizedProperties);
 
+    const { scaleMapping = {} } = normalizedProperties;
+
     // is a scalable property
-    const isScale = _.flow(_.keys, _.size, _.gt(_, 0))(scaleProperties);
+    const isScale =
+        _.flow(_.keys, _.size, _.gt(_, 0))(scaleProperties) ||
+        normalizedKey in scaleMapping;
 
     // si une string
     if (typeof normalizedProperties[normalizedKey] === 'string') {
@@ -100,7 +124,8 @@ function getValueFunction(normalizedProperties, normalizedKey, data) {
             const scale = buildScale(
                 scaleProperties,
                 data,
-                normalizedProperties[normalizedKey]
+                normalizedProperties,
+                normalizedKey
             );
             const f = _.flow(normalizedProperties[normalizedKey], scale);
             f.scale = scale;
@@ -167,7 +192,7 @@ function getProperties(context, props, data) {
         // on enlève les scales keys
         removeScaleKeys,
         // on enlève aussi data
-        _.omit(['data', 'by'])
+        _.omit(['data', 'by', 'scaleMapping'])
     )(normalizedProperties);
 }
 

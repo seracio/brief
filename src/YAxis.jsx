@@ -4,13 +4,19 @@ import * as React from 'react';
 import { FulgurContext, buildData, getProperties } from './Fulgur';
 import Texts from './Texts';
 
-const YAxis = props => {
+const YAxis = (props) => {
     const context = React.useContext(FulgurContext);
     const { children, ...otherProps } = props;
     // data
     const data = buildData(context, otherProps);
     const properties = getProperties(context, otherProps, data);
-    const { x, y, label = '', ticks = 4, ...otherProperties } = properties;
+    const {
+        x,
+        y,
+        label = () => '',
+        ticks = 4,
+        ...otherProperties
+    } = properties;
     const range = y.scale.range();
     const domain = y.scale.domain();
     const graduations = Array.isArray(ticks)
@@ -39,7 +45,7 @@ const YAxis = props => {
                     // on enlève x et y
                     _.omit(['x', 'y']),
                     // on exécute les val fonctions sans argument
-                    _.mapValues(val => val()),
+                    _.mapValues((val) => val()),
                     // on supprime les properties nil
                     _.omitBy(_.isNil)
                 )(otherProperties)}
@@ -47,10 +53,10 @@ const YAxis = props => {
             />
             <Texts
                 data={graduations}
-                y={d => d}
+                y={(d) => d}
                 yDomain={domain}
                 yRange={range}
-                value={d => d}
+                value={(d) => d}
                 dx={'-0.5em'}
                 dominantBaseline={'middle'}
                 textAnchor="end"

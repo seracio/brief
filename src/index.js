@@ -1,3 +1,4 @@
+import Bins from './Bins';
 import Circles from './Circles';
 import {
     FulgurContext,
@@ -14,6 +15,7 @@ import XAxis from './XAxis';
 import YAxis from './YAxis';
 
 export {
+    Bins,
     Circles,
     Line,
     Map,

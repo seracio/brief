@@ -1,7 +1,16 @@
 import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
-import { Node, Line, Circles, Rects, XAxis, YAxis, Map } from '../src/index';
+import {
+    Bins,
+    Node,
+    Line,
+    Circles,
+    Rects,
+    XAxis,
+    YAxis,
+    Map
+} from '../src/index';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -28,7 +37,14 @@ for (const day of days) {
     }
 }
 
-console.log(d3);
+const bins = _.flow(
+    d3.histogram().value(_.get('value')),
+    _.map((bin) => ({
+        x0: bin.x0,
+        x1: bin.x1,
+        size: bin.length
+    }))
+)(data);
 
 export default {
     title: 'Welcome'
@@ -102,13 +118,28 @@ export const Example = () => (
         >
             <g transform={`translate(40 260)`}>
                 <Node
-                    data={d3.histogram().value(_.get('value'))(data)}
+                    data={bins}
                     $x={_.get('x0')}
+                    xDomain={[
+                        d3.min(bins, (d) => d.x0),
+                        d3.max(bins, (d) => d.x1)
+                    ]}
                     xRange={[0, 420]}
-                    $y={_.size}
+                    $y={(d) => d.size}
                     yRange={[0, -220]}
                 >
-                    <Rects width={10} height={10} />
+                    <Bins
+                        x0={_.get('x0')}
+                        x1={_.get('x1')}
+                        scaleMapping={{
+                            x0: 'x',
+                            x1: 'x'
+                        }}
+                        fill="red"
+                        stroke="white"
+                    />
+                    <XAxis label="value" />
+                    <YAxis label="count" />
                 </Node>
             </g>
         </svg>
