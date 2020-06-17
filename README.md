@@ -18,3 +18,4 @@ yarn add lodash react react-dom d3 @seracio/fulgur
 -   Other scales
 -   Legend
 -   Color system
+-   Manage wide data

@@ -51,7 +51,7 @@ const YAxis = props => {
                 yDomain={domain}
                 yRange={range}
                 value={d => d}
-                dx={-10}
+                dx={'-0.5em'}
                 dominantBaseline={'middle'}
                 textAnchor="end"
                 fontSize={'0.75em'}

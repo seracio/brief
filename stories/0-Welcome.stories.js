@@ -28,6 +28,8 @@ for (const day of days) {
     }
 }
 
+console.log(d3);
+
 export default {
     title: 'Welcome'
 };
@@ -35,7 +37,7 @@ export default {
 const highlight = _.flow(
     _.groupBy(_.get('label')),
     _.values,
-    _.partition(d => d[0].label === 'toto')
+    _.partition((d) => d[0].label === 'toto')
 );
 
 export const Example = () => (
@@ -47,7 +49,8 @@ export const Example = () => (
             margin: 'auto'
         }}
     >
-        <h3>A first test</h3>
+        <h3>A line chart</h3>
+        <p>With an highlighted curve</p>
         <svg
             preserveAspectRatio="xMidYMid meet"
             viewBox={`0 0 500 300`}
@@ -68,8 +71,6 @@ export const Example = () => (
                 >
                     {([highlighted, others]) => (
                         <>
-                            <XAxis label="day" />
-                            <YAxis label="value" />
                             <Map data={others}>
                                 <Line stroke="#ccc" />
                             </Map>
@@ -83,8 +84,31 @@ export const Example = () => (
                                     fill="red"
                                 />
                             </Map>
+                            <XAxis label="day" />
+                            <YAxis label="value" />
                         </>
                     )}
+                </Node>
+            </g>
+        </svg>
+        <h3>A simple distribution</h3>
+        <svg
+            preserveAspectRatio="xMidYMid meet"
+            viewBox={`0 0 500 300`}
+            style={{
+                border: 'solid 1px black',
+                maxHeight: '75vh'
+            }}
+        >
+            <g transform={`translate(40 260)`}>
+                <Node
+                    data={d3.histogram().value(_.get('value'))(data)}
+                    $x={_.get('x0')}
+                    xRange={[0, 420]}
+                    $y={_.size}
+                    yRange={[0, -220]}
+                >
+                    <Rects width={10} height={10} />
                 </Node>
             </g>
         </svg>

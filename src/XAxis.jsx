@@ -52,7 +52,7 @@ const XAxis = props => {
                 xDomain={domain}
                 xRange={range}
                 value={d => d}
-                dy={10}
+                dy={'1em'}
                 dominantBaseline={'middle'}
                 textAnchor={'middle'}
                 fontSize={'0.75em'}
