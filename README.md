@@ -5,7 +5,7 @@
 ## Install
 
 ```
-yarn add lodash react react-dom d3 @seracio/fulgur
+yarn add react react-dom d3 @seracio/fulgur
 ```
 
 ## TODO

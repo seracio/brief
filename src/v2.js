@@ -1,9 +1,21 @@
 import * as d3 from 'd3';
-import _ from 'lodash/fp';
 import * as React from 'react';
 
-const mapKeys = _.mapKeys.convert({ cap: false });
-const mapValues = _.mapValues.convert({ cap: false });
+const mapKeys = (fn) => (obj) =>
+    Object.entries(obj).reduce((acc, [key, val]) => {
+        return {
+            ...acc,
+            [fn(val, key)]: val
+        };
+    }, {});
+
+const mapValues = (fn) => (obj) =>
+    Object.entries(obj).reduce((acc, [key, val]) => {
+        return {
+            ...acc,
+            [key]: fn(val, key)
+        };
+    }, {});
 
 const omit = (keys) => (obj) =>
     Object.keys(obj).reduce((acc, key) => {
@@ -20,6 +32,8 @@ const mean = (values) =>
     values.reduce((acc, val) => val + acc, 0) / values.length;
 
 const isNil = (val) => typeof val === 'undefined' || val === null;
+
+const flow = (...fns) => (param) => fns.reduce((acc, fn) => fn(acc), param);
 
 export const FulgurContext = React.createContext({});
 
@@ -42,7 +56,7 @@ export function getData(context, props, substitute = 'wrap') {
 export function hasScale(key, props) {
     //
     const reg = new RegExp(`^${key}(Scale|Domain|Range)$`);
-    return _.flow(
+    return flow(
         Object.keys,
         (keys) => keys.filter((key) => reg.test(key)),
         (keys) => keys.length > 0
@@ -52,12 +66,12 @@ export function hasScale(key, props) {
 export function getScale(key, props, data) {
     //
     const reg = new RegExp(`^${key}(Scale|Domain|Range)$`);
-    const scaleKeys = _.flow(
+    const scaleKeys = flow(
         //
         Object.keys,
         (keys) => keys.filter((key) => reg.test(key))
     )(props);
-    const { scale = d3.scaleLinear, range = [0, 500], domain } = _.flow(
+    const { scale = d3.scaleLinear, range = [0, 500], domain } = flow(
         pick(scaleKeys),
         // on les normalise afin de pouvoir généraliser l'algo plus facilement
         mapKeys((val, key) => {
@@ -82,14 +96,12 @@ export function getScale(key, props, data) {
 
 export function getInheritedContext(context, props, data) {
     // les clés éligibles
-    const keys = _.flow(
-        omit(['pick', 'data', 'children']),
-        Object.keys,
-        (keys) => keys.filter((key) => !/(Scale|Range|Domain)$/.test(key))
+    const keys = flow(omit(['pick', 'data', 'children']), Object.keys, (keys) =>
+        keys.filter((key) => !/(Scale|Range|Domain)$/.test(key))
     )(props);
 
     // Pour chacune
-    const newContext = _.flow(
+    const newContext = flow(
         //
         (keys) =>
             keys.reduce((acc, key) => {
@@ -101,7 +113,7 @@ export function getInheritedContext(context, props, data) {
                     return {
                         ...acc,
                         [`$${key}`]: scale,
-                        [key]: _.flow(props[key], scale)
+                        [key]: flow(props[key], scale)
                     };
                 }
                 // sinon, on laisse comme ça
@@ -120,7 +132,7 @@ export function getInheritedContext(context, props, data) {
 }
 
 export function getProps(context, props, datum, index) {
-    return _.flow(
+    return flow(
         omit(['children']), // mostlty for Texts
         mapValues((val, key) => {
             if (typeof val === 'boolean' || isNil(val)) {
