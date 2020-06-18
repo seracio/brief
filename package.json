@@ -2,7 +2,7 @@
   "name": "@seracio/fulgur",
   "version": "1.2.0",
   "description": "An esoteric vis library",
-  "source": "src/index.js",
+  "source": "src/v2.js",
   "main": "dist/fulgur.js",
   "module": "dist/fulgur.module.js",
   "unpkg": "dist/fulgur.umd.js",

@@ -103,6 +103,7 @@ export function getInheritedContext(context, props, data) {
 
 export function getProps(context, props, datum, index) {
     return _.flow(
+        _.omit(['children']), // mostlty for Texts
         mapValues((val, key) => {
             if (_.isBoolean(val) || _.isNil(val)) {
                 if (key in context) {
@@ -189,6 +190,130 @@ export const Circles = (props) => {
                     {...getProps(context, props, datum, index)}
                 />
             ))}
+        </>
+    );
+};
+
+export const Texts = (props) => {
+    const context = React.useContext(FulgurContext);
+    const data = getData(context, props);
+    const { children } = props;
+    return (
+        <>
+            {data.map((datum, index) => (
+                <text key={index} {...getProps(context, props, datum, index)}>
+                    {typeof children === 'function'
+                        ? children(datum, index, context)
+                        : children}
+                </text>
+            ))}
+        </>
+    );
+};
+
+export const XAxis = (props) => {
+    const context = React.useContext(FulgurContext);
+    const { ticks = 4, label } = props;
+    // on récupère le scale
+    const range = context.$x.range();
+    const domain = context.$x.domain();
+    const graduations = Array.isArray(ticks)
+        ? ticks
+        : d3.ticks(...domain, ticks);
+    return (
+        <>
+            <defs>
+                <marker
+                    id="arrow"
+                    viewBox="0 0 10 10"
+                    refX="5"
+                    refY="5"
+                    markerWidth="6"
+                    markerHeight="6"
+                    orient="auto-start-reverse"
+                >
+                    <path d="M 0 0 L 10 5 L 0 10 z" />
+                </marker>
+            </defs>
+            <line
+                x1={range[0]}
+                x2={range[1]}
+                markerEnd="url(#arrow)"
+                stroke="black"
+            />
+            <Node
+                data={graduations}
+                x={_.identity}
+                xDomain={domain}
+                xRange={range}
+            >
+                <Texts
+                    x
+                    dy={'1em'}
+                    dominantBaseline={'middle'}
+                    textAnchor={'middle'}
+                    fontSize={'0.75em'}
+                >
+                    {(d) => d}
+                </Texts>
+            </Node>
+
+            <text x={_.mean(range)} dy={'1.75em'} textAnchor="middle">
+                {label}
+            </text>
+        </>
+    );
+};
+
+export const YAxis = (props) => {
+    const context = React.useContext(FulgurContext);
+    const { ticks = 4, label } = props;
+    // on récupère le scale
+    const range = context.$y.range();
+    const domain = context.$y.domain();
+    const graduations = Array.isArray(ticks)
+        ? ticks
+        : d3.ticks(...domain, ticks);
+    return (
+        <>
+            <defs>
+                <marker
+                    id="fulgur-arrow-y"
+                    viewBox="0 0 10 10"
+                    refX="5"
+                    refY="5"
+                    markerWidth="6"
+                    markerHeight="6"
+                    orient="auto-start-reverse"
+                >
+                    <path d="M 0 0 L 10 5 L 0 10 z" />
+                </marker>
+            </defs>
+            <line
+                y1={range[0]}
+                y2={range[1]}
+                markerEnd="url(#fulgur-arrow-y)"
+                stroke="black"
+            />
+            <Node
+                data={graduations}
+                y={_.identity}
+                yDomain={domain}
+                yRange={range}
+            >
+                <Texts
+                    y
+                    dx={'-0.5em'}
+                    dominantBaseline={'middle'}
+                    textAnchor="end"
+                    fontSize={'0.75em'}
+                >
+                    {(d) => d}
+                </Texts>
+            </Node>
+            <text y={range[1]} dy={'-1em'}>
+                {label}
+            </text>
         </>
     );
 };
