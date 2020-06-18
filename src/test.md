@@ -1,15 +1,26 @@
 ## Une distribution
 
 ```jsx
-<Node data={bins} xDomain={(d) => d.x0} xRange={[0, 500]}>
+<Node
+    data={bins}
+    x={_.get('x0')}
+    xRange={[0, 500]}
+    y={_.size}
+    yRange={[0, -220]}
+>
     <Rects
-        x={(b) => s.x(b.x0)}
-        y={(b) => s.y()}
-        _height={(b, p) => -y}
-        _width={(b, p) => s.x(b.x1) - p.x}
+        _x
+        _y
+        height={(d, i, c) => -c._y}
+        width={(d, i, c) => c.$x(d.x1) - c._x}
     />
     <XAxis />
 </Node>
+```
+
+ou
+
+```jsx
 ```
 
 ## Une courbe highlightée
@@ -17,30 +28,43 @@
 ```jsx
 <Node
     data={data}
-    by={highlight}
-    xDomain={_.get('day')}
+    by={_.get('label')}
+    x={_.get('day')}
     xRange={[0, 420]}
+    y={_.get('value')}
     yDomain={[0, 100]}
     yRange={[0, -220]}
 >
-    {([highlighted, others]) => (
-        <>
-            <Map data={others}>
-                <Line stroke="#ccc" d={line().curve()} />
+    {(groups) => {
+        return (
+            <Map data={groups}>
+                <Path pt={['c.x', 'c.y']} stroke="red" fill="none" />
+                <Circles data={_.last} cx={'c.x'} cy={'c.y'} />
             </Map>
-            <Map data={highlighted}>
-                <Line stroke="red" strokeWidth="2" />
-                <Rects
-                    data={_.last}
-                    width="6"
-                    height="6"
-                    centered="true"
-                    fill="red"
-                />
-            </Map>
-            <XAxis label="day" />
-            <YAxis label="value" />
-        </>
-    )}
+        );
+    }}
 </Node>
 ```
+
+## faire un marker
+
+## Callback
+
+il nous faut :
+
+-   le datum
+-   l'index
+-   le context
+-   les précédentes properties
+
+## Attributs
+
+-   Node :
+    -   data : flowé
+    -   by : props function
+    -   /(Range|Domain|Scale)\$/ : scales - injectés dans le context
+        -   si domain est une fonction, extent(fn, data)
+        -   si pas de domain, mais un getter, extent(getter, data)
+    -   getters : injecté dans le context
+        -   si associé à un scale : \_.flow(getter, scale)
+        -   sinon getter

@@ -1,7 +1,8 @@
 import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
-import { Node, Line, Circles, Rects, XAxis, YAxis, Map } from '../src/index';
+import { Node, Path, Circles, Rects, Map } from '../src/v2';
+import { linkVertical } from 'd3';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -41,12 +42,6 @@ export default {
     title: 'Welcome'
 };
 
-const highlight = _.flow(
-    _.groupBy(_.get('label')),
-    _.values,
-    _.partition((d) => d[0].label === 'toto')
-);
-
 export const Example = () => (
     <div
         style={{
@@ -57,7 +52,6 @@ export const Example = () => (
         }}
     >
         <h3>A line chart</h3>
-        <p>With an highlighted curve</p>
         <svg
             preserveAspectRatio="xMidYMid meet"
             viewBox={`0 0 500 300`}
@@ -66,67 +60,37 @@ export const Example = () => (
                 maxHeight: '75vh'
             }}
         >
-            <g transform={`translate(40 260)`}>
+            <g transform="translate(20 280)">
                 <Node
                     data={data}
-                    by={highlight}
-                    $x={_.get('day')}
-                    xRange={[0, 420]}
-                    $y={_.get('value')}
-                    yDomain={[0, 100]}
-                    yRange={[0, -220]}
+                    by={_.groupBy(_.get('label'))}
+                    x={_.get('day')}
+                    xRange={[0, 460]}
+                    y={_.get('value')}
+                    yRange={[0, -260]}
                 >
-                    {([highlighted, others]) => (
-                        <>
-                            <Map data={others}>
-                                <Line stroke="#ccc" />
-                            </Map>
-                            <Map data={highlighted}>
-                                <Line stroke="red" strokeWidth="2" />
-                                <Rects
-                                    data={_.last}
-                                    width="6"
-                                    height="6"
-                                    centered="true"
-                                    fill="red"
-                                />
-                            </Map>
-                            <XAxis label="day" />
-                            <YAxis label="value" />
-                        </>
+                    {(groups) => (
+                        <Map data={groups}>
+                            <Path
+                                d={(d, i, c) =>
+                                    d3
+                                        .line()
+                                        .x(c.x)
+                                        .y(c.y)
+                                        .curve(d3.curveMonotoneX)(d)
+                                }
+                                stroke="red"
+                                fill="none"
+                            />
+                            <Circles
+                                data={_.last}
+                                cx={'c.x'}
+                                cy={'c.y'}
+                                r={3}
+                                fill="red"
+                            />
+                        </Map>
                     )}
-                </Node>
-            </g>
-        </svg>
-        <h3>A simple distribution</h3>
-        <svg
-            preserveAspectRatio="xMidYMid meet"
-            viewBox={`0 0 500 300`}
-            style={{
-                border: 'solid 1px black',
-                maxHeight: '75vh'
-            }}
-        >
-            <g transform={`translate(40 260)`}>
-                <Node
-                    data={bins}
-                    $x={_.get('x0')}
-                    xDomain={[bins[0].x0, _.last(bins).x1]}
-                    xRange={[0, 420]}
-                    $x1={_.get('x1')}
-                    x1Domain={[bins[0].x0, _.last(bins).x1]}
-                    x1Range={[0, 420]}
-                    $y={(d) => d.size}
-                    yRange={[0, -220]}
-                >
-                    <Rects
-                        _width={(p) => p.x1 - p.x}
-                        _height={(p) => Math.abs(p.y)}
-                        fill="red"
-                        stroke="white"
-                    />
-                    <XAxis label="value" />
-                    <YAxis label="count" />
                 </Node>
             </g>
         </svg>
