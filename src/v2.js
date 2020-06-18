@@ -137,7 +137,9 @@ export function getProps(context, props, datum, index) {
         mapValues((val, key) => {
             if (typeof val === 'boolean' || isNil(val)) {
                 if (key in context) {
-                    return context[key](datum, index);
+                    return typeof context[key] === 'function'
+                        ? context[key](datum, index, context)
+                        : context[key];
                 }
                 return val.toString();
             }
@@ -147,7 +149,10 @@ export function getProps(context, props, datum, index) {
             if (typeof val === 'string') {
                 // réf à une fonction du contexte
                 if (/^c\./.test(val)) {
-                    return context[val.slice(2)](datum, index, context);
+                    const contextVal = context[val.slice(2)];
+                    return typeof contextVal === 'function'
+                        ? contextVal(datum, index, context)
+                        : contextVal;
                 }
                 // sinon
                 return val;

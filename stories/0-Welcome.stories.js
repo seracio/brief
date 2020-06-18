@@ -172,15 +172,12 @@ export const Highlight = () => {
                         line={(d, i, c) =>
                             d3.line().x(c.x).y(c.y).curve(d3.curveMonotoneX)(d)
                         }
+                        stroke="#ccc"
                     >
                         {([highligted, others]) => (
                             <>
                                 <Map data={others}>
-                                    <Path
-                                        d={'c.line'}
-                                        stroke="#ccc"
-                                        fill="none"
-                                    />
+                                    <Path d={'c.line'} stroke fill="none" />
                                 </Map>
                                 <Map data={highligted}>
                                     <Path
