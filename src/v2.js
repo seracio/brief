@@ -5,6 +5,22 @@ import * as React from 'react';
 const mapKeys = _.mapKeys.convert({ cap: false });
 const mapValues = _.mapValues.convert({ cap: false });
 
+const omit = (keys) => (obj) =>
+    Object.keys(obj).reduce((acc, key) => {
+        return keys.includes(key) ? acc : { ...acc, [key]: obj[key] };
+    }, {});
+
+const pick = (keys) => (obj) => {
+    return keys.reduce((acc, key) => {
+        return key in obj ? { ...acc, [key]: obj[key] } : acc;
+    }, {});
+};
+
+const mean = (values) =>
+    values.reduce((acc, val) => val + acc, 0) / values.length;
+
+const isNil = (val) => typeof val === 'undefined' || val === null;
+
 export const FulgurContext = React.createContext({});
 
 // On récupère les data couantes
@@ -20,17 +36,16 @@ export function getData(context, props, substitute = 'wrap') {
     if (Array.isArray(data)) {
         return data;
     }
-    return substitute === 'wrap' ? [data] : _.values(data);
+    return substitute === 'wrap' ? [data] : Object.values(data);
 }
 
 export function hasScale(key, props) {
     //
     const reg = new RegExp(`^${key}(Scale|Domain|Range)$`);
     return _.flow(
-        _.keys,
-        _.filter((key) => reg.test(key)),
-        _.size,
-        _.gt(_, 0)
+        Object.keys,
+        (keys) => keys.filter((key) => reg.test(key)),
+        (keys) => keys.length > 0
     )(props);
 }
 
@@ -38,11 +53,12 @@ export function getScale(key, props, data) {
     //
     const reg = new RegExp(`^${key}(Scale|Domain|Range)$`);
     const scaleKeys = _.flow(
-        _.keys,
-        _.filter((key) => reg.test(key))
+        //
+        Object.keys,
+        (keys) => keys.filter((key) => reg.test(key))
     )(props);
     const { scale = d3.scaleLinear, range = [0, 500], domain } = _.flow(
-        _.pick(scaleKeys),
+        pick(scaleKeys),
         // on les normalise afin de pouvoir généraliser l'algo plus facilement
         mapKeys((val, key) => {
             if (/Scale$/.test(key)) {
@@ -67,31 +83,33 @@ export function getScale(key, props, data) {
 export function getInheritedContext(context, props, data) {
     // les clés éligibles
     const keys = _.flow(
-        _.omit(['pick', 'data', 'children']),
-        _.keys,
-        _.filter((key) => !/(Scale|Range|Domain)$/.test(key))
+        omit(['pick', 'data', 'children']),
+        Object.keys,
+        (keys) => keys.filter((key) => !/(Scale|Range|Domain)$/.test(key))
     )(props);
 
     // Pour chacune
     const newContext = _.flow(
-        _.reduce((acc, key) => {
-            // si on détecte un scale associé, on renvoie :
-            // - le scale sous le namespace $[key]
-            // - la fonction sous le namespace
-            if (hasScale(key, props)) {
-                const scale = getScale(key, props, data);
+        //
+        (keys) =>
+            keys.reduce((acc, key) => {
+                // si on détecte un scale associé, on renvoie :
+                // - le scale sous le namespace $[key]
+                // - la fonction sous le namespace
+                if (hasScale(key, props)) {
+                    const scale = getScale(key, props, data);
+                    return {
+                        ...acc,
+                        [`$${key}`]: scale,
+                        [key]: _.flow(props[key], scale)
+                    };
+                }
+                // sinon, on laisse comme ça
                 return {
                     ...acc,
-                    [`$${key}`]: scale,
-                    [key]: _.flow(props[key], scale)
+                    [key]: props[key]
                 };
-            }
-            // sinon, on laisse comme ça
-            return {
-                ...acc,
-                [key]: props[key]
-            };
-        }, {})
+            }, {})
     )(keys);
 
     return {
@@ -103,18 +121,18 @@ export function getInheritedContext(context, props, data) {
 
 export function getProps(context, props, datum, index) {
     return _.flow(
-        _.omit(['children']), // mostlty for Texts
+        omit(['children']), // mostlty for Texts
         mapValues((val, key) => {
-            if (_.isBoolean(val) || _.isNil(val)) {
+            if (typeof val === 'boolean' || isNil(val)) {
                 if (key in context) {
                     return context[key](datum, index);
                 }
                 return val.toString();
             }
-            if (_.isFinite(val)) {
+            if (Number.isFinite(val)) {
                 return val;
             }
-            if (_.isString(val)) {
+            if (typeof val === 'string') {
                 // réf à une fonction du contexte
                 if (/^c\./.test(val)) {
                     return context[val.slice(2)](datum, index, context);
@@ -122,7 +140,7 @@ export function getProps(context, props, datum, index) {
                 // sinon
                 return val;
             }
-            if (_.isFunction(val)) {
+            if (typeof val === 'function') {
                 return val(datum, index, context);
             }
         })
@@ -135,7 +153,7 @@ export const Node = (props) => {
     const inheritedContext = getInheritedContext(context, props, data);
     return (
         <FulgurContext.Provider value={inheritedContext}>
-            {!!props.by && _.isFunction(props.by)
+            {!!props.by && typeof props.by === 'function'
                 ? props.children(props.by(data))
                 : props.children}
         </FulgurContext.Provider>
@@ -243,7 +261,7 @@ export const XAxis = (props) => {
             />
             <Node
                 data={graduations}
-                x={_.identity}
+                x={(d) => d}
                 xDomain={domain}
                 xRange={range}
             >
@@ -258,7 +276,7 @@ export const XAxis = (props) => {
                 </Texts>
             </Node>
 
-            <text x={_.mean(range)} dy={'1.75em'} textAnchor="middle">
+            <text x={mean(range)} dy={'1.75em'} textAnchor="middle">
                 {label}
             </text>
         </>
@@ -297,7 +315,7 @@ export const YAxis = (props) => {
             />
             <Node
                 data={graduations}
-                y={_.identity}
+                y={(d) => d}
                 yDomain={domain}
                 yRange={range}
             >
