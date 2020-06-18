@@ -103,7 +103,7 @@ export const Bin = () => {
                 margin: 'auto'
             }}
         >
-            <h3>An Histogram</h3>
+            <h3>An histogram</h3>
             <svg
                 preserveAspectRatio="xMidYMid meet"
                 viewBox={`0 0 500 300`}
@@ -130,6 +130,77 @@ export const Bin = () => {
                             height={(d, i, c) => -c.y(d)}
                         />
                         <XAxis label="bins" />
+                    </Node>
+                </g>
+            </svg>
+        </div>
+    );
+};
+
+export const Highlight = () => {
+    return (
+        <div
+            style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '800px',
+                margin: 'auto'
+            }}
+        >
+            <h3>A line chart</h3>
+            <svg
+                preserveAspectRatio="xMidYMid meet"
+                viewBox={`0 0 500 300`}
+                style={{
+                    border: 'solid 1px black',
+                    maxHeight: '75vh'
+                }}
+            >
+                <g transform="translate(40 260)">
+                    <Node
+                        data={data}
+                        by={_.flow(
+                            _.groupBy(_.get('label')),
+                            _.values,
+                            _.partition((gl) => gl[0].label === 'toto')
+                        )}
+                        x={_.get('day')}
+                        xRange={[0, 420]}
+                        y={_.get('value')}
+                        yDomain={[0, 100]}
+                        yRange={[0, -200]}
+                        line={(d, i, c) =>
+                            d3.line().x(c.x).y(c.y).curve(d3.curveMonotoneX)(d)
+                        }
+                    >
+                        {([highligted, others]) => (
+                            <>
+                                <Map data={others}>
+                                    <Path
+                                        d={'c.line'}
+                                        stroke="#ccc"
+                                        fill="none"
+                                    />
+                                </Map>
+                                <Map data={highligted}>
+                                    <Path
+                                        d={'c.line'}
+                                        stroke="red"
+                                        fill="none"
+                                    />
+                                    <Circles
+                                        data={_.last}
+                                        cx={'c.x'}
+                                        cy={'c.y'}
+                                        fill="red"
+                                        stroke="white"
+                                        r={3}
+                                    />
+                                </Map>
+                                <XAxis label="days" />
+                                <YAxis label="value" />
+                            </>
+                        )}
                     </Node>
                 </g>
             </svg>

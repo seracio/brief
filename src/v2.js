@@ -117,7 +117,7 @@ export function getProps(context, props, datum, index) {
             if (_.isString(val)) {
                 // réf à une fonction du contexte
                 if (/^c\./.test(val)) {
-                    return context[val.slice(2)](datum, index);
+                    return context[val.slice(2)](datum, index, context);
                 }
                 // sinon
                 return val;
