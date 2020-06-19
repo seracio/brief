@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
-import { Node, El, Els, Map, XAxis, YAxis } from '../src/index';
+import { Node, El, Els, Map, XAxis, YAxis, Circles, Bins } from '../src/index';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -75,14 +75,7 @@ export const Curve = () => (
                                     stroke="red"
                                     fill="none"
                                 />
-                                <Els
-                                    tag="circle"
-                                    data={_.last}
-                                    cx={'c.x'}
-                                    cy={'c.y'}
-                                    r={3}
-                                    fill="red"
-                                />
+                                <Circles data={_.last} r={3} fill="red" />
                             </Map>
                             <XAxis label="test" />
                             <YAxis label="test" />
@@ -123,15 +116,7 @@ export const Bin = () => {
                         y={_.size}
                         yRange={[0, -220]}
                     >
-                        <Els
-                            tag="rect"
-                            fill="red"
-                            stroke="white"
-                            x
-                            width={(d, i, c) => c.$x(d.x1) - c.x(d)}
-                            y
-                            height={(d, i, c) => -c.y(d)}
-                        />
+                        <Bins fill="red" stroke="white" />
                         <XAxis label="bins" />
                     </Node>
                 </g>
@@ -195,7 +180,6 @@ export const Highlight = () => {
                                         fill="none"
                                     />
                                     <El
-                                        da
                                         tag="circle"
                                         data={_.last}
                                         cx={'c.x'}

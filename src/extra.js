@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import * as React from 'react';
-import { FulgurContext, getProps, Els, Node } from './base';
+import { FulgurContext, Els, Node } from './base';
 import { mean } from './helpers';
 /**
  *
@@ -112,3 +112,20 @@ export const YAxis = (props) => {
         </g>
     );
 };
+
+export const Circles = (props) => (
+    <Els tag="circle" cx={'c.x'} cy={'c.y'} {...props} />
+);
+
+export const Bins = (props) => (
+    <Els
+        tag="rect"
+        x
+        width={(d, i, c) => c.$x(d.x1) - c.x(d)}
+        y
+        height={(d, i, c) => -c.y(d)}
+        {...props}
+    />
+);
+
+//export const Line = (props) => {};
