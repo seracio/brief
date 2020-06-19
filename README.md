@@ -8,9 +8,16 @@
 yarn add react react-dom d3 @seracio/fulgur
 ```
 
+## Concepts
+
+-   vectorized elements when possible
+-   generic
+-   declarative
+-   inherited props via the React context
+
 ## TODO
 
--   Axis: manage otherProps
+-   Axis: manage otherProps, ...
 -   Area
 -   Force
 -   Errors handling
