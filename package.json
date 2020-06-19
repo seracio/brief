@@ -2,14 +2,12 @@
   "name": "@seracio/fulgur",
   "version": "3.2.0",
   "description": "An esoteric vis library",
-  "source": "src/base.jsx",
   "main": "dist/fulgur.js",
   "module": "dist/fulgur.module.js",
   "unpkg": "dist/fulgur.umd.js",
   "scripts": {
     "prepublishOnly": "rm -rf dist && yarn build",
-    "build": "microbundle --no-sourcemap --jsx React.createElement",
-    "dev": "microbundle watch --no-sourcemap --jsx React.createElement",
+    "build": "microbundle -i src/base.js src/extra.js --no-sourcemap --jsx React.createElement",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
