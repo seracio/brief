@@ -1,6 +1,6 @@
 # fulgur ⚡️
 
-> Esoteric vis library
+> vis library
 
 ## Install
 
@@ -8,15 +8,19 @@
 yarn add react react-dom d3 @seracio/fulgur
 ```
 
-## Concepts
+## Principles
 
+-   normalization
 -   vectorized elements when possible
--   generic
--   declarative
+-   declarative (jsx)
 -   inherited props via the React context
+-   server side rendering (svg)
+
+Fulgur is the lib we use to make some of the vis in our website.
 
 ## TODO
 
+-   Circles
 -   Axis: manage otherProps, ...
 -   Area
 -   Force
