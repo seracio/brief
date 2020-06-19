@@ -202,45 +202,21 @@ export const Path = (props) => {
     return <path {...getProps(context, props, data, 0)} />;
 };
 
-export const Rects = (props) => {
+export const El = (props) => {
     const context = React.useContext(FulgurContext);
     const data = getData(context, props);
-    return (
-        <>
-            {data.map((datum, index) => (
-                <rect key={index} {...getProps(context, props, datum, index)} />
-            ))}
-        </>
-    );
-};
-
-export const Circles = (props) => {
-    const context = React.useContext(FulgurContext);
-    const data = getData(context, props);
+    const { children, tag } = props;
     return (
         <React.Fragment>
             {data.map((datum, index) => (
-                <circle
+                <props.tag
                     key={index}
                     {...getProps(context, props, datum, index)}
-                />
-            ))}
-        </React.Fragment>
-    );
-};
-
-export const Texts = (props) => {
-    const context = React.useContext(FulgurContext);
-    const data = getData(context, props);
-    const { children } = props;
-    return (
-        <React.Fragment>
-            {data.map((datum, index) => (
-                <text key={index} {...getProps(context, props, datum, index)}>
+                >
                     {typeof children === 'function'
                         ? children(datum, index, context)
                         : children}
-                </text>
+                </props.tag>
             ))}
         </React.Fragment>
     );
@@ -282,7 +258,8 @@ export const XAxis = (props) => {
                 xDomain={domain}
                 xRange={range}
             >
-                <Texts
+                <El
+                    tag="text"
                     x
                     dy={'1em'}
                     dominantBaseline={'middle'}
@@ -290,7 +267,7 @@ export const XAxis = (props) => {
                     fontSize={'0.75em'}
                 >
                     {(d) => d}
-                </Texts>
+                </El>
             </Node>
 
             <text x={mean(range)} dy={'1.75em'} textAnchor="middle">
@@ -336,7 +313,8 @@ export const YAxis = (props) => {
                 yDomain={domain}
                 yRange={range}
             >
-                <Texts
+                <El
+                    tag="text"
                     y
                     dx={'-0.5em'}
                     dominantBaseline={'middle'}
@@ -344,7 +322,7 @@ export const YAxis = (props) => {
                     fontSize={'0.75em'}
                 >
                     {(d) => d}
-                </Texts>
+                </El>
             </Node>
             <text y={range[1]} dy={'-1em'}>
                 {label}
