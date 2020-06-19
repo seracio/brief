@@ -207,11 +207,42 @@ export const Highlight = () => {
 
 export const Scatter = () => {
     return (
-        <div>
-            <svg preserveAspectRatio="xMidYMid meet" viewBox={`0 0 500 500`}>
-                <Node data={[3, 4, 5, 6]} x={(d) => d} xRange={[0, 500]}>
-                    <Circles cx={'c.x'} cy={250} fill="red" r={4} />
-                </Node>
+        <div
+            style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '800px',
+                margin: 'auto'
+            }}
+        >
+            <h3>A line chart</h3>
+            <svg
+                preserveAspectRatio="xMidYMid meet"
+                viewBox={`0 0 500 300`}
+                style={{
+                    border: 'solid 1px black',
+                    maxHeight: '75vh'
+                }}
+            >
+                <g transform="translate(40 260)">
+                    <Node
+                        data={data}
+                        x={_.get('day')}
+                        xRange={[0, 420]}
+                        y={_.get('value')}
+                        yRange={[0, -220]}
+                    >
+                        <XAxis label="test" />
+                        <YAxis label="test" />
+                        <Circles
+                            cx={'c.x'}
+                            cy={'c.y'}
+                            r={5}
+                            fill="red"
+                            stroke="white"
+                        />
+                    </Node>
+                </g>
             </svg>
         </div>
     );

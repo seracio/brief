@@ -10,8 +10,7 @@ yarn add react react-dom d3 @seracio/fulgur
 
 ## TODO
 
--   Axis: format
--   Distribution example
+-   Axis: manage otherProps
 -   Area
 -   Force
 -   Errors handling
