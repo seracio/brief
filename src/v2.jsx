@@ -181,7 +181,7 @@ export const Map = (props) => {
     const context = React.useContext(FulgurContext);
     const data = getData(context, props, 'values');
     return (
-        <>
+        <React.Fragment>
             {data.map((data, i) => {
                 return (
                     <FulgurContext.Provider
@@ -192,7 +192,7 @@ export const Map = (props) => {
                     </FulgurContext.Provider>
                 );
             })}
-        </>
+        </React.Fragment>
     );
 };
 
@@ -218,14 +218,14 @@ export const Circles = (props) => {
     const context = React.useContext(FulgurContext);
     const data = getData(context, props);
     return (
-        <>
+        <React.Fragment>
             {data.map((datum, index) => (
                 <circle
                     key={index}
                     {...getProps(context, props, datum, index)}
                 />
             ))}
-        </>
+        </React.Fragment>
     );
 };
 
@@ -234,7 +234,7 @@ export const Texts = (props) => {
     const data = getData(context, props);
     const { children } = props;
     return (
-        <>
+        <React.Fragment>
             {data.map((datum, index) => (
                 <text key={index} {...getProps(context, props, datum, index)}>
                     {typeof children === 'function'
@@ -242,7 +242,7 @@ export const Texts = (props) => {
                         : children}
                 </text>
             ))}
-        </>
+        </React.Fragment>
     );
 };
 
@@ -256,7 +256,7 @@ export const XAxis = (props) => {
         ? ticks
         : d3.ticks(...domain, ticks);
     return (
-        <>
+        <React.Fragment>
             <defs>
                 <marker
                     id="arrow"
@@ -296,7 +296,7 @@ export const XAxis = (props) => {
             <text x={mean(range)} dy={'1.75em'} textAnchor="middle">
                 {label}
             </text>
-        </>
+        </React.Fragment>
     );
 };
 
@@ -310,7 +310,7 @@ export const YAxis = (props) => {
         ? ticks
         : d3.ticks(...domain, ticks);
     return (
-        <>
+        <React.Fragment>
             <defs>
                 <marker
                     id="fulgur-arrow-y"
@@ -349,6 +349,6 @@ export const YAxis = (props) => {
             <text y={range[1]} dy={'-1em'}>
                 {label}
             </text>
-        </>
+        </React.Fragment>
     );
 };

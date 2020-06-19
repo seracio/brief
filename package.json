@@ -9,7 +9,7 @@
   "scripts": {
     "prepublishOnly": "rm -rf dist && yarn build",
     "build": "microbundle --no-sourcemap --jsx React.createElement",
-    "dev": "microbundle watch --no-sourcemap",
+    "dev": "microbundle watch --no-sourcemap --jsx React.createElement",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
