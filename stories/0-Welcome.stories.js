@@ -204,3 +204,15 @@ export const Highlight = () => {
         </div>
     );
 };
+
+export const Scatter = () => {
+    return (
+        <div>
+            <svg preserveAspectRatio="xMidYMid meet" viewBox={`0 0 500 500`}>
+                <Node data={[3, 4, 5, 6]} x={(d) => d} xRange={[0, 500]}>
+                    <Circles cx={'c.x'} cy={250} fill="red" r={4} />
+                </Node>
+            </svg>
+        </div>
+    );
+};

@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import * as React from 'react';
+import React from 'react';
 
 const mapKeys = (fn) => (obj) =>
     Object.entries(obj).reduce((acc, [key, val]) => {
