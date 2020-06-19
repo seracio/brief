@@ -114,7 +114,15 @@ export const YAxis = (props) => {
 };
 
 export const Circles = (props) => (
-    <Els tag="circle" cx={'c.x'} cy={'c.y'} {...props} />
+    <Els
+        tag="circle"
+        {...{
+            cx: 'c.x',
+            cy: 'c.y',
+            r: 'c.r',
+            ...props
+        }}
+    />
 );
 
 export const Bins = (props) => (

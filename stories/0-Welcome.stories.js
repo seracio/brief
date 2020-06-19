@@ -229,14 +229,7 @@ export const Scatter = () => {
                     >
                         <XAxis label="test" />
                         <YAxis label="test" />
-                        <Els
-                            tag="circle"
-                            cx={'c.x'}
-                            cy={'c.y'}
-                            r={5}
-                            fill="red"
-                            stroke="white"
-                        />
+                        <Circles r={5} fill="red" stroke="white" />
                     </Node>
                 </g>
             </svg>
