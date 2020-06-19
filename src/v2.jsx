@@ -202,10 +202,10 @@ export const Path = (props) => {
     return <path {...getProps(context, props, data, 0)} />;
 };
 
-export const El = (props) => {
+export const Els = (props) => {
     const context = React.useContext(FulgurContext);
     const data = getData(context, props);
-    const { children, tag } = props;
+    const { children } = props;
     return (
         <React.Fragment>
             {data.map((datum, index) => (
@@ -258,7 +258,7 @@ export const XAxis = (props) => {
                 xDomain={domain}
                 xRange={range}
             >
-                <El
+                <Els
                     tag="text"
                     x
                     dy={'1em'}
@@ -267,7 +267,7 @@ export const XAxis = (props) => {
                     fontSize={'0.75em'}
                 >
                     {(d) => d}
-                </El>
+                </Els>
             </Node>
 
             <text x={mean(range)} dy={'1.75em'} textAnchor="middle">
@@ -313,7 +313,7 @@ export const YAxis = (props) => {
                 yDomain={domain}
                 yRange={range}
             >
-                <El
+                <Els
                     tag="text"
                     y
                     dx={'-0.5em'}
@@ -322,7 +322,7 @@ export const YAxis = (props) => {
                     fontSize={'0.75em'}
                 >
                     {(d) => d}
-                </El>
+                </Els>
             </Node>
             <text y={range[1]} dy={'-1em'}>
                 {label}

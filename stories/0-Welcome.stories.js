@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
-import { Node, Path, Circles, Rects, Map, XAxis, YAxis, El } from '../src/v2';
+import { Node, Path, Map, XAxis, YAxis, Els } from '../src/v2';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -74,7 +74,7 @@ export const Curve = () => (
                                     stroke="red"
                                     fill="none"
                                 />
-                                <El
+                                <Els
                                     tag="circle"
                                     data={_.last}
                                     cx={'c.x'}
@@ -122,7 +122,7 @@ export const Bin = () => {
                         y={_.size}
                         yRange={[0, -220]}
                     >
-                        <El
+                        <Els
                             tag="rect"
                             fill="red"
                             stroke="white"
@@ -187,7 +187,7 @@ export const Highlight = () => {
                                         stroke="red"
                                         fill="none"
                                     />
-                                    <El
+                                    <Els
                                         tag="circle"
                                         data={_.last}
                                         cx={'c.x'}
@@ -237,7 +237,7 @@ export const Scatter = () => {
                     >
                         <XAxis label="test" />
                         <YAxis label="test" />
-                        <El
+                        <Els
                             tag="circle"
                             cx={'c.x'}
                             cy={'c.y'}
