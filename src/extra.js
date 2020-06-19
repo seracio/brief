@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import * as React from 'react';
-import { FulgurContext, Els, Node } from './base';
+import { FulgurContext, Els, Node } from './core';
 import { mean } from './helpers';
 /**
  *

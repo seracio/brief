@@ -1,4 +1,4 @@
-import * as base from './base';
+import * as core from './core';
 import * as extra from './extra';
 
 export const {
@@ -12,6 +12,6 @@ export const {
     Circles,
     Bins
 } = {
-    ...base,
+    ...core,
     ...extra
 };
