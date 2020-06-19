@@ -38,7 +38,7 @@ const flow = (...fns) => (param) => fns.reduce((acc, fn) => fn(acc), param);
 export const FulgurContext = React.createContext({});
 
 // On récupère les data couantes
-export function getData(context, props, substitute = 'wrap') {
+export function getData(context, props, fallback = (val) => [val]) {
     let data = context.data || [];
     if (props.data) {
         if (typeof props.data === 'function') {
@@ -50,7 +50,7 @@ export function getData(context, props, substitute = 'wrap') {
     if (Array.isArray(data)) {
         return data;
     }
-    return substitute === 'wrap' ? [data] : Object.values(data);
+    return fallback(data);
 }
 
 export function hasScale(key, props) {
@@ -133,7 +133,7 @@ export function getInheritedContext(context, props, data) {
 
 export function getProps(context, props, datum, index) {
     return flow(
-        omit(['children']), // mostlty for Texts
+        omit(['children', 'tag']), // mostlty for Texts
         mapValues((val, key) => {
             if (typeof val === 'boolean' || isNil(val)) {
                 if (key in context) {
@@ -179,7 +179,7 @@ export const Node = (props) => {
 
 export const Map = (props) => {
     const context = React.useContext(FulgurContext);
-    const data = getData(context, props, 'values');
+    const data = getData(context, props, Object.values);
     return (
         <React.Fragment>
             {data.map((data, i) => {
@@ -196,10 +196,17 @@ export const Map = (props) => {
     );
 };
 
-export const Path = (props) => {
+export const El = (props) => {
     const context = React.useContext(FulgurContext);
-    const data = getData(context, props);
-    return <path {...getProps(context, props, data, 0)} />;
+    const data = getData(context, props, (d) => d);
+    const { children } = props;
+    return (
+        <props.tag {...getProps(context, props, data, 0)}>
+            {typeof children === 'function'
+                ? children(data, 0, context)
+                : children}
+        </props.tag>
+    );
 };
 
 export const Els = (props) => {

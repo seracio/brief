@@ -18,3 +18,4 @@ yarn add react react-dom d3 @seracio/fulgur
 -   Legend
 -   Color system
 -   Manage wide data
+-   omit/pick shortcuts

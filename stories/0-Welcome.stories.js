@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
-import { Node, Path, Map, XAxis, YAxis, Els } from '../src/v2';
+import { Node, Map, XAxis, YAxis, Els, El } from '../src/base';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -63,7 +63,8 @@ export const Curve = () => (
                     {(groups) => (
                         <>
                             <Map data={groups}>
-                                <Path
+                                <El
+                                    tag="path"
                                     d={(d, i, c) =>
                                         d3
                                             .line()
@@ -179,15 +180,22 @@ export const Highlight = () => {
                         {([highligted, others]) => (
                             <>
                                 <Map data={others}>
-                                    <Path d={'c.line'} stroke fill="none" />
+                                    <El
+                                        tag="path"
+                                        d={'c.line'}
+                                        stroke
+                                        fill="none"
+                                    />
                                 </Map>
                                 <Map data={highligted}>
-                                    <Path
+                                    <El
+                                        tag="path"
                                         d={'c.line'}
                                         stroke="red"
                                         fill="none"
                                     />
-                                    <Els
+                                    <El
+                                        da
                                         tag="circle"
                                         data={_.last}
                                         cx={'c.x'}
