@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
-import { Node, El, Els, Map, XAxis, YAxis } from '../dist/fulgur.module';
+import { Node, El, Els, Map, XAxis, YAxis } from '../src/index';
 
 const days = d3.range(0, 10);
 const labels = [

@@ -30,7 +30,7 @@ export const Arrow = () => (
 
 export const XAxis = (props) => {
     const context = React.useContext(FulgurContext);
-    const { ticks = 4, label = '', ...lineProps } = props;
+    const { ticks = 4, label = '', ...otherProps } = props;
     // on récupère le scale
     const range = context.$x.range();
     const domain = context.$x.domain();
@@ -39,7 +39,7 @@ export const XAxis = (props) => {
         : d3.ticks(...domain, ticks);
 
     return (
-        <React.Fragment>
+        <g {...otherProps}>
             <Arrow />
             <Node
                 data={graduations}
@@ -63,18 +63,17 @@ export const XAxis = (props) => {
                 x2={range[1]}
                 markerEnd="url(#fulgur-arrow)"
                 stroke="black"
-                {...getProps(context, lineProps, null, 0)}
             />
             <text x={mean(range)} dy={'1.75em'} textAnchor="middle">
                 {label}
             </text>
-        </React.Fragment>
+        </g>
     );
 };
 
 export const YAxis = (props) => {
     const context = React.useContext(FulgurContext);
-    const { ticks = 4, label = '', ...lineProps } = props;
+    const { ticks = 4, label = '', ...otherProps } = props;
     // on récupère le scale
     const range = context.$y.range();
     const domain = context.$y.domain();
@@ -82,7 +81,7 @@ export const YAxis = (props) => {
         ? ticks
         : d3.ticks(...domain, ticks);
     return (
-        <React.Fragment>
+        <g {...otherProps}>
             <Arrow />
             <Node
                 data={graduations}
@@ -106,11 +105,10 @@ export const YAxis = (props) => {
                 y2={range[1]}
                 markerEnd="url(#fulgur-arrow)"
                 stroke="black"
-                {...getProps(context, lineProps, null, 0)}
             />
             <text y={range[1]} dy={'-1em'}>
                 {label}
             </text>
-        </React.Fragment>
+        </g>
     );
 };
