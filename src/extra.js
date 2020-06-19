@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import * as React from 'react';
-import { FulgurContext, Els, Node } from './core';
+import { FulgurContext, Els, El, Node } from './core';
 import { mean } from './helpers';
 /**
  *
@@ -136,4 +136,25 @@ export const Bins = (props) => (
     />
 );
 
-//export const Line = (props) => {};
+export const Line = (props) => (
+    <El
+        tag="path"
+        {...{
+            d: (data, i, c) => d3.line().x(c.x).y(c.y)(data),
+            fill: 'none',
+            ...props
+        }}
+    />
+);
+
+export const Curve = (props) => (
+    <El
+        tag="path"
+        {...{
+            d: (data, i, c) =>
+                d3.line().x(c.x).y(c.y).curve(d3.curveMonotoneX)(data),
+            fill: 'none',
+            ...props
+        }}
+    />
+);

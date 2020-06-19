@@ -1,7 +1,18 @@
 import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
-import { Node, El, Els, Map, XAxis, YAxis, Circles, Bins } from '../src/index';
+import {
+    Node,
+    El,
+    Els,
+    Map,
+    XAxis,
+    YAxis,
+    Circles,
+    Bins,
+    Curve,
+    Line
+} from '../src/index';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -32,7 +43,7 @@ export default {
     title: 'Welcome'
 };
 
-export const Curve = () => (
+export const CurveDemo = () => (
     <div
         style={{
             position: 'relative',
@@ -63,18 +74,7 @@ export const Curve = () => (
                     {(groups) => (
                         <>
                             <Map data={groups}>
-                                <El
-                                    tag="path"
-                                    d={(d, i, c) =>
-                                        d3
-                                            .line()
-                                            .x(c.x)
-                                            .y(c.y)
-                                            .curve(d3.curveMonotoneX)(d)
-                                    }
-                                    stroke="red"
-                                    fill="none"
-                                />
+                                <Curve stroke="red" />
                                 <Circles data={_.last} r={3} fill="red" />
                             </Map>
                             <XAxis label="test" />
@@ -157,33 +157,17 @@ export const Highlight = () => {
                         y={_.get('value')}
                         yDomain={[0, 100]}
                         yRange={[0, -200]}
-                        line={(d, i, c) =>
-                            d3.line().x(c.x).y(c.y).curve(d3.curveMonotoneX)(d)
-                        }
                         stroke="#ccc"
                     >
                         {([highligted, others]) => (
                             <>
                                 <Map data={others}>
-                                    <El
-                                        tag="path"
-                                        d={'c.line'}
-                                        stroke
-                                        fill="none"
-                                    />
+                                    <Line stroke="#ccc" />
                                 </Map>
                                 <Map data={highligted}>
-                                    <El
-                                        tag="path"
-                                        d={'c.line'}
-                                        stroke="red"
-                                        fill="none"
-                                    />
-                                    <El
-                                        tag="circle"
+                                    <Line stroke="red" />
+                                    <Circles
                                         data={_.last}
-                                        cx={'c.x'}
-                                        cy={'c.y'}
                                         fill="red"
                                         stroke="white"
                                         r={3}

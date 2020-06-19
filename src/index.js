@@ -10,7 +10,9 @@ export const {
     XAxis,
     YAxis,
     Circles,
-    Bins
+    Bins,
+    Curve,
+    Line
 } = {
     ...core,
     ...extra
