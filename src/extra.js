@@ -177,3 +177,5 @@ export const Dist = (props) => {};
 // y array
 // returns a function?
 export const Wide = (props) => {};
+
+export const Bar = (props) => {};
