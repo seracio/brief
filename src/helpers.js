@@ -32,3 +32,5 @@ export const isNil = (val) => typeof val === 'undefined' || val === null;
 
 export const flow = (...fns) => (param) =>
     fns.reduce((acc, fn) => fn(acc), param);
+
+export const asFunc = (val) => (typeof val === 'function' ? val : () => val);

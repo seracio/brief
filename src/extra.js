@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import * as React from 'react';
 import { FulgurContext, Els, El, Node } from './core';
-import { mean } from './helpers';
+import { mean, asFunc } from './helpers';
 
 export const Arrow = () => (
     <defs>
@@ -116,13 +116,26 @@ export const Circles = (props) => (
     />
 );
 
+export const Rects = (props) => (
+    <Els
+        tag="circle"
+        {...{
+            x: 'c.x',
+            y: 'c.y',
+            width: 'c.width',
+            height: 'c.height',
+            ...props
+        }}
+    />
+);
+
 export const Bins = (props) => (
     <Els
         tag="rect"
         x
-        width={(d, i, c) => c.$x(d.x1) - c.x(d)}
+        width={(d, i, c) => c.$x(d.x1) - c.x(d, i, c)}
         y
-        height={(d, i, c) => -c.y(d)}
+        height={(d, i, c) => -c.y(d, i, c)}
         {...props}
     />
 );

@@ -10,6 +10,7 @@ export const {
     XAxis,
     YAxis,
     Circles,
+    Rects,
     Bins,
     Curve,
     Line
