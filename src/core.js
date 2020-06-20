@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import * as React from 'react';
-import { flow, mapKeys, mapValues, omit, pick, isNil } from './helpers';
+import { flow, mapKeys, mapValues, omit, pick, isNil, asFunc } from './helpers';
 
 export const FulgurContext = React.createContext({});
 
@@ -91,7 +91,8 @@ export function getInheritedContext(context, props, data) {
                     ...acc,
                     [key]: props[key]
                 };
-            }, {})
+            }, {}),
+        mapValues(asFunc)
     )(keys);
 
     return {
@@ -107,9 +108,7 @@ export function getProps(context, props, datum, index) {
         mapValues((val, key) => {
             if (typeof val === 'boolean' || isNil(val)) {
                 if (key in context) {
-                    return typeof context[key] === 'function'
-                        ? context[key](datum, index, context)
-                        : context[key];
+                    return context[key](datum, index, context);
                 }
                 return val.toString();
             }
@@ -120,9 +119,7 @@ export function getProps(context, props, datum, index) {
                 // réf à une fonction du contexte
                 if (/^c\./.test(val)) {
                     const contextVal = context[val.slice(2)];
-                    return typeof contextVal === 'function'
-                        ? contextVal(datum, index, context)
-                        : contextVal;
+                    return contextVal(datum, index, context);
                 }
                 // sinon
                 return val;
