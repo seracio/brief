@@ -46,6 +46,37 @@ ou
 </Node>
 ```
 
+## Wide data
+
+```jsx
+<svg>
+    <Node data={data} x={_.get('day')} xRange={[0, 300]}>
+        {keys.map((k) => (
+            <Node y={_.get(k)} yRange={[0, -300]}>
+                <Line />
+            </Node>
+        ))}
+    </Node>
+</svg>
+```
+
+## Color
+
+```jsx
+<Node
+    data={data}
+    x={_.get('day')}
+    xRange={[0, 300]}
+    color={palette(_.get('label'))}
+>
+    {keys.map((k) => (
+        <Node y={_.get(k)} yRange={[0, -300]}>
+            <Line />
+        </Node>
+    ))}
+</Node>
+```
+
 ## faire un marker
 
 ## Callback

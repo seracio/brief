@@ -57,14 +57,17 @@ export function getScale(key, props, data) {
     if (!domain) {
         return scale().domain(d3.extent(data, props[key])).range(range);
     }
-    // sinon
+    // sinonx
     return scale().domain(domain).range(range);
 }
 
 export function getInheritedContext(context, props, data) {
     // les clés éligibles
-    const keys = flow(omit(['pick', 'data', 'children']), Object.keys, (keys) =>
-        keys.filter((key) => !/(Scale|Range|Domain)$/.test(key))
+    const keys = flow(
+        //
+        omit(['by', 'data', 'children']),
+        Object.keys,
+        (keys) => keys.filter((key) => !/(Scale|Range|Domain)$/.test(key))
     )(props);
 
     // Pour chacune
@@ -100,7 +103,7 @@ export function getInheritedContext(context, props, data) {
 
 export function getProps(context, props, datum, index) {
     return flow(
-        omit(['children', 'tag']), // mostlty for Texts
+        omit(['children', 'tag']),
         mapValues((val, key) => {
             if (typeof val === 'boolean' || isNil(val)) {
                 if (key in context) {

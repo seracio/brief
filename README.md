@@ -25,6 +25,7 @@ Fulgur is the lib we use to make some of the vis in our website.
 -   Area
 -   Force
 -   Errors handling
+-   Bars
 -   Other scales
 -   Legend
 -   Color system
