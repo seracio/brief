@@ -2,15 +2,6 @@ import * as d3 from 'd3';
 import * as React from 'react';
 import { FulgurContext, Els, El, Node } from './core';
 import { mean } from './helpers';
-/**
- *
- * Axis
- * Line
- * Area
- * Force
- * Regression
- * Loess
- */
 
 export const Arrow = () => (
     <defs>
@@ -158,3 +149,12 @@ export const Curve = (props) => (
         }}
     />
 );
+
+export const Area = (props) => {};
+
+export const Force = (props) => {};
+
+// https://github.com/jasondavies/science.js/blob/master/src/stats/loess.js
+export const Loess = (props) => {};
+
+export const LinReg = (props) => {};

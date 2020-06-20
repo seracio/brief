@@ -3,8 +3,6 @@ import React from 'react';
 import _ from 'lodash/fp';
 import {
     Node,
-    El,
-    Els,
     Map,
     XAxis,
     YAxis,
