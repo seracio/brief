@@ -92,6 +92,7 @@ export function getInheritedContext(context, props, data) {
                     };
                 }
                 // sinon, on laisse comme ça
+                // TODO: wide data
                 return {
                     ...acc,
                     [key]: props[key]

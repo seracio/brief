@@ -38,6 +38,20 @@ for (const day of days) {
     }
 }
 
+let wide = [];
+for (const day of days) {
+    let datum = {
+        day
+    };
+    for (const label of labels) {
+        datum = {
+            ...datum,
+            [label]: Math.random() * 20 + 40
+        };
+    }
+    wide.push(datum);
+}
+
 export default {
     title: 'Welcome'
 };
@@ -186,6 +200,38 @@ export const Scatter = () => {
                         <XAxis label="test" />
                         <YAxis label="test" />
                         <Circles r={5} fill="red" stroke="white" />
+                    </Node>
+                )}
+            </Wrapper>
+        </div>
+    );
+};
+
+export const Wide = () => {
+    return (
+        <div
+            style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '800px',
+                margin: 'auto'
+            }}
+        >
+            <h3>Wide data</h3>
+
+            <Wrapper>
+                {({ w, h }) => (
+                    <Node
+                        data={wide}
+                        x={_.get('day')}
+                        xRange={[0, w]}
+                        y={labels}
+                        yDomain={[0, 100]}
+                        yRange={[0, -h]}
+                    >
+                        <Circles r={5} fill="red" stroke="white" />
+                        <XAxis label="test" />
+                        <YAxis label="test" />
                     </Node>
                 )}
             </Wrapper>

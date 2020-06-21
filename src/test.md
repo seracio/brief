@@ -50,9 +50,15 @@ ou
 
 ```jsx
 <svg>
-    <Node data={data} x={_.get('day')} xRange={[0, 300]}>
+    <Node
+        data={data}
+        x={_.get('day')}
+        xRange={[0, 300]}
+        y={keys.map((d) => d[key])}
+        yRange={[0, -300]}
+    >
         {keys.map((k) => (
-            <Node y={_.get(k)} yRange={[0, -300]}>
+            <Node y={_.get(key)}>
                 <Line />
             </Node>
         ))}

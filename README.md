@@ -28,3 +28,4 @@ Fulgur is the lib we use to make some of the vis in our website.
 -   Legend
 -   Color system
 -   Manage wide data
+-   Tables?
