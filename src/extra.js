@@ -1,7 +1,8 @@
 import * as d3 from 'd3';
 import * as React from 'react';
 import { FulgurContext, Els, El, Node } from './core';
-import { mean, asFunc } from './helpers';
+import { mean } from './helpers';
+import { useMemo } from 'react';
 
 export const Arrow = () => (
     <defs>
@@ -55,7 +56,7 @@ export const XAxis = (props) => {
                 markerEnd="url(#fulgur-arrow)"
                 stroke="black"
             />
-            <text x={mean(range)} dy={'1.75em'} textAnchor="middle">
+            <text x={mean(range)} dy={'2em'} textAnchor="middle">
                 {label}
             </text>
         </g>
@@ -162,6 +163,56 @@ export const Curve = (props) => (
         }}
     />
 );
+
+export const Wrapper = (props) => {
+    const {
+        width = 500,
+        height = 300,
+        margin = 25,
+        children,
+        origin = 'bottom',
+        root = true
+    } = props;
+    const sizes = useMemo(() => {
+        let margins = [];
+        if (Number.isFinite(margin)) {
+            margins = [margin, margin, margin, margin];
+        }
+        if (Array.isArray(margin)) {
+            if (margin.length === 2) {
+                margins = [margin[0], margin[1], margin[0], margin[1]];
+            }
+        }
+        return {
+            width: width - margins[0] - margins[2],
+            height: height - margins[1] - margins[3],
+            margins
+        };
+    }, []);
+
+    const Comp = (
+        <g
+            transform={`translate(${sizes.margins[0]} ${
+                origin === 'bottom'
+                    ? sizes.margins[1] + sizes.height
+                    : sizes.margins[1]
+            })`}
+        >
+            {children(sizes)}
+        </g>
+    );
+
+    return root ? (
+        <svg
+            preserveAspectRatio="xMidYMid meet"
+            viewBox={`0 0 ${width} ${height}`}
+        >
+            <Comp />
+        </svg>
+    ) : (
+        <Comp />
+    );
+};
 
 export const Area = (props) => {};
 
