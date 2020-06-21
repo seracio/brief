@@ -64,6 +64,10 @@ ou
         ))}
     </Node>
 </svg>
+
+<Node data={data} y={keys} yRange={} color={keys} >
+
+</Node>
 ```
 
 ## Color

@@ -229,9 +229,7 @@ export const Wide = () => {
                         yDomain={[0, 100]}
                         yRange={[0, -h]}
                     >
-                        <Circles r={5} fill="red" stroke="white" />
-                        <XAxis label="test" />
-                        <YAxis label="test" />
+                        {labels.map((label) => {})}
                     </Node>
                 )}
             </Wrapper>

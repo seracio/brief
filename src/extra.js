@@ -231,10 +231,10 @@ export const Loess = (props) => {};
 
 export const LinReg = (props) => {};
 
-export const Dist = (props) => {};
-
 // y array
 // returns a function?
-export const Wide = (props) => {};
+export const Wide = (props) => {
+    const { keys, ...otherProps } = props;
+};
 
 export const Bar = (props) => {};
