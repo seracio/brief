@@ -57,8 +57,13 @@ export function getScale(key, props, data) {
     if (!domain) {
         return scale().domain(d3.extent(data, props[key])).range(range);
     }
-    // sinonx
-    return scale().domain(domain).range(range);
+    // sinon :
+    // gestion
+    const [
+        domainMin = d3.min(data, props[key]),
+        domainMax = d3.max(data, props[key])
+    ] = domain;
+    return scale().domain([domainMin, domainMax]).range(range);
 }
 
 export function getInheritedContext(context, props, data) {

@@ -180,6 +180,7 @@ export const Scatter = () => {
             }}
         >
             <h3>A line chart</h3>
+
             <svg
                 preserveAspectRatio="xMidYMid meet"
                 viewBox={`0 0 500 300`}
