@@ -12,6 +12,7 @@ import {
     Line
 } from '../src/index';
 import { Wrapper } from '../src/extra';
+import { wideToTidy } from '../src/util';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -218,18 +219,26 @@ export const Wide = () => {
             }}
         >
             <h3>Wide data</h3>
-
             <Wrapper>
                 {({ w, h }) => (
                     <Node
-                        data={wide}
+                        data={wideToTidy(wide, labels, 'label', 'value')}
+                        by={_.groupBy(_.get('label'))}
                         x={_.get('day')}
                         xRange={[0, w]}
-                        y={labels}
-                        yDomain={[0, 100]}
+                        y={_.get('value')}
+                        yDomain={[0, undefined]}
                         yRange={[0, -h]}
                     >
-                        {labels.map((label) => {})}
+                        {(groups) => (
+                            <>
+                                <Map data={groups}>
+                                    <Curve stroke="#ccc" />
+                                </Map>
+                                <XAxis label="day" />
+                                <YAxis label="value" />
+                            </>
+                        )}
                     </Node>
                 )}
             </Wrapper>

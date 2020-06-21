@@ -1,5 +1,6 @@
 import * as core from './core';
 import * as extra from './extra';
+import * as util from './util';
 
 export const {
     FulgurContext,
@@ -14,8 +15,10 @@ export const {
     Bins,
     Curve,
     Line,
-    Wrapper
+    Wrapper,
+    wideToTidy
 } = {
     ...core,
-    ...extra
+    ...extra,
+    ...util
 };
