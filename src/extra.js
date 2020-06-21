@@ -184,18 +184,18 @@ export const Wrapper = (props) => {
             }
         }
         return {
-            width: width - margins[0] - margins[2],
-            height: height - margins[1] - margins[3],
+            width: width - margins[3] - margins[1],
+            height: height - margins[0] - margins[2],
             margins
         };
     }, []);
 
     const Comp = (
         <g
-            transform={`translate(${sizes.margins[0]} ${
+            transform={`translate(${sizes.margins[3]} ${
                 origin === 'bottom'
-                    ? sizes.margins[1] + sizes.height
-                    : sizes.margins[1]
+                    ? sizes.margins[0] + sizes.height
+                    : sizes.margins[0]
             })`}
         >
             {children(sizes)}
