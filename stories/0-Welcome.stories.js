@@ -53,15 +53,15 @@ export const CurveDemo = () => (
     >
         <h3>A line chart</h3>
         <Wrapper>
-            {({ width, height }) => (
+            {({ w, h }) => (
                 <Node
                     data={data}
                     by={_.groupBy(_.get('label'))}
                     x={_.get('day')}
-                    xRange={[0, width]}
+                    xRange={[0, w]}
                     y={_.get('value')}
                     yDomain={[0, 100]}
-                    yRange={[0, -height]}
+                    yRange={[0, -h]}
                 >
                     {(groups) => (
                         <>
@@ -92,14 +92,14 @@ export const Bin = () => {
         >
             <h3>An histogram</h3>
             <Wrapper>
-                {({ width, height }) => (
+                {({ w, h }) => (
                     <Node
                         data={bins}
                         x={_.get('x0')}
                         xDomain={[bins[0].x0, _.last(bins).x1]}
-                        xRange={[0, width]}
+                        xRange={[0, w]}
                         y={_.size}
-                        yRange={[0, -height]}
+                        yRange={[0, -h]}
                     >
                         <Bins fill="red" stroke="white" />
                         <XAxis label="bins" />

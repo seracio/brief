@@ -174,28 +174,35 @@ export const Wrapper = (props) => {
         root = true
     } = props;
     const sizes = useMemo(() => {
-        let margins = [];
+        let [t, r, l, b] = Array(4).fill(0);
         if (Number.isFinite(margin)) {
-            margins = [margin, margin, margin, margin];
+            [t, r, l, b] = Array(4).fill(margin);
         }
         if (Array.isArray(margin)) {
             if (margin.length === 2) {
-                margins = [margin[0], margin[1], margin[0], margin[1]];
+                [t, b] = Array(2).fill(margin[0]);
+                [l, r] = Array(2).fill(margin[1]);
+            }
+            if (margin.length === 3) {
+                t = margin[0];
+                [l, r] = Array(2).fill(margin[1]);
+                b = margin[2];
             }
         }
         return {
-            width: width - margins[3] - margins[1],
-            height: height - margins[0] - margins[2],
-            margins
+            w: width - l - r,
+            h: height - t - b,
+            t,
+            r,
+            b,
+            l
         };
-    }, []);
+    }, [width, height, margin]);
 
     const Comp = (
         <g
-            transform={`translate(${sizes.margins[3]} ${
-                origin === 'bottom'
-                    ? sizes.margins[0] + sizes.height
-                    : sizes.margins[0]
+            transform={`translate(${sizes.l} ${
+                origin === 'bottom' ? sizes.t + sizes.h : sizes.t
             })`}
         >
             {children(sizes)}
