@@ -96,7 +96,7 @@ export const Bin = () => {
                     <Node
                         data={bins}
                         x={_.get('x0')}
-                        xDomain={[bins[0].x0, _.last(bins).x1]}
+                        xDomain={[, _.last(bins).x1]}
                         xRange={[0, w]}
                         y={_.size}
                         yRange={[0, -h]}
