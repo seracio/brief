@@ -121,15 +121,8 @@ export const Highlight = () => {
             }}
         >
             <h3>A line chart</h3>
-            <svg
-                preserveAspectRatio="xMidYMid meet"
-                viewBox={`0 0 500 300`}
-                style={{
-                    border: 'solid 1px black',
-                    maxHeight: '75vh'
-                }}
-            >
-                <g transform="translate(40 260)">
+            <Wrapper>
+                {({ w, h }) => (
                     <Node
                         data={data}
                         by={_.flow(
@@ -138,10 +131,10 @@ export const Highlight = () => {
                             _.partition((gl) => gl[0].label === 'toto')
                         )}
                         x={_.get('day')}
-                        xRange={[0, 420]}
+                        xRange={[0, w]}
                         y={_.get('value')}
-                        yDomain={[0, 100]}
-                        yRange={[0, -200]}
+                        yDomain={[0]}
+                        yRange={[0, -h]}
                         stroke="#ccc"
                     >
                         {([highligted, others]) => (
@@ -163,8 +156,8 @@ export const Highlight = () => {
                             </>
                         )}
                     </Node>
-                </g>
-            </svg>
+                )}
+            </Wrapper>
         </div>
     );
 };
@@ -181,28 +174,21 @@ export const Scatter = () => {
         >
             <h3>A line chart</h3>
 
-            <svg
-                preserveAspectRatio="xMidYMid meet"
-                viewBox={`0 0 500 300`}
-                style={{
-                    border: 'solid 1px black',
-                    maxHeight: '75vh'
-                }}
-            >
-                <g transform="translate(40 260)">
+            <Wrapper>
+                {({ w, h }) => (
                     <Node
                         data={data}
                         x={_.get('day')}
-                        xRange={[0, 420]}
+                        xRange={[0, w]}
                         y={_.get('value')}
-                        yRange={[0, -220]}
+                        yRange={[0, -h]}
                     >
                         <XAxis label="test" />
                         <YAxis label="test" />
                         <Circles r={5} fill="red" stroke="white" />
                     </Node>
-                </g>
-            </svg>
+                )}
+            </Wrapper>
         </div>
     );
 };
