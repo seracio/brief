@@ -11,6 +11,7 @@ import {
     Curve,
     Line
 } from '../src/index';
+import { Wrapper } from '../src/extra';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -51,23 +52,16 @@ export const CurveDemo = () => (
         }}
     >
         <h3>A line chart</h3>
-        <svg
-            preserveAspectRatio="xMidYMid meet"
-            viewBox={`0 0 500 300`}
-            style={{
-                border: 'solid 1px black',
-                maxHeight: '75vh'
-            }}
-        >
-            <g transform="translate(40 260)">
+        <Wrapper>
+            {({ width, height }) => (
                 <Node
                     data={data}
                     by={_.groupBy(_.get('label'))}
                     x={_.get('day')}
-                    xRange={[0, 420]}
+                    xRange={[0, width]}
                     y={_.get('value')}
                     yDomain={[0, 100]}
-                    yRange={[0, -200]}
+                    yRange={[0, -height]}
                 >
                     {(groups) => (
                         <>
@@ -80,8 +74,8 @@ export const CurveDemo = () => (
                         </>
                     )}
                 </Node>
-            </g>
-        </svg>
+            )}
+        </Wrapper>
     </div>
 );
 
@@ -97,28 +91,21 @@ export const Bin = () => {
             }}
         >
             <h3>An histogram</h3>
-            <svg
-                preserveAspectRatio="xMidYMid meet"
-                viewBox={`0 0 500 300`}
-                style={{
-                    border: 'solid 1px black',
-                    maxHeight: '75vh'
-                }}
-            >
-                <g transform="translate(20 260)">
+            <Wrapper>
+                {({ width, height }) => (
                     <Node
                         data={bins}
                         x={_.get('x0')}
                         xDomain={[bins[0].x0, _.last(bins).x1]}
-                        xRange={[0, 460]}
+                        xRange={[0, width]}
                         y={_.size}
-                        yRange={[0, -220]}
+                        yRange={[0, -height]}
                     >
                         <Bins fill="red" stroke="white" />
                         <XAxis label="bins" />
                     </Node>
-                </g>
-            </svg>
+                )}
+            </Wrapper>
         </div>
     );
 };

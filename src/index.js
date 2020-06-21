@@ -13,7 +13,8 @@ export const {
     Rects,
     Bins,
     Curve,
-    Line
+    Line,
+    Wrapper
 } = {
     ...core,
     ...extra

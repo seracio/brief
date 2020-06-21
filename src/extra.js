@@ -168,7 +168,7 @@ export const Wrapper = (props) => {
     const {
         width = 500,
         height = 300,
-        margin = 25,
+        margin = 30,
         children,
         origin = 'bottom',
         root = true
@@ -204,13 +204,14 @@ export const Wrapper = (props) => {
 
     return root ? (
         <svg
+            style={{ overflow: 'visible' }}
             preserveAspectRatio="xMidYMid meet"
             viewBox={`0 0 ${width} ${height}`}
         >
-            <Comp />
+            {Comp}
         </svg>
     ) : (
-        <Comp />
+        <React.Fragment>{Comp}</React.Fragment>
     );
 };
 
