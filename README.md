@@ -5,7 +5,7 @@
 ## Install
 
 ```
-yarn add react react-dom d3 @seracio/fulgur
+yarn add react react-dom d3-scale d3-array d3-shape @seracio/fulgur
 ```
 
 ## Principles

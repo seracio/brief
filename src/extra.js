@@ -1,4 +1,5 @@
-import * as d3 from 'd3';
+import { ticks as d3Ticks } from 'd3-array';
+import { line, curveMonotoneX } from 'd3-shape';
 import * as React from 'react';
 import { FulgurContext, Els, El, Node } from './core';
 import { mean } from './helpers';
@@ -28,7 +29,7 @@ export const XAxis = (props) => {
     const domain = context.$x.domain();
     const graduations = Array.isArray(ticks)
         ? ticks
-        : d3.ticks(...domain, ticks);
+        : d3Ticks(...domain, ticks);
 
     return (
         <g {...otherProps}>
@@ -71,7 +72,7 @@ export const YAxis = (props) => {
     const domain = context.$y.domain();
     const graduations = Array.isArray(ticks)
         ? ticks
-        : d3.ticks(...domain, ticks);
+        : d3Ticks(...domain, ticks);
     return (
         <g {...otherProps}>
             <Arrow />
@@ -145,7 +146,7 @@ export const Line = (props) => (
     <El
         tag="path"
         {...{
-            d: (data, i, c) => d3.line().x(c.x).y(c.y)(data),
+            d: (data, i, c) => line().x(c.x).y(c.y)(data),
             fill: 'none',
             ...props
         }}
@@ -156,8 +157,7 @@ export const Curve = (props) => (
     <El
         tag="path"
         {...{
-            d: (data, i, c) =>
-                d3.line().x(c.x).y(c.y).curve(d3.curveMonotoneX)(data),
+            d: (data, i, c) => line().x(c.x).y(c.y).curve(curveMonotoneX)(data),
             fill: 'none',
             ...props
         }}

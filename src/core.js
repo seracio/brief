@@ -1,4 +1,5 @@
-import * as d3 from 'd3';
+import { extent } from 'd3-array';
+import { scaleLinear } from 'd3-scale';
 import * as React from 'react';
 import { flow, mapKeys, mapValues, omit, pick, isNil, asFunc } from './helpers';
 
@@ -38,7 +39,7 @@ export function getScale(key, props, data) {
         Object.keys,
         (keys) => keys.filter((key) => reg.test(key))
     )(props);
-    const { scale = d3.scaleLinear, range = [0, 500], domain } = flow(
+    const { scale = scaleLinear, range = [0, 500], domain } = flow(
         pick(scaleKeys),
         // on les normalise afin de pouvoir généraliser l'algo plus facilement
         mapKeys((val, key) => {
@@ -54,15 +55,13 @@ export function getScale(key, props, data) {
         })
     )(props);
     // si le domain n'existe pas, on prend l'extent
+    const keyExtent = extent(data, props[key]);
     if (!domain) {
-        return scale().domain(d3.extent(data, props[key])).range(range);
+        return scale().domain(keyExtent).range(range);
     }
     // sinon :
     // gestion
-    const [
-        domainMin = d3.min(data, props[key]),
-        domainMax = d3.max(data, props[key])
-    ] = domain;
+    const [domainMin = keyExtent[0], domainMax = keyExtent[1]] = domain;
     return scale().domain([domainMin, domainMax]).range(range);
 }
 
