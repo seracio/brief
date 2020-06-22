@@ -150,7 +150,6 @@ export const Highlight = () => {
                         y={_.get('value')}
                         yDomain={[0]}
                         yRange={[0, -h]}
-                        stroke="#ccc"
                     >
                         {([highligted, others]) => (
                             <>
