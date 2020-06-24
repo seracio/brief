@@ -120,7 +120,7 @@ export const Circles = (props) => (
 
 export const Rects = (props) => (
     <Els
-        tag="circle"
+        tag="rect"
         {...{
             x: 'c.x',
             y: 'c.y',
