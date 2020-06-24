@@ -1,0 +1,85 @@
+import * as d3 from 'd3';
+import React from 'react';
+import _ from 'lodash/fp';
+import {
+    Node,
+    Map,
+    XAxis,
+    YAxis,
+    Circles,
+    Bins,
+    Curve,
+    Line,
+    unwide
+} from '../src/index';
+import { Wrapper } from '../src/extra';
+
+const days = d3.range(0, 10);
+const labels = [
+    'toto',
+    'tata',
+    'tutu',
+    'titi',
+    'tete',
+    'tyty',
+    'toutou',
+    'kiki',
+    'keke',
+    'koko'
+];
+
+let wide = [];
+for (const day of days) {
+    let datum = {
+        day
+    };
+    for (const label of labels) {
+        datum = {
+            ...datum,
+            [label]: Math.random() * 20 + 40
+        };
+    }
+    wide.push(datum);
+}
+
+export default {
+    title: 'Wide data'
+};
+
+export const Unwide = () => {
+    return (
+        <div
+            style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '800px',
+                margin: 'auto'
+            }}
+        >
+            <h3>unwide function</h3>
+            <Wrapper>
+                {({ w, h }) => (
+                    <Node
+                        data={unwide(wide, labels, 'label', 'value')}
+                        by={_.groupBy(_.get('label'))}
+                        x={_.get('day')}
+                        xRange={[0, w]}
+                        y={_.get('value')}
+                        yDomain={[0, undefined]}
+                        yRange={[0, -h]}
+                    >
+                        {groups => (
+                            <>
+                                <Map data={groups}>
+                                    <Curve stroke="#ccc" />
+                                </Map>
+                                <XAxis label="day" />
+                                <YAxis label="value" />
+                            </>
+                        )}
+                    </Node>
+                )}
+            </Wrapper>
+        </div>
+    );
+};
