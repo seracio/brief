@@ -1,18 +1,7 @@
 import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
-import {
-    Node,
-    Map,
-    XAxis,
-    YAxis,
-    Circles,
-    Bins,
-    Curve,
-    Line,
-    unwide
-} from '../src/index';
-import { Wrapper } from '../src/extra';
+import { Node, XAxis, Bins, Wrapper } from '../src/index';
 
 const days = d3.range(0, 10);
 const labels = [
