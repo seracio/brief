@@ -16,7 +16,7 @@ export const {
     Curve,
     Line,
     Wrapper,
-    wideToTidy
+    unwide
 } = {
     ...core,
     ...extra,

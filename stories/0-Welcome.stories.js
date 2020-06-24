@@ -9,10 +9,10 @@ import {
     Circles,
     Bins,
     Curve,
-    Line
+    Line,
+    unwide
 } from '../src/index';
 import { Wrapper } from '../src/extra';
-import { wideToTidy } from '../src/util';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -221,7 +221,7 @@ export const Wide = () => {
             <Wrapper>
                 {({ w, h }) => (
                     <Node
-                        data={wideToTidy(wide, labels, 'label', 'value')}
+                        data={unwide(wide, labels, 'label', 'value')}
                         by={_.groupBy(_.get('label'))}
                         x={_.get('day')}
                         xRange={[0, w]}
