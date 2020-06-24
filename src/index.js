@@ -14,6 +14,8 @@ export const {
     Rects,
     Bins,
     Curve,
+    Area,
+    CurvedArea,
     Line,
     Wrapper,
     unwide

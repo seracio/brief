@@ -9,7 +9,9 @@ import {
     Circles,
     Curve,
     Line,
-    Wrapper
+    Area,
+    Wrapper,
+    CurvedArea
 } from '../src/index';
 
 const days = d3.range(0, 10);
@@ -65,6 +67,43 @@ export const Basic = () => (
                     {groups => (
                         <>
                             <Map data={groups}>
+                                <Line stroke="red" />
+                                <Circles data={_.last} r={3} fill="red" />
+                            </Map>
+                            <XAxis label="test" />
+                            <YAxis label="test" />
+                        </>
+                    )}
+                </Node>
+            )}
+        </Wrapper>
+    </div>
+);
+
+export const WithCurve = () => (
+    <div
+        style={{
+            position: 'relative',
+            width: '100%',
+            maxWidth: '800px',
+            margin: 'auto'
+        }}
+    >
+        <h3>A curved line chart</h3>
+        <Wrapper>
+            {({ w, h }) => (
+                <Node
+                    data={data}
+                    by={_.groupBy(_.get('label'))}
+                    x={_.get('day')}
+                    xRange={[0, w]}
+                    y={_.get('value')}
+                    yDomain={[0, 100]}
+                    yRange={[0, -h]}
+                >
+                    {groups => (
+                        <>
+                            <Map data={groups}>
                                 <Curve stroke="red" />
                                 <Circles data={_.last} r={3} fill="red" />
                             </Map>
@@ -78,7 +117,87 @@ export const Basic = () => (
     </div>
 );
 
-export const Highlight = () => {
+export const WithArea = () => (
+    <div
+        style={{
+            position: 'relative',
+            width: '100%',
+            maxWidth: '800px',
+            margin: 'auto'
+        }}
+    >
+        <h3>Areas</h3>
+        <Wrapper>
+            {({ w, h }) => (
+                <Node
+                    data={data}
+                    by={_.groupBy(_.get('label'))}
+                    x={_.get('day')}
+                    xRange={[0, w]}
+                    y={_.get('value')}
+                    yDomain={[0, 100]}
+                    yRange={[0, -h]}
+                >
+                    {groups => (
+                        <>
+                            <Map data={groups}>
+                                <Area
+                                    stroke="red"
+                                    fill="red"
+                                    fillOpacity="0.15"
+                                />
+                            </Map>
+                            <XAxis label="test" />
+                            <YAxis label="test" />
+                        </>
+                    )}
+                </Node>
+            )}
+        </Wrapper>
+    </div>
+);
+
+export const WithCurvedArea = () => (
+    <div
+        style={{
+            position: 'relative',
+            width: '100%',
+            maxWidth: '800px',
+            margin: 'auto'
+        }}
+    >
+        <h3>Curved areas</h3>
+        <Wrapper>
+            {({ w, h }) => (
+                <Node
+                    data={data}
+                    by={_.groupBy(_.get('label'))}
+                    x={_.get('day')}
+                    xRange={[0, w]}
+                    y={_.get('value')}
+                    yDomain={[0, 100]}
+                    yRange={[0, -h]}
+                >
+                    {groups => (
+                        <>
+                            <Map data={groups}>
+                                <CurvedArea
+                                    stroke="red"
+                                    fill="red"
+                                    fillOpacity="0.15"
+                                />
+                            </Map>
+                            <XAxis label="test" />
+                            <YAxis label="test" />
+                        </>
+                    )}
+                </Node>
+            )}
+        </Wrapper>
+    </div>
+);
+
+export const WithHighlight = () => {
     return (
         <div
             style={{

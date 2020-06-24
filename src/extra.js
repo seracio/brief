@@ -1,5 +1,5 @@
 import { ticks as d3Ticks } from 'd3-array';
-import { line, curveMonotoneX } from 'd3-shape';
+import { line, area, curveMonotoneX } from 'd3-shape';
 import * as React from 'react';
 import { FulgurContext, Els, El, Node } from './core';
 import { mean } from './helpers';
@@ -23,7 +23,7 @@ export const Arrow = () => (
 
 export const XAxis = (props) => {
     const context = React.useContext(FulgurContext);
-    const { ticks = 4, label = '', ...otherProps } = props;
+    const { ticks = 4, label = '', format = (d) => d, ...otherProps } = props;
     // on récupère le scale
     const range = context.$x.range();
     const domain = context.$x.domain();
@@ -48,7 +48,7 @@ export const XAxis = (props) => {
                     textAnchor={'middle'}
                     fontSize={'0.75em'}
                 >
-                    {(d) => d}
+                    {(d, i, c) => format(d, i, c)}
                 </Els>
             </Node>
             <line
@@ -66,7 +66,7 @@ export const XAxis = (props) => {
 
 export const YAxis = (props) => {
     const context = React.useContext(FulgurContext);
-    const { ticks = 4, label = '', ...otherProps } = props;
+    const { ticks = 4, label = '', format = (d) => d, ...otherProps } = props;
     // on récupère le scale
     const range = context.$y.range();
     const domain = context.$y.domain();
@@ -90,7 +90,7 @@ export const YAxis = (props) => {
                     textAnchor="end"
                     fontSize={'0.75em'}
                 >
-                    {(d) => d}
+                    {(d, i, c) => format(d, i, c)}
                 </Els>
             </Node>
             <line
@@ -164,6 +164,38 @@ export const Curve = (props) => (
     />
 );
 
+export const Area = (props) => (
+    <El
+        tag="path"
+        {...{
+            d: (data, i, c) => area().x(c.x).y1(c.y).y0(0)(data),
+            ...props
+        }}
+    />
+);
+
+export const DiffCurve = (props) => {};
+
+export const CurvedArea = (props) => (
+    <El
+        tag="path"
+        {...{
+            d: (data, i, c) =>
+                area().x(c.x).y1(c.y).y0(0).curve(curveMonotoneX)(data),
+            ...props
+        }}
+    />
+);
+
+export const Force = (props) => {};
+
+// https://github.com/jasondavies/science.js/blob/master/src/stats/loess.js
+export const Loess = (props) => {};
+
+export const LinReg = (props) => {};
+
+export const Bar = (props) => {};
+
 export const Wrapper = (props) => {
     const {
         width = 500,
@@ -221,20 +253,3 @@ export const Wrapper = (props) => {
         <React.Fragment>{Comp}</React.Fragment>
     );
 };
-
-export const Area = (props) => {};
-
-export const Force = (props) => {};
-
-// https://github.com/jasondavies/science.js/blob/master/src/stats/loess.js
-export const Loess = (props) => {};
-
-export const LinReg = (props) => {};
-
-// y array
-// returns a function?
-export const Wide = (props) => {
-    const { keys, ...otherProps } = props;
-};
-
-export const Bar = (props) => {};
