@@ -41,7 +41,7 @@ export const Basic = () => {
                         widthRange={[0, w]}
                         height={(d, i, c) => c.$y.bandwidth()}
                     >
-                        <Rects fill="red" stroke="black" />
+                        <Rects fill="red" stroke="white" />
                     </Node>
                 )}
             </Wrapper>

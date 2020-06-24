@@ -60,9 +60,13 @@ export function getScale(key, props, data) {
         return scale().domain(keyExtent).range(range);
     }
     // sinon :
-    // gestion
-    const [domainMin = keyExtent[0], domainMax = keyExtent[1]] = domain;
-    return scale().domain([domainMin, domainMax]).range(range);
+    // gestion des tableaux taille 1
+    if (domain.length === 1) {
+        const [domainMin = keyExtent[0], domainMax = keyExtent[1]] = domain;
+        return scale().domain([domainMin, domainMax]).range(range);
+    }
+    // sinon
+    return scale().domain(domain).range(range);
 }
 
 export function getInheritedContext(context, props, data) {
@@ -87,7 +91,7 @@ export function getInheritedContext(context, props, data) {
                     return {
                         ...acc,
                         [`$${key}`]: scale,
-                        [key]: flow(props[key], scale)
+                        [key]: (d, i, c) => scale(props[key](d, i, c))
                     };
                 }
                 // sinon, on laisse comme ça
