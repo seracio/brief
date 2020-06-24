@@ -1,6 +1,6 @@
 {
   "name": "@seracio/fulgur",
-  "version": "3.9.1",
+  "version": "3.9.2",
   "description": "An esoteric vis library",
   "source": "src/index.js",
   "main": "dist/fulgur.js",
