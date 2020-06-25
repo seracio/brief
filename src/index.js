@@ -1,5 +1,5 @@
 import * as core from './core';
-import * as extra from './extra';
+import * as shortcuts from './shortcuts';
 import * as util from './util';
 
 export const {
@@ -21,6 +21,6 @@ export const {
     unwide
 } = {
     ...core,
-    ...extra,
+    ...shortcuts,
     ...util
 };

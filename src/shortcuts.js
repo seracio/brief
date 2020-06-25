@@ -1,9 +1,8 @@
-import { ticks as d3Ticks } from 'd3-array';
 import { line, area, curveMonotoneX } from 'd3-shape';
+import { ticks as d3Ticks } from 'd3-array';
 import * as React from 'react';
-import { FulgurContext, Els, El, Node } from './core';
+import { Node, Els, El, FulgurContext } from './core';
 import { mean } from './helpers';
-import { useMemo } from 'react';
 
 export const Arrow = () => (
     <defs>
@@ -224,7 +223,7 @@ export const Wrapper = props => {
         origin = 'bottom',
         root = true
     } = props;
-    const sizes = useMemo(() => {
+    const sizes = React.useMemo(() => {
         let [t, r, l, b] = Array(4).fill(0);
         if (Number.isFinite(margin)) {
             [t, r, l, b] = Array(4).fill(margin);
