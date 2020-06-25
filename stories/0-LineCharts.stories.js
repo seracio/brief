@@ -12,7 +12,7 @@ import {
     Area,
     Wrapper,
     CurvedArea
-} from '../src/index';
+} from '../src';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -58,11 +58,15 @@ export const Basic = () => (
                 <Node
                     data={data}
                     by={_.groupBy(_.get('label'))}
-                    x={_.get('day')}
-                    xRange={[0, w]}
-                    y={_.get('value')}
-                    yDomain={[0, 100]}
-                    yRange={[0, -h]}
+                    x={{
+                        get: 'day',
+                        to: [0, w]
+                    }}
+                    y={{
+                        get: 'value',
+                        from: [0, 100],
+                        to: [0, -h]
+                    }}
                 >
                     {groups => (
                         <>
@@ -95,11 +99,15 @@ export const WithCurve = () => (
                 <Node
                     data={data}
                     by={_.groupBy(_.get('label'))}
-                    x={_.get('day')}
-                    xRange={[0, w]}
-                    y={_.get('value')}
-                    yDomain={[0, 100]}
-                    yRange={[0, -h]}
+                    x={{
+                        get: 'day',
+                        to: [0, w]
+                    }}
+                    y={{
+                        get: 'value',
+                        from: [0, 100],
+                        to: [0, -h]
+                    }}
                 >
                     {groups => (
                         <>
@@ -132,11 +140,11 @@ export const WithArea = () => (
                 <Node
                     data={data}
                     by={_.groupBy(_.get('label'))}
-                    x={_.get('day')}
-                    xRange={[0, w]}
-                    y={_.get('value')}
-                    yDomain={[0, 100]}
-                    yRange={[0, -h]}
+                    x={{
+                        get: 'day',
+                        to: [0, w]
+                    }}
+                    y={{ get: 'value', from: [0, 100], to: [0, -h] }}
                 >
                     {groups => (
                         <>
@@ -172,11 +180,15 @@ export const WithCurvedArea = () => (
                 <Node
                     data={data}
                     by={_.groupBy(_.get('label'))}
-                    x={_.get('day')}
-                    xRange={[0, w]}
-                    y={_.get('value')}
-                    yDomain={[0, 100]}
-                    yRange={[0, -h]}
+                    x={{
+                        get: 'day',
+                        to: [0, w]
+                    }}
+                    y={{
+                        get: 'value',
+                        from: [0, 100],
+                        to: [0, -h]
+                    }}
                 >
                     {groups => (
                         <>
@@ -217,11 +229,11 @@ export const WithHighlight = () => {
                             _.values,
                             _.partition(gl => gl[0].label === 'toto')
                         )}
-                        x={_.get('day')}
-                        xRange={[0, w]}
-                        y={_.get('value')}
-                        yDomain={[0]}
-                        yRange={[0, -h]}
+                        x={{
+                            get: 'day',
+                            to: [0, w]
+                        }}
+                        y={{ get: 'value', from: [0], to: [0, -h] }}
                     >
                         {([highligted, others]) => (
                             <>

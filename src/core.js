@@ -1,12 +1,12 @@
 import { extent } from 'd3-array';
 import { scaleLinear } from 'd3-scale';
 import * as React from 'react';
-import { flow, mapKeys, mapValues, omit, pick, isNil, asFunc } from './helpers';
+import { flow, mapValues, omit, isNil, asFunc } from './helpers';
 
 export const FulgurContext = React.createContext({});
 
-// On récupère les data couantes
-export function getData(context, props, fallback = (val) => [val]) {
+// On récupère les data courantes
+export function getData(context, props, fallback = val => [val]) {
     let data = context.data || [];
     if (props.data) {
         if (typeof props.data === 'function') {
@@ -22,51 +22,53 @@ export function getData(context, props, fallback = (val) => [val]) {
 }
 
 export function hasScale(key, props) {
-    //
-    const reg = new RegExp(`^${key}(Scale|Domain|Range)$`);
-    return flow(
-        Object.keys,
-        (keys) => keys.filter((key) => reg.test(key)),
-        (keys) => keys.length > 0
-    )(props);
+    return typeof props[key] === 'object' && 'get' in props[key];
 }
 
 export function getScale(key, props, data) {
-    //
-    const reg = new RegExp(`^${key}(Scale|Domain|Range)$`);
-    const scaleKeys = flow(
-        //
-        Object.keys,
-        (keys) => keys.filter((key) => reg.test(key))
-    )(props);
-    const { scale = scaleLinear, range = [0, 500], domain } = flow(
-        pick(scaleKeys),
-        // on les normalise afin de pouvoir généraliser l'algo plus facilement
-        mapKeys((val, key) => {
-            if (/Scale$/.test(key)) {
-                return 'scale';
-            }
-            if (/Range$/.test(key)) {
-                return 'range';
-            }
-            if (/Domain$/.test(key)) {
-                return 'domain';
-            }
-        })
-    )(props);
-    // si le domain n'existe pas, on prend l'extent
-    const keyExtent = extent(data, props[key]);
-    if (!domain) {
-        return scale().domain(keyExtent).range(range);
+    const { get, from, to, use = scaleLinear } = props[key];
+
+    // getter
+    const getter = typeof get === 'function' ? get : d => d[get];
+
+    // domain
+    let domain = undefined;
+    const getExtent = extent(data, getter);
+    if (typeof from === 'undefined') {
+        domain = getExtent;
+    } else if (Array.isArray(from)) {
+        // [0,]
+        if (from.length === 1) {
+            domain = [from[0], getExtent[1]];
+        }
+        // [,30]
+        else if (from.length === 2 && typeof from[0] === 'undefined') {
+            domain = [getExtent[0], from[1]];
+        } else {
+            domain = from;
+        }
+    } else if (typeof from === 'function') {
+        domain = from(data);
+    } else {
+        domain = [0, 1];
     }
-    // sinon :
-    // gestion des tableaux taille 1
-    if (domain.length === 1) {
-        const [domainMin = keyExtent[0], domainMax = keyExtent[1]] = domain;
-        return scale().domain([domainMin, domainMax]).range(range);
+
+    // range
+    let range = undefined;
+    if (typeof to === 'undefined') {
+        range = [0, 1];
+    } else if (typeof to === 'function') {
+        range = to(data);
+    } else {
+        range = to;
     }
-    // sinon
-    return scale().domain(domain).range(range);
+
+    return {
+        getter,
+        scale: use()
+            .domain(domain)
+            .range(range)
+    };
 }
 
 export function getInheritedContext(context, props, data) {
@@ -74,24 +76,24 @@ export function getInheritedContext(context, props, data) {
     const keys = flow(
         //
         omit(['by', 'data', 'children']),
-        Object.keys,
-        (keys) => keys.filter((key) => !/(Scale|Range|Domain)$/.test(key))
+        Object.keys
     )(props);
 
     // Pour chacune
     const newContext = flow(
         //
-        (keys) =>
+        keys =>
             keys.reduce((acc, key) => {
                 // si on détecte un scale associé, on renvoie :
                 // - le scale sous le namespace $[key]
                 // - la fonction sous le namespace
                 if (hasScale(key, props)) {
-                    const scale = getScale(key, props, data);
+                    const { scale, getter } = getScale(key, props, data);
+                    let scalable = (d, i) => scale(getter(d, i));
+                    scalable.$ = scale;
                     return {
                         ...acc,
-                        [`$${key}`]: scale,
-                        [key]: (d, i, c) => scale(props[key](d, i, c))
+                        [key]: scalable
                     };
                 }
                 // sinon, on laisse comme ça
@@ -101,6 +103,7 @@ export function getInheritedContext(context, props, data) {
                     [key]: props[key]
                 };
             }, {}),
+        // on transforme tout le contexte en fonction
         mapValues(asFunc)
     )(keys);
 
@@ -140,7 +143,7 @@ export function getProps(context, props, datum, index) {
     )(props);
 }
 
-export const Node = (props) => {
+export const Node = props => {
     const context = React.useContext(FulgurContext);
     const data = getData(context, props);
     const inheritedContext = getInheritedContext(context, props, data);
@@ -153,7 +156,7 @@ export const Node = (props) => {
     );
 };
 
-export const Map = (props) => {
+export const Map = props => {
     const context = React.useContext(FulgurContext);
     const data = getData(context, props, Object.values);
     return (
@@ -172,9 +175,9 @@ export const Map = (props) => {
     );
 };
 
-export const El = (props) => {
+export const El = props => {
     const context = React.useContext(FulgurContext);
-    const data = getData(context, props, (d) => d);
+    const data = getData(context, props, d => d);
     const { children } = props;
     return (
         <props.tag {...getProps(context, props, data, 0)}>
@@ -185,7 +188,7 @@ export const El = (props) => {
     );
 };
 
-export const Els = (props) => {
+export const Els = props => {
     const context = React.useContext(FulgurContext);
     const data = getData(context, props);
     const { children } = props;

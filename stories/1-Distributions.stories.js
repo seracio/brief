@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
-import { Node, XAxis, Bins, Wrapper } from '../src/index';
+import { Node, XAxis, Bins, Wrapper } from '../src';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -48,11 +48,15 @@ export const Basic = () => {
                 {({ w, h }) => (
                     <Node
                         data={bins}
-                        x={_.get('x0')}
-                        xDomain={[, _.last(bins).x1]}
-                        xRange={[0, w]}
-                        y={_.size}
-                        yRange={[0, -h]}
+                        x={{
+                            get: 'x0',
+                            from: bins => [bins[0].x0, _.last(bins).x1],
+                            to: [0, w]
+                        }}
+                        y={{
+                            get: _.size,
+                            to: [0, -h]
+                        }}
                     >
                         <Bins fill="red" stroke="white" />
                         <XAxis label="bins" />

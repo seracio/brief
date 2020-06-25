@@ -48,10 +48,8 @@ export const Basic = () => {
                 {({ w, h }) => (
                     <Node
                         data={data}
-                        x={_.get('day')}
-                        xRange={[0, w]}
-                        y={_.get('value')}
-                        yRange={[0, -h]}
+                        x={{ get: 'day', to: [0, w] }}
+                        y={{ get: 'value', to: [0, -h] }}
                     >
                         <XAxis label="test" />
                         <YAxis label="test" />

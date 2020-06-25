@@ -2,6 +2,8 @@ import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
 import { Node, XAxis, Rects, Wrapper } from '../src/index';
+import { range } from 'd3-array';
+import { scaleBand } from 'd3';
 
 let data = [
     {
@@ -31,17 +33,26 @@ export const Basic = () => {
                 {({ w, h }) => (
                     <Node
                         data={data}
-                        x={0}
-                        y={(d, i, c) => i}
-                        yScale={d3.scaleBand}
-                        yDomain={[0, 1, 2]}
-                        yRange={[0, h]}
-                        width={_.get('size')}
-                        widthDomain={[0]}
-                        widthRange={[0, w]}
-                        height={(d, i, c) => c.$y.bandwidth()}
+                        y={{
+                            get: (d, i) => i,
+                            from: data => range(0, data.length),
+                            to: [0, h],
+                            use: scaleBand
+                        }}
+                        width={{
+                            get: 'size',
+                            from: [0],
+                            to: [0, w]
+                        }}
                     >
-                        <Rects fill="red" stroke="white" />
+                        <Rects
+                            x="0"
+                            height={(d, i, c) => {
+                                return c.y.$.bandwidth();
+                            }}
+                            fill="red"
+                            stroke="white"
+                        />
                     </Node>
                 )}
             </Wrapper>

@@ -51,11 +51,11 @@ export const Unwide = () => {
                     <Node
                         data={unwide(wide, labels, 'label', 'value')}
                         by={_.groupBy(_.get('label'))}
-                        x={_.get('day')}
-                        xRange={[0, w]}
-                        y={_.get('value')}
-                        yDomain={[0, undefined]}
-                        yRange={[0, -h]}
+                        x={{
+                            get: 'day',
+                            to: [0, w]
+                        }}
+                        y={{ get: 'value', from: [0], to: [0, -h] }}
                     >
                         {groups => (
                             <>
