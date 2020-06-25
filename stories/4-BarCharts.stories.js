@@ -37,7 +37,7 @@ export const Basic = () => {
                             get: (d, i) => i,
                             from: data => range(0, data.length),
                             to: [0, h],
-                            use: scaleBand
+                            use: scaleBand().padding(0.5)
                         }}
                         width={{
                             get: 'size',

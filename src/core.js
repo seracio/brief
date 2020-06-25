@@ -26,7 +26,7 @@ export function hasScale(key, props) {
 }
 
 export function getScale(key, props, data) {
-    const { get, from, to, use = scaleLinear } = props[key];
+    const { get, from, to, use = scaleLinear() } = props[key];
 
     // getter
     const getter = typeof get === 'function' ? get : d => d[get];
@@ -65,9 +65,7 @@ export function getScale(key, props, data) {
 
     return {
         getter,
-        scale: use()
-            .domain(domain)
-            .range(range)
+        scale: use.domain(domain).range(range)
     };
 }
 
