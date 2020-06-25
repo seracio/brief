@@ -11,7 +11,8 @@ import {
     Line,
     Area,
     Wrapper,
-    CurvedArea
+    CurvedArea,
+    Els
 } from '../src';
 
 const days = d3.range(0, 10);
@@ -252,6 +253,49 @@ export const WithHighlight = () => {
                                 <XAxis label="days" />
                                 <YAxis label="value" />
                             </>
+                        )}
+                    </Node>
+                )}
+            </Wrapper>
+        </div>
+    );
+};
+
+export const JoyDivision = () => {
+    return (
+        <div
+            style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '800px',
+                margin: 'auto'
+            }}
+        >
+            <h3>Joy Division</h3>
+            <Wrapper height={1000}>
+                {({ w, h }) => (
+                    <Node
+                        data={data}
+                        by={_.groupBy(_.get('label'))}
+                        x={{
+                            get: 'day',
+                            to: [0, w]
+                        }}
+                        y={{
+                            get: 'value',
+                            from: [0],
+                            to: [0, -h / 10]
+                        }}
+                    >
+                        {groups => (
+                            <Map data={groups}>
+                                <Line
+                                    stroke="red"
+                                    transform={(d, i) =>
+                                        `translate(0 ${i * 10})`
+                                    }
+                                />
+                            </Map>
                         )}
                     </Node>
                 )}
