@@ -12,8 +12,10 @@ import {
     Area,
     Wrapper,
     CurvedArea,
-    Els
+    Els,
+    El
 } from '../src';
+import { scaleBand } from 'd3';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -35,7 +37,7 @@ for (const day of days) {
         data.push({
             day,
             label,
-            value: Math.random() * 20 + 40
+            value: Math.random() * 40 + 20
         });
     }
 }
@@ -262,6 +264,8 @@ export const WithHighlight = () => {
 };
 
 export const JoyDivision = () => {
+    const dataByLabel = _.flow(_.groupBy(_.get('label')), _.values)(data);
+
     return (
         <div
             style={{
@@ -272,33 +276,46 @@ export const JoyDivision = () => {
             }}
         >
             <h3>Joy Division</h3>
-            <Wrapper height={1000}>
-                {({ w, h }) => (
-                    <Node
-                        data={data}
-                        by={_.groupBy(_.get('label'))}
-                        x={{
-                            get: 'day',
-                            to: [0, w]
-                        }}
-                        y={{
-                            get: 'value',
-                            from: [0],
-                            to: [0, -h / 10]
-                        }}
-                    >
-                        {groups => (
-                            <Map data={groups}>
-                                <Line
-                                    stroke="red"
-                                    transform={(d, i) =>
-                                        `translate(0 ${i * 10})`
-                                    }
-                                />
-                            </Map>
-                        )}
-                    </Node>
-                )}
+            <Wrapper height={500} origin="top">
+                {({ w, h }) => {
+                    const tScale = scaleBand()
+                        .domain(d3.range(0, dataByLabel.length))
+                        .range([0, h]);
+                    const bw = tScale.bandwidth();
+                    return (
+                        <>
+                            {d3.range(0, dataByLabel.length).map(i => {
+                                const data = dataByLabel[i];
+                                return (
+                                    <g
+                                        transform={`translate(0 ${tScale(i) +
+                                            bw})`}
+                                        key={i}
+                                    >
+                                        <Node
+                                            data={data}
+                                            x={{
+                                                get: _.get('day'),
+                                                to: [0, w]
+                                            }}
+                                            y={{
+                                                get: _.get('value'),
+                                                from: [0, 50],
+                                                to: [0, -bw]
+                                            }}
+                                        >
+                                            <CurvedArea
+                                                fill="red"
+                                                fillOpacity={0.75}
+                                                stroke="white"
+                                            />
+                                        </Node>
+                                    </g>
+                                );
+                            })}
+                        </>
+                    );
+                }}
             </Wrapper>
         </div>
     );
