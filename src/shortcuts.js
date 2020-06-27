@@ -210,7 +210,10 @@ export const Force = props => {};
 // https://github.com/jasondavies/science.js/blob/master/src/stats/loess.js
 export const Loess = props => {};
 
-export const LinReg = props => {};
+export const LineReg = props => {
+    const context = React.useContext(FulgurContext);
+    const { data, x, y, ...otherProps } = props;
+};
 
 export const Bar = props => {};
 
