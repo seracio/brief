@@ -1,8 +1,9 @@
 import { line, area, curveMonotoneX } from 'd3-shape';
 import { ticks as d3Ticks } from 'd3-array';
 import * as React from 'react';
-import { Node, Els, El, FulgurContext } from './core';
+import { Node, Els, El, FulgurContext, getProps } from './core';
 import { mean } from './helpers';
+import { normalEquation } from './matrix';
 
 export const Arrow = () => (
     <defs>
@@ -210,9 +211,28 @@ export const Force = props => {};
 // https://github.com/jasondavies/science.js/blob/master/src/stats/loess.js
 export const Loess = props => {};
 
-export const LineReg = props => {
+export const LinReg = props => {
     const context = React.useContext(FulgurContext);
-    const { data, x, y, ...otherProps } = props;
+    const { data } = props;
+    const values = data.map((datum, index) => {
+        const { x, y } = getProps(context, props, datum, index);
+        return [x, y];
+    });
+    const x = values.map(d => d[0]);
+    const y = values.map(d => d[1]);
+    const reg = normalEquation(x, y);
+    return (
+        <El
+            tag="path"
+            {...{
+                ...props,
+                fill: 'none',
+                d: line()
+                    .x((d, i, c) => c.x(d))
+                    .y((d, i, c) => reg[0] + reg[1] * c.x(d))(data)
+            }}
+        />
+    );
 };
 
 export const Bar = props => {};

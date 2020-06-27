@@ -17,6 +17,7 @@ export const {
     Area,
     CurvedArea,
     Line,
+    LinReg,
     Wrapper,
     unwide
 } = {
