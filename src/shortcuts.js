@@ -1,7 +1,7 @@
 import { line, area, curveMonotoneX } from 'd3-shape';
 import { ticks as d3Ticks } from 'd3-array';
 import * as React from 'react';
-import { Node, Els, El, FulgurContext, getProps } from './core';
+import { Node, Els, El, FulgurContext, getProps, getData } from './core';
 import { mean } from './helpers';
 import { normalEquation } from './matrix';
 
@@ -213,7 +213,7 @@ export const Loess = props => {};
 
 export const LinReg = props => {
     const context = React.useContext(FulgurContext);
-    const { data } = props;
+    const { data, ...otherProps } = getData(data);
     const values = data.map((datum, index) => {
         const { x, y } = getProps(context, props, datum, index);
         return [x, y];
@@ -225,7 +225,7 @@ export const LinReg = props => {
         <El
             tag="path"
             {...{
-                ...props,
+                ...otherProps,
                 fill: 'none',
                 d: line()
                     .x((d, i, c) => c.x(d))
