@@ -23,7 +23,7 @@ for (const day of days) {
         data.push({
             day,
             label,
-            value: Math.random() * 20 + 40
+            value: Math.random() * 10 + 30
         });
     }
 }

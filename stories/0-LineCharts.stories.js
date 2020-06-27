@@ -284,35 +284,41 @@ export const JoyDivision = () => {
                     const bw = tScale.bandwidth();
                     return (
                         <>
-                            {d3.range(0, dataByLabel.length).map(i => {
-                                const data = dataByLabel[i];
-                                return (
-                                    <g
-                                        transform={`translate(0 ${tScale(i) +
-                                            bw})`}
-                                        key={i}
-                                    >
-                                        <Node
-                                            data={data}
-                                            x={{
-                                                get: _.get('day'),
-                                                to: [0, w]
-                                            }}
-                                            y={{
-                                                get: _.get('value'),
-                                                from: [0, 50],
-                                                to: [0, -bw]
-                                            }}
+                            <Node
+                                data={data}
+                                x={{
+                                    get: _.get('day'),
+                                    to: [0, w]
+                                }}
+                            >
+                                {d3.range(0, dataByLabel.length).map(i => {
+                                    const data = dataByLabel[i];
+                                    return (
+                                        <g
+                                            transform={`translate(0 ${tScale(
+                                                i
+                                            ) + bw})`}
+                                            key={i}
                                         >
-                                            <CurvedArea
-                                                fill="red"
-                                                fillOpacity={0.75}
-                                                stroke="white"
-                                            />
-                                        </Node>
-                                    </g>
-                                );
-                            })}
+                                            <Node
+                                                data={data}
+                                                y={{
+                                                    get: _.get('value'),
+                                                    from: [0, 50],
+                                                    to: [0, -bw]
+                                                }}
+                                            >
+                                                <CurvedArea
+                                                    fill="red"
+                                                    fillOpacity={0.75}
+                                                    stroke="white"
+                                                />
+                                            </Node>
+                                        </g>
+                                    );
+                                })}
+                                <XAxis transform={`translate(0 ${h})`} />
+                            </Node>
                         </>
                     );
                 }}
