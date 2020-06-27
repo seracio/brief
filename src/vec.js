@@ -16,7 +16,7 @@ export const mult = (M1, M2) => {
         for (let p = 0; p < dim2; p++) {
             const row1 = M1[m];
             const col2 = M2.map(r => r[p]);
-            res[m][p] = row[1].reduce((acc, cur, i) => acc + cur * col2[i], 0);
+            res[m][p] = row1[1].reduce((acc, cur, i) => acc + cur * col2[i], 0);
         }
     }
     return res;
