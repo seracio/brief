@@ -1,8 +1,8 @@
 // https://towardsdatascience.com/performing-linear-regression-using-the-normal-equation-6372ed3c57
-export const v2m = rows => [rows.map(r => [r])];
+export const v2m = rows => rows.map(r => [r]);
 
 export const transpose = M => {
-    return [...Array(M.length).keys()].map(i => M.map(r => r[i]));
+    return [...Array(M[0].length).keys()].map(i => M.map(r => r[i]));
 };
 
 export const mult = (M1, M2) => {
@@ -11,12 +11,12 @@ export const mult = (M1, M2) => {
     // res: M x P
     const dim1 = M1.length;
     const dim2 = M2[0].length;
-    let res = new Array(dim1).fill(new Array(dim2).fill(0));
-    for (let m = 0; m < dim1; m++) {
-        for (let p = 0; p < dim2; p++) {
+    let res = new Array(dim1).fill(0).map(() => new Array(dim2).fill(0));
+    for (let m = 0; m < dim1; m = m + 1) {
+        for (let p = 0; p < dim2; p = p + 1) {
             const row1 = M1[m];
             const col2 = M2.map(r => r[p]);
-            res[m][p] = row1[1].reduce((acc, cur, i) => acc + cur * col2[i], 0);
+            res[m][p] = row1.reduce((acc, cur, i) => acc + cur * col2[i], 0);
         }
     }
     return res;
