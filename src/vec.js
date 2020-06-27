@@ -1,5 +1,5 @@
 // https://towardsdatascience.com/performing-linear-regression-using-the-normal-equation-6372ed3c57
-export const asMatrix = rows => [rows.map(r => (Array.isArray(r) ? r : [r]))];
+export const asMatrix = rows => [rows.map(r => [r])];
 
 export const transpose = M => {
     return [...Array(M.length).keys()].map(i => M.map(r => r[i]));
