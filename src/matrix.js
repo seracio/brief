@@ -1,5 +1,5 @@
 // https://towardsdatascience.com/performing-linear-regression-using-the-normal-equation-6372ed3c57
-export const asMatrix = rows => [rows.map(r => [r])];
+export const v2m = rows => [rows.map(r => [r])];
 
 export const transpose = M => {
     return [...Array(M.length).keys()].map(i => M.map(r => r[i]));
@@ -39,5 +39,5 @@ export const normalEquation = (x, y) => {
     // add bias
     const X = x.map(s => [1, s]);
     const Xt = transpose(X);
-    return mult(mult(invert2x2(mult(Xt, X)), Xt), asMatrix(y));
+    return mult(mult(invert2x2(mult(Xt, X)), Xt), v2m(y));
 };
