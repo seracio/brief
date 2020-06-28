@@ -225,7 +225,7 @@ export const LinReg = props => {
     const points = data.map((datum, index) => {
         const { x, y } = getProps(
             context,
-            { x: 'c.x', y: 'c.y' },
+            { x: 'c.x', y: 'c.y', ...props },
             datum,
             index
         );
