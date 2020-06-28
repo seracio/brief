@@ -62,6 +62,20 @@ export const Basic = () => {
 };
 
 export const WithLinearRegression = () => {
+    const data = [
+        {
+            x: 1,
+            y: 3
+        },
+        {
+            x: 2,
+            y: 2
+        },
+        {
+            x: 3,
+            y: 4
+        }
+    ];
     return (
         <div
             style={{
@@ -76,20 +90,7 @@ export const WithLinearRegression = () => {
             <Wrapper>
                 {({ w, h }) => (
                     <Node
-                        data={[
-                            {
-                                x: 1,
-                                y: 3
-                            },
-                            {
-                                x: 2,
-                                y: 2
-                            },
-                            {
-                                x: 3,
-                                y: 4
-                            }
-                        ]}
+                        data={data}
                         x={{ get: 'x', to: [0, w] }}
                         y={{ get: 'y', to: [0, -h] }}
                     >
