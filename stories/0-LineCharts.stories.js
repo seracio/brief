@@ -11,9 +11,7 @@ import {
     Line,
     Area,
     Wrapper,
-    CurvedArea,
-    Els,
-    El
+    CurvedArea
 } from '../src';
 import { scaleBand } from 'd3';
 

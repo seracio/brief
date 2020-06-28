@@ -92,7 +92,7 @@ export const WithLinearRegression = () => {
                     <Node
                         data={data}
                         x={{ get: 'x', to: [0, w] }}
-                        y={{ get: 'y', to: [0, -h] }}
+                        y={{ get: 'y', from: [0], to: [0, -h] }}
                     >
                         <XAxis label="test" />
                         <YAxis label="test" />
