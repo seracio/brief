@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import React from 'react';
 import _ from 'lodash/fp';
-import { Node, XAxis, YAxis, Circles, Wrapper } from '../src/index';
+import { Node, XAxis, YAxis, Circles, LinReg, Wrapper } from '../src/index';
 
 const days = d3.range(0, 10);
 const labels = [
@@ -54,6 +54,49 @@ export const Basic = () => {
                         <XAxis label="test" />
                         <YAxis label="test" />
                         <Circles r={5} fill="red" stroke="white" />
+                    </Node>
+                )}
+            </Wrapper>
+        </div>
+    );
+};
+
+export const WithLinearRegression = () => {
+    return (
+        <div
+            style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '800px',
+                margin: 'auto'
+            }}
+        >
+            <h3>A scatter plot with a linear regression</h3>
+
+            <Wrapper>
+                {({ w, h }) => (
+                    <Node
+                        data={[
+                            {
+                                x: 1,
+                                y: 3
+                            },
+                            {
+                                x: 2,
+                                y: 2
+                            },
+                            {
+                                x: 3,
+                                y: 4
+                            }
+                        ]}
+                        x={{ get: 'x', to: [0, w] }}
+                        y={{ get: 'y', to: [0, -h] }}
+                    >
+                        <XAxis label="test" />
+                        <YAxis label="test" />
+                        <Circles r={5} fill="red" stroke="white" />
+                        <LinReg stroke="black" />
                     </Node>
                 )}
             </Wrapper>

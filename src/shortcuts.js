@@ -1,7 +1,15 @@
 import { line, area, curveMonotoneX } from 'd3-shape';
 import { ticks as d3Ticks } from 'd3-array';
 import * as React from 'react';
-import { Node, Els, El, FulgurContext, getProps, getData } from './core';
+import {
+    Node,
+    Els,
+    El,
+    FulgurContext,
+    getProps,
+    getData,
+    getInheritedContext
+} from './core';
 import { mean } from './helpers';
 import { normalEquation } from './matrix';
 
@@ -213,26 +221,23 @@ export const Loess = props => {};
 
 export const LinReg = props => {
     const context = React.useContext(FulgurContext);
-    const { data, ...otherProps } = getData(data);
-    const values = data.map((datum, index) => {
-        const { x, y } = getProps(context, props, datum, index);
+    const data = getData(context, props);
+    const points = data.map((datum, index) => {
+        const { x, y } = getProps(
+            context,
+            { x: 'c.x', y: 'c.y' },
+            datum,
+            index
+        );
         return [x, y];
     });
-    const x = values.map(d => d[0]);
-    const y = values.map(d => d[1]);
+    const x = points.map(d => d[0]);
+    const y = points.map(d => d[1]);
     const reg = normalEquation(x, y);
-    return (
-        <El
-            tag="path"
-            {...{
-                ...otherProps,
-                fill: 'none',
-                d: line()
-                    .x((d, i, c) => c.x(d))
-                    .y((d, i, c) => reg[0] + reg[1] * c.x(d))(data)
-            }}
-        />
-    );
+    const d = line()
+        .x(d => d[0])
+        .y(d => reg[0][0] + reg[1][0] * d[0])(points);
+    return <El tag="path" d={d} {...{ ...props, fill: 'none' }} />;
 };
 
 export const Bar = props => {};
