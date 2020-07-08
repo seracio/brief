@@ -21,15 +21,14 @@ export const Introduction = () => (
 
         <Wrapper origin="top">
             {({ w }) => (
-                <Node data={[1, 2, 3]}>
-                    <Els
-                        tag="circle"
-                        cx={(d, i) => d * 100}
-                        cy={100}
-                        fill="red"
-                        r="10"
-                    />
-                </Node>
+                <Els
+                    data={[1, 2, 3]}
+                    tag="circle"
+                    cx={(d, i) => d * 100}
+                    cy={100}
+                    fill="red"
+                    r="10"
+                />
             )}
         </Wrapper>
     </div>
