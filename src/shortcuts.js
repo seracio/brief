@@ -1,5 +1,4 @@
-import { line, area, curveMonotoneX } from 'd3-shape';
-import { ticks as d3Ticks } from 'd3-array';
+import * as d3 from 'd3';
 import * as React from 'react';
 import {
     Node,
@@ -37,7 +36,7 @@ export const XAxis = props => {
     const domain = context.x.$.domain();
     const graduations = Array.isArray(ticks)
         ? ticks
-        : d3Ticks(...domain, ticks);
+        : d3.ticks(...domain, ticks);
 
     return (
         <g {...otherProps}>
@@ -82,7 +81,7 @@ export const YAxis = props => {
     const domain = context.y.$.domain();
     const graduations = Array.isArray(ticks)
         ? ticks
-        : d3Ticks(...domain, ticks);
+        : d3.ticks(...domain, ticks);
     return (
         <g {...otherProps}>
             <Arrow />
@@ -159,7 +158,8 @@ export const Line = props => (
         tag="path"
         {...{
             d: (data, i, c) =>
-                line()
+                d3
+                    .line()
                     .x(c.x)
                     .y(c.y)(data),
             fill: 'none',
@@ -173,10 +173,11 @@ export const Curve = props => (
         tag="path"
         {...{
             d: (data, i, c) =>
-                line()
+                d3
+                    .line()
                     .x(c.x)
                     .y(c.y)
-                    .curve(curveMonotoneX)(data),
+                    .curve(d3.curveMonotoneX)(data),
             fill: 'none',
             ...props
         }}
@@ -188,7 +189,8 @@ export const Area = props => (
         tag="path"
         {...{
             d: (data, i, c) =>
-                area()
+                d3
+                    .area()
                     .x(c.x)
                     .y1(c.y)
                     .y0(0)(data),
@@ -204,11 +206,12 @@ export const CurvedArea = props => (
         tag="path"
         {...{
             d: (data, i, c) =>
-                area()
+                d3
+                    .area()
                     .x(c.x)
                     .y1(c.y)
                     .y0(0)
-                    .curve(curveMonotoneX)(data),
+                    .curve(d3.curveMonotoneX)(data),
             ...props
         }}
     />
@@ -234,7 +237,8 @@ export const LinReg = props => {
     const x = points.map(d => d[0]);
     const y = points.map(d => d[1]);
     const reg = normalEquation(x, y);
-    const d = line()
+    const d = d3
+        .line()
         .x(d => d[0])
         .y(d => reg[0][0] + reg[1][0] * d[0])(points);
     return <El tag="path" d={d} {...{ ...props, fill: 'none' }} />;

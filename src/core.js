@@ -1,5 +1,4 @@
-import { extent } from 'd3-array';
-import { scaleLinear } from 'd3-scale';
+import * as d3 from 'd3';
 import * as React from 'react';
 import { flow, mapValues, omit, isNil, asFunc } from './helpers';
 
@@ -26,14 +25,14 @@ export function hasScale(key, props) {
 }
 
 export function getScale(key, props, data) {
-    const { get, from, to, use = scaleLinear() } = props[key];
+    const { get, from, to, use = d3.scaleLinear() } = props[key];
 
     // getter
     const getter = typeof get === 'function' ? get : d => d[get];
 
     // domain
     let domain = undefined;
-    const getExtent = extent(data, getter);
+    const getExtent = d3.extent(data, getter);
     if (typeof from === 'undefined') {
         domain = getExtent;
     } else if (Array.isArray(from)) {
