@@ -10,7 +10,7 @@ yarn add react react-dom d3 @seracio/fulgur
 
 ## Principles
 
--   at the top of d3 & React
+-   on top of d3 & React
 -   vectorized elements
 -   declarative (jsx)
 -   inherited props via the React context
